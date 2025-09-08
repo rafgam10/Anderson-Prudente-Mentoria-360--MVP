@@ -1,0 +1,3 @@
+class ErrorValue:
+    
+    pass

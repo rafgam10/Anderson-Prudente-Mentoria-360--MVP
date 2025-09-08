@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/rafgam10/Anderson-Prudente-Mentoria-360--MVP/issues"
   },
-  "homepage": "https://github.com/rafgam10/Anderson-Prudente-Mentoria-360--MVP#readme"
+  "homepage": "https://github.com/rafgam10/Anderson-Prudente-Mentoria-360--MVP#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "tailwindcss": "^4.1.13"
+  }
 }

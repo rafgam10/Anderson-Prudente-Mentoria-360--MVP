@@ -1,0 +1,47 @@
+# ==========================
+# Python / Flask
+# ==========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Ambiente virtual
+venv/
+.env
+.env.*
+
+# Configurações locais
+instance/
+config.py
+
+# ==========================
+# Node / Frontend (Tailwind, build)
+# ==========================
+node_modules/
+dist/
+build/
+*.log
+
+# ==========================
+# Sistema / Editor
+# ==========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# VSCode / IDEs
+.vscode/
+.idea/
+
+# ==========================
+# Docker (se usar)
+# ==========================
+*.pid
+*.seed
+*.bak
+*.tar
+docker-compose.override.yml

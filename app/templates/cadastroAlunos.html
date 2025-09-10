@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Mentoria 360°</title>
+    <link rel="icon" href="../static/img/logoicon.jpg">
+    <script src="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2"></script>
+    <link href="../static/output.css" rel="stylesheet">
+    <link href="../static/scrollbar.css" rel="stylesheet">
+</head>
+
+<body class="overflow-hidden min-h-screen bg-[#101010] flex flex-col items-center justify-center p-4 sm:p-6">
+
+    <!-- Formulário de Cadastro -->
+    <form class="w-full max-w-3xl bg-[#171717] rounded-lg border border-[#2a2a2a] p-6 sm:p-10 shadow-lg">
+        <h3 class="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-7 text-center">Cadastro de Aluno</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+
+            <!-- Nome -->
+            <div class="relative">
+                <input type="text" name="nomeAluno" placeholder="Nome do Aluno"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <i class="ph ph-user absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            <!-- Email -->
+            <div class="relative">
+                <input type="email" name="emailAluno" placeholder="Email do Aluno"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <i class="ph ph-envelope-simple absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            <!-- Senha -->
+            <div class="relative">
+                <input type="password" name="senhaAluno" placeholder="Senha do Aluno"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <button type="button" id="iconSenhaCadastro"
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#f8ca54]">
+                    <i class="ph ph-eye text-lg"></i>
+                </button>
+            </div>
+
+            <!-- CPF -->
+            <div class="relative">
+                <input type="text" name="cpfAluno" placeholder="CPF do Aluno"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <i
+                    class="ph ph-identification-card absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+        </div>
+
+        <!-- Produtos -->
+        <div class="flex flex-row items-center sm:justify-normal justify-center gap-3 mt-6">
+            <label class="text-white font-bold">Produtos:</label>
+            <div class="flex items-center text-white">
+                <input type="checkbox" id="produtoMPS" name="produtos" value="MPS" class="accent-[#f8ca54]">
+                <label for="produtoMPS">MPS</label>
+            </div>
+
+            <div class="flex items-center text-white">
+                <input type="checkbox" id="produtoDOP" name="produtos" value="DOP" class="accent-[#f8ca54]">
+                <label for="produtoDOP">DOP</label>
+            </div>
+        </div>
+
+        <!-- Botão -->
+        <button type="submit"
+            class="w-full mt-6 bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-2 sm:py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-base sm:text-lg">
+            <i class="ph ph-user-plus text-lg sm:text-xl"></i>
+            Cadastrar Aluno
+        </button>
+    </form>
+
+    <!-- Script Mostrar/Ocultar Senha -->
+    <script>
+        const iconSenhaCadastro = document.querySelector("#iconSenhaCadastro");
+        const inputSenhaCadastro = document.querySelector("input[name='senhaAluno']");
+
+        iconSenhaCadastro.addEventListener("click", () => {
+            if (inputSenhaCadastro.type === "password") {
+                inputSenhaCadastro.type = "text";
+                iconSenhaCadastro.innerHTML = '<i class="ph ph-eye-slash text-lg"></i>';
+            } else {
+                inputSenhaCadastro.type = "password";
+                iconSenhaCadastro.innerHTML = '<i class="ph ph-eye text-lg"></i>';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from app.routes import all_blueprints
 
 app = Flask(
@@ -14,7 +14,7 @@ for bp in all_blueprints:
 
 @app.route("/")
 def index():
-    return "<h1>Home Mentoria 360° 🚀</h1>"
+    return render_template("welcome.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

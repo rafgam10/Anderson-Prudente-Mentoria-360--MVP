@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Mentoria 360°</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/logoicon.jpg') }}">
+    <script src="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="{{ url_for('static', filename='output.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='scrollbar.css') }}" rel="stylesheet">
+</head>
+
+<body
+    class="overflow-hidden bg-[url('/static/img/foto-detalhe-direita.png')] bg-no-repeat bg-right bg-contain min-h-screen bg-[#101010] flex flex-col items-center justify-center p-4 sm:p-6">
+
+    <div class="flex flex-col items-center mb-5 sm:mb-10 animate__animated animate__fadeInDown">
+        <div class="flex items-center">
+            <h2 class="text-2xl sm:text-4xl font-semibold text-white">Mentoria</h2>
+            <h2 class="text-2xl sm:text-4xl font-semibold text-[#f8ca54]">&nbsp;360°</h2>
+        </div>
+        <img src="{{ url_for('static', filename='img/icone.webp') }}" alt="Logo" class="h-10 w-auto sm:h-15 mb-0">
+    </div>
+
+    <!-- botão -->
+    <button type="submit"
+        class="animate__animated animate__fadeInUp w-40 sm:w-80 bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-2 sm:py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-base sm:text-lg">
+        <i class="ph ph-door-open text-lg sm:text-xl"></i>
+        Acessar
+    </button>
+
+
+    <!-- detalhes imagens -->
+    <img src="{{ url_for('static', filename='img/detalhe1.png') }}"
+        class="absolute top-[-10px] left-[-10px] h-80 md:h-120 w-auto blur-xs animate__animated animate__pulse">
+    <img src="{{ url_for('static', filename='img/detalhe2.png') }}"
+        class="absolute bottom-[-8px] right-[-8px] h-90 md:h-120 blur-xs w-auto animate__animated animate__pulse">
+
+</body>
+
+</html>

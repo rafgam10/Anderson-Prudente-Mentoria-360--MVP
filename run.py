@@ -14,7 +14,21 @@ for bp in all_blueprints:
 
 @app.route("/")
 def index():
-    return render_template("welcome.html")
+    return render_template("baseAdm.html")
+
+
+@app.route("/cadastro-alunos")
+def cadastro_alunos():
+    return render_template("cadastroalunos.html")
+
+@app.route("/cadastro-adms")
+def cadastro_adms():
+    return render_template("cadastroadms.html")
+
+@app.route("/lista-alunos")
+def lista_alunos():
+    return render_template("listaalunos.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

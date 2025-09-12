@@ -1,0 +1,62 @@
+
+{% extends "baseAdm.html" %}
+
+{% block title %}Cadastro de Adms | Mentoria 360° - ADM{% endblock %}
+{% block navbar_title %}Cadastrar novo Admin{% endblock %}
+
+
+{% block content %}
+    <div class=" bg-[#101010] flex flex-col items-center justify-center h-full p-4 sm:p-6">
+        <form class="w-full max-w-lg bg-[#171717] rounded-lg border border-[#2a2a2a] p-6 sm:p-10 shadow-lg">
+            <h3 class="text-xl sm:text-2xl font-bold text-white mb-6 text-center">Cadastro de Admin</h3>
+            
+            <div class="relative mb-4 sm:mb-6">
+                <input type="text" name="nomeAdmin" placeholder="Nome do Admin"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <i class="ph ph-user absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            <div class="relative mb-4 sm:mb-6">
+                <input type="email" name="emailAdmin" placeholder="Email do Admin"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <i class="ph ph-envelope-simple absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            <div class="relative mb-6">
+                <input type="password" name="senhaAdmin" placeholder="Senha do Admin"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <button type="button" id="iconSenhaAdmin"
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#f8ca54]">
+                    <i class="ph ph-eye text-lg"></i>
+                </button>
+            </div>
+
+
+            <button type="submit"
+                class="w-full bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-2 sm:py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-base sm:text-lg">
+                <i class="ph ph-user-plus text-lg sm:text-xl"></i>
+                Cadastrar Admin
+            </button>
+        </form>
+
+
+        <!-- Script de senha -->
+        <script>
+            const iconSenhaAdmin = document.querySelector("#iconSenhaAdmin");
+            const inputSenhaAdmin = document.querySelector("input[name='senhaAdmin']");
+
+            iconSenhaAdmin.addEventListener("click", () => {
+                if (inputSenhaAdmin.type === "password") {
+                    inputSenhaAdmin.type = "text";
+                    iconSenhaAdmin.innerHTML = '<i class="ph ph-eye-slash text-lg"></i>';
+                } else {
+                    inputSenhaAdmin.type = "password";
+                    iconSenhaAdmin.innerHTML = '<i class="ph ph-eye text-lg"></i>';
+                }
+            });
+        </script>
+    </div>
+
+{% endblock %}
+
+

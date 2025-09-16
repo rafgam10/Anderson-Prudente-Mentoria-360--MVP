@@ -16,17 +16,6 @@ for bp in all_blueprints:
 def index():
     return render_template("welcome.html",)
 
-# @app.route("/cadastro-alunos")
-# def cadastro_alunos():
-#     return render_template("cadastroAlunos.html")
-
-# @app.route("/cadastro-adms")
-# def cadastro_adms():
-#     return render_template("cadastroAdms.html")
-
-# @app.route("/lista-alunos")
-# def lista_alunos():
-#     return render_template("listaalunos.html")
 
 
 if __name__ == "__main__":

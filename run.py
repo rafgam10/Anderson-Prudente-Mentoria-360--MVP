@@ -6,7 +6,7 @@ app = Flask(
     template_folder="app/templates",
     static_folder="app/static"
 )
-app.secret_key = 'mentoria360'
+app.secret_key = '57ee3757ba351d795da0b100ce3bfb97d623fb24d2ce123380a4d3ee21d1e076'
 
 # Registra os blueprints
 for bp in all_blueprints:
@@ -14,20 +14,19 @@ for bp in all_blueprints:
 
 @app.route("/")
 def index():
-    return render_template("baseAdm.html")
+    return render_template("welcome.html",)
 
+# @app.route("/cadastro-alunos")
+# def cadastro_alunos():
+#     return render_template("cadastroAlunos.html")
 
-@app.route("/cadastro-alunos")
-def cadastro_alunos():
-    return render_template("cadastroalunos.html")
+# @app.route("/cadastro-adms")
+# def cadastro_adms():
+#     return render_template("cadastroAdms.html")
 
-@app.route("/cadastro-adms")
-def cadastro_adms():
-    return render_template("cadastroadms.html")
-
-@app.route("/lista-alunos")
-def lista_alunos():
-    return render_template("listaalunos.html")
+# @app.route("/lista-alunos")
+# def lista_alunos():
+#     return render_template("listaalunos.html")
 
 
 if __name__ == "__main__":

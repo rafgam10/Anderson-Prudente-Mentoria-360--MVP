@@ -1,5 +1,5 @@
-import os 
 
+# Variaveis do Mysql
 USER = "root"
 PASSWORD = "root"
 HOST = "localhost"

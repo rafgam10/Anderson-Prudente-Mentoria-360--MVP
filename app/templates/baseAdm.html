@@ -22,21 +22,21 @@
 
 
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <a href="{{ url_for('cadastro_alunos') }}"
+            <a href=""
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors 
                 {% if request.endpoint == 'cadastro_alunos' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
                 <i class="ph ph-student text-lg"></i>
                 Cadastro de Alunos
             </a>
 
-            <a href="{{ url_for('cadastro_adms') }}"
+            <a href=""
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors 
                 {% if request.endpoint == 'cadastro_adms' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
                 <i class="ph ph-user-gear text-lg"></i>
                 Cadastro de Admins
             </a>
 
-            <a href="{{ url_for('lista_alunos') }}"
+            <a href=""
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors 
                 {% if request.endpoint == 'lista_alunos' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
                 <i class="ph ph-list text-lg"></i>
@@ -46,7 +46,7 @@
 
 
         <div class="p-4 border-t border-[#2a2a2a]">
-            <a href="{{ url_for('index') }}"
+            <a href="{{ url_for('login.logout') }}"
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors hover:bg-[#2a2a2a] text-red-400">
                 <i class="ph ph-sign-out text-lg"></i>
                 Sair

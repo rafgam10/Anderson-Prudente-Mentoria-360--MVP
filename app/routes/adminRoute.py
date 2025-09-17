@@ -6,7 +6,6 @@ from flask import (
     flash,
     request
 )
-from app.models import db, Administrador
 
 admin_bp = Blueprint("admin", __name__, url_prefix='/admin')
 
@@ -21,45 +20,24 @@ def index_admin():
 #### Gerenciamento de Administradores do Painel Admin.
 
 @admin_bp.route('/admins/lista', methods=["GET"])
-def lista_admins_page():
+def lista_admins():
     return render_template('listaAdmins.html')
-
-# @admin_bp.route('/admins/cadastro', methods=["GET","POST"])
-# def cadastro_admins_page():
-#     return render_template('cadastroAdmins.html')
 
 @admin_bp.route('/admins/cadastro', methods=["GET","POST"])
 def cadastro_admins():
-    if request.method == "POST":
-        nomeAdmin = request.form.get('nomeAdmin')
-        emailAdmin = request.form.get('emailAdmin')
-        senhaAdmin = request.form.get('senhaAdmin')
-        
-        adminObj = Administrador(
-            nomeAdmin=nomeAdmin,
-            emailAdmin=emailAdmin,
-            senhaAdmin=senhaAdmin
-        )
-        print(f"Objeto criado DB: {adminObj}")
-        db.session.add(adminObj)
-        print(f"Adicionando na sessão...")
-        db.session.commit()
-        print("Commit - Admin adicionado com sucesso!")
-        return redirect(url_for('admin.cadastro_admins'))  # nome do blueprint + função
-    
-    # Se for GET, apenas renderiza o template
     return render_template('cadastroAdmins.html')
+
 
 
 ##### Gerenciamento de Alunos no rota Admin.
 
 @admin_bp.route('/alunos/lista', methods=["GET"])
-def lista_alunos_page():
+def lista_alunos():
     return render_template('listaAlunos.html')
 
 
 @admin_bp.route('/alunos/cadastro', methods=["GET","POST"])
-def cadastro_aluno_page():
+def cadastro_aluno():
     return render_template('cadastroAlunos.html')
 
 

@@ -4,6 +4,7 @@ USE mentoria360_mvp;
 CREATE TABLE IF NOT EXISTS administradores(
     id INT PRIMARY KEY AUTO_INCREMENT, 
     nomeAdmin VARCHAR(100) NOT NULL,
+    emailAdmin VARCHAR(255) NOT NULL,
     senhaAdmin VARCHAR(100) NOT NULL
 );
 
@@ -27,3 +28,5 @@ CREATE TABLE IF NOT EXISTS usuarios_produtos(
     FOREIGN KEY (usuario_id) REFERENCES alunos(id) ON DELETE CASCADE,
     FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE CASCADE
 );
+
+

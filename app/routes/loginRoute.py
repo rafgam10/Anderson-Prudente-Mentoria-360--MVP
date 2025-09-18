@@ -26,7 +26,7 @@ def login_page():
         
         # ADMIN
         user = Administrador.query.filter_by(emailAdmin=inputEmailNome).first()
-        if user and user.senhaAdmin == inputSenhaCpfAluno:
+        if user and check_password_hash(user.senhaAdmin, inputSenhaCpfAluno):
             login_user(user)
             flash("Login realizado como Admin!", "success")
             return redirect(url_for("admin.index_admin"))

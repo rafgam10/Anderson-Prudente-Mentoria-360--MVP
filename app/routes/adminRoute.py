@@ -64,6 +64,14 @@ def lista_alunos():
 
 @admin_bp.route('/alunos/cadastro', methods=["GET","POST"])
 def cadastro_aluno():
+    if request.method == "POST":
+        
+        inputNomeAluno = request.form.get('nomeAluno')
+        inputEmailAluno = request.form.get('emailAluno')
+        inputSenhaAluno = request.form.get('senhaAluno')
+        inputCPFAluno = request.form.get('cpfAluno')
+        
+    
     return render_template('cadastroAlunos.html')
 
 

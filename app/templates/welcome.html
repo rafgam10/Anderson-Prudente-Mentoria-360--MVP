@@ -24,11 +24,13 @@
 
 
 
-    <button type="submit"
-        class="animate__animated animate__fadeInUp w-40 sm:w-80 bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-2 sm:py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-base sm:text-lg">
+    <button type="button" 
+            onclick='window.location.href="{{ url_for("login.redireciona_login") }}"'
+            class="animate__animated animate__fadeInUp w-40 sm:w-80 bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-2 sm:py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-base sm:text-lg">
         <i class="ph ph-door-open text-lg sm:text-xl"></i>
         Acessar
     </button>
+
 
 
     <!-- detalhes imagens -->

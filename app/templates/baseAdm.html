@@ -24,14 +24,14 @@
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
             <a href=""
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors 
-                {% if request.endpoint == 'cadastro_alunos' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
+                {% if request.endpoint == 'cadastro_aluno' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
                 <i class="ph ph-student text-lg"></i>
                 Cadastro de Alunos
             </a>
 
-            <a href=""
+            <a href="{{url_for('admin.cadastro_admins')}}"
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors 
-                {% if request.endpoint == 'cadastro_adms' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
+                {% if request.endpoint == 'admin.cadastro_admins' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
                 <i class="ph ph-user-gear text-lg"></i>
                 Cadastro de Admins
             </a>

@@ -54,6 +54,14 @@ def cadastro_admins():
     return render_template('cadastroAdmins.html')
 
 
+@admin_bp.route('/admins/editar/<int:id>', methods=["PATCH"])
+def editar_admin(id:int):
+    pass
+
+
+@admin_bp.route('/admins/deletar/<int:id>', methods=["DELETE"])
+def deletar_admin(id:int):
+    pass
 
 ##### Gerenciamento de Alunos no rota Admin.
 

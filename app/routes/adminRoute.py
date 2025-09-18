@@ -15,7 +15,7 @@ admin_bp = Blueprint("admin", __name__, url_prefix='/admin')
 #### Página Admin Principal
 @admin_bp.route('/', methods=["GET"])
 def index_admin():
-    return render_template('baseAdm.html')
+    return render_template('homeAdmin.html')
 
 
 #### Gerenciamento de Administradores do Painel Admin.

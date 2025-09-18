@@ -23,11 +23,14 @@ def login_page():
     if request.method == "POST":
         inputEmailNome = request.form.get('InputUsuario')
         inputSenhaCpfAluno = request.form.get('InputSenha')
+        print("Pegado dados do Login")
         
         # ADMIN
         user = Administrador.query.filter_by(emailAdmin=inputEmailNome).first()
-        if user and check_password_hash(user.senhaAdmin, inputSenhaCpfAluno):
+        print("Admin encontrado:", user)
+        if user and user.senhaAdmin == inputSenhaCpfAluno:
             login_user(user)
+            print("Acesso ao Admin")
             flash("Login realizado como Admin!", "success")
             return redirect(url_for("admin.index_admin"))
 

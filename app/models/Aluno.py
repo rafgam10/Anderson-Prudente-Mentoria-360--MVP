@@ -6,10 +6,10 @@ class Aluno(db.Model, UserMixin):
     __tablename__ = 'alunos'
     
     id = db.Column(db.Integer, primary_key=True)
-    nomeAluno = db.Column(db.String(100), nullable=False)
+    nomeAluno = db.Column(db.String(255), nullable=False)
     emailAluno = db.Column(db.String(255), nullable=False)
     senhaAluno = db.Column(db.String(255), nullable=False)
-    CPFAluno = db.Column(db.String(15), nullable=False)
+    CPFAluno = db.Column(db.String(255), nullable=False)
     
     produtos = db.relationship("Produto", secondary="usuarios_produtos", back_populates="alunos")
     

@@ -3,17 +3,17 @@ USE mentoria360_mvp;
 
 CREATE TABLE IF NOT EXISTS administradores(
     id INT PRIMARY KEY AUTO_INCREMENT, 
-    nomeAdmin VARCHAR(100) NOT NULL,
+    nomeAdmin VARCHAR(255) NOT NULL,
     emailAdmin VARCHAR(255) NOT NULL,
-    senhaAdmin VARCHAR(100) NOT NULL
+    senhaAdmin VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS alunos(
     id INT PRIMARY KEY AUTO_INCREMENT,
-    nomeAluno VARCHAR(100) NOT NULL,
+    nomeAluno VARCHAR(255) NOT NULL,
     emailAluno VARCHAR(255) NOT NULL,
     senhaAluno VARCHAR(255) NOT NULL,
-    CPFAluno VARCHAR(15) NOT NULL
+    CPFAluno VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS produtos(

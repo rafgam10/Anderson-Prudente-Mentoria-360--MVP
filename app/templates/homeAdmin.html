@@ -1,14 +1,33 @@
-
 {% extends "baseAdm.html" %}
 
-{% block title %}Cadastro de Adms | Mentoria 360° - ADM{% endblock %}
-{% block navbar_title %}Cadastrar novo Admin{% endblock %}
-
+{% block title %}Mentoria 360° - ADM{% endblock %}
+{% block navbar_title %}Painel Administrativo{% endblock %}
 
 {% block content %}
-    
-    <h1>BEM VINDO AO PAINEL ADMINISTRATIVO</h1>
+<div class="flex items-center justify-center h-full">
+    <div class="bg-[#171717] border border-[#2a2a2a] rounded-xl p-8 max-w-lg w-full text-center shadow-lg">
+        
+        <!-- Ícone / Logo -->
+        <div class="flex justify-center mb-4">
+            <i class="ph ph-crown text-4xl text-[#f8ca54]"></i>
+        </div>
+        
+        <!-- Mensagem -->
+        <h1 class="text-2xl font-bold text-white mb-2">Bem-vindo ao Painel Administrativo</h1>
+        <p class="text-gray-400 mb-6">
+            Aqui você pode gerenciar alunos, administradores e visualizar informações do sistema.
+        </p>
 
+        
+        <p class="text-gray-400 mb-6 hidden md:block">
+            Selecione alguma das opções à esquerda para continuar
+        </p>
+
+        <p class="text-gray-400 mb-6 block md:hidden">
+            Abra o menu acima ☰ para continuar
+        </p>
+
+
+    </div>
+</div>
 {% endblock %}
-
-

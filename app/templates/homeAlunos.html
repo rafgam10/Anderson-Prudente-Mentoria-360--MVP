@@ -1,0 +1,27 @@
+{% extends "baseAlunos.html" %}
+
+{% block title %}Mentoria 360° - Aluno{% endblock %}
+{% block navbar_title %}Painel do Aluno{% endblock %}
+
+{% block content %}
+
+
+<div class="px-8 py-7 sm:px-10 sm:py-8 text-center">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-9 justify-center">
+        <div
+            class="bg-[#171717] border border-[#2a2a2a] rounded-lg p-0 flex items-center justify-center overflow-hidden">
+            <a class="w-full h-full p-0 m-0 border-none bg-transparent cursor-pointer">
+                <img src="{{ url_for('static', filename='img/capa-dop.webp') }}" alt="Treino In Control"
+                    class="w-full h-full object-cover">
+            </a>
+        </div>
+        <div
+            class="bg-[#171717] border border-[#2a2a2a] rounded-lg p-0 flex items-center justify-center overflow-hidden">
+            <a class="w-full h-full p-0 m-0 border-none bg-transparent cursor-pointer">
+                <img src="{{ url_for('static', filename='img/capa-mps.webp') }}" alt="Treino In Control"
+                    class="w-full h-full object-cover">
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -16,7 +16,7 @@ aluno_bp = Blueprint("aluno", __name__,url_prefix='/aluno')
 def home_index_aluno():
     
     # Aqui fica a página principal com uma Navbar no centro dos produtos.
-    return render_template("baseAlunos.html")
+    return render_template("homeAlunos.html")
 
 
 

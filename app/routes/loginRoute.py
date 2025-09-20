@@ -18,7 +18,7 @@ from app.models import db, Aluno, Administrador
 
 login_bp = Blueprint("login", __name__, url_prefix='/login')
 
-@login_bp.route("/", methods=["GET", "POST"])
+@login_bp.route("/aluno", methods=["GET", "POST"])
 def login_page_aluno():
     if request.method == "POST":
         inputEmailNome = request.form.get('InputUsuario')

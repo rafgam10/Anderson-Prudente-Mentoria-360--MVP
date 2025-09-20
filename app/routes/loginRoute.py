@@ -19,21 +19,12 @@ from app.models import db, Aluno, Administrador
 login_bp = Blueprint("login", __name__, url_prefix='/login')
 
 @login_bp.route("/", methods=["GET", "POST"])
-def login_page():
+def login_page_aluno():
     if request.method == "POST":
         inputEmailNome = request.form.get('InputUsuario')
         inputSenhaCpfAluno = request.form.get('InputSenha')
-        print("Pegado dados do Login")
+        print("Pegado dados do Login - Aluno")
         
-        # ADMIN
-        user = Administrador.query.filter_by(emailAdmin=inputEmailNome).first()
-        print("Admin encontrado:", user)
-        if user and user.senhaAdmin == inputSenhaCpfAluno:
-            login_user(user)
-            print("Acesso ao Admin")
-            flash("Login realizado como Admin!", "success")
-            return redirect(url_for("admin.index_admin"))
-
         # ALUNO
         user = Aluno.query.filter_by(emailAluno=inputEmailNome).first()
         if user and user.senhaAluno == inputSenhaCpfAluno:
@@ -45,8 +36,27 @@ def login_page():
         return redirect(url_for('login.login_page'))
 
     # GET
-    return render_template('login.html')
+    return render_template('loginAlunos.html')
 
+
+@login_bp.route("/admin", methods=["GET", "POST"])
+def login_page_admin():
+    if request.method == "POST":
+        inputEmailNome = request.form.get('InputUsuario')
+        inputSenhaCpfAluno = request.form.get('InputSenha')
+        print("Pegado dados do Login - Admin")
+        
+        # ADMIN
+        user = Administrador.query.filter_by(emailAdmin=inputEmailNome).first()
+        print("Admin encontrado:", user)
+        if user and user.senhaAdmin == inputSenhaCpfAluno:
+            login_user(user)
+            print("Acesso ao Admin")
+            flash("Login realizado como Admin!", "success")
+            return redirect(url_for("admin.index_admin"))
+
+    # GET
+    return render_template('loginAdmin.html')
         
 @login_bp.route('/logout')
 @login_required
@@ -58,7 +68,7 @@ def logout():
 
 @login_bp.route('/redireciona_login')
 def redireciona_login():
-    return redirect(url_for('login.login_page'))
+    return redirect(url_for('login.login_page_aluno'))
 
 #### Tem que fazer uma consulta com Banco de dados para validar Usuários
 def validar_user_login(email: str, senha: str) -> bool:

@@ -100,6 +100,7 @@ def cadastro_aluno():
         if produtos_marcados:
             produtos_db = Produto.query.filter(Produto.nomeProduto.in_(produtos_marcados)).all()
             novo_aluno.produtos.extend(produtos_db)
+            print("Produtos do aluno:",produtos_db, " - ", produtos_marcados)
             
         
         db.session.add(novo_aluno)

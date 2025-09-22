@@ -19,33 +19,36 @@
     </div>
 
 
-    <div class="card-adm mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
+    <!-- Aqui fica todos os cards de Administradores -->
+    {% for admin in lista_admin %}
+        <div class="card-adm mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
 
-        <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-            <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-                <i class="ph-duotone ph-user-gear text-2xl"></i>
-                <span>Admin Master</span>
+            <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+                <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                    <i class="ph-duotone ph-user-gear text-2xl"></i>
+                    <span>Admin Master - {{ admin.nomeAdmin }}</span>
+                </div>
+
+                <div class="flex flex-col p-1 sm:flex-row gap-2">
+                    <button onclick="openModal('Admin Master', 'admin@email.com', 'senhalegal')"
+                        class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+                        <i class="ph ph-pencil-simple"></i> Editar
+                    </button>
+                    <button
+                        class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+                        <i class="ph ph-trash"></i> Deletar
+                    </button>
+                </div>
             </div>
 
-            <div class="flex flex-col p-1 sm:flex-row gap-2">
-                <button onclick="openModal('Admin Master', 'admin@email.com', 'senhalegal')"
-                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
-                    <i class="ph ph-pencil-simple"></i> Editar
-                </button>
-                <button
-                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
-                    <i class="ph ph-trash"></i> Deletar
-                </button>
+            <div class="p-4 flex flex-col lg:flex-row gap-6">
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
+                    <p class="text-sm font-medium">{{ admin.emailAdmin }}</p>
+                </div>
             </div>
         </div>
-
-        <div class="p-4 flex flex-col lg:flex-row gap-6">
-            <div class="flex-1 space-y-2">
-                <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
-                <p class="text-sm font-medium">admin@email.com</p>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 
 </div>
 

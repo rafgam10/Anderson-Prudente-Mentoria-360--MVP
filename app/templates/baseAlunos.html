@@ -42,8 +42,10 @@
 
             <!-- faz as rota do jeito q eu ja adiantei aq chefe -->
             <div class="mt-6 px-6 border-b border-[#2a2a2a] flex gap-6 text-sm sm:text-base">
-                <a href="{{ url_for('aluno.cursos') }}" class="pb-2 transition 
-                {% if request.endpoint == 'aluno.cursos' %}
+                
+                
+                <a href="{{ url_for('aluno.cursos_page') }}" class="pb-2 transition 
+                {% if request.endpoint == 'aluno.cursos_page' %}
                     border-b-2 border-[#f8ca54] text-[#f8ca54] font-semibold
                 {% else %}
                     text-gray-400 hover:text-white
@@ -51,7 +53,8 @@
                     Meus Cursos
                 </a>
 
-                <a href="{{ url_for('aluno.conta') }}" class="pb-2 transition 
+                
+                <a href="" class="pb-2 transition 
                 {% if request.endpoint == 'aluno.conta' %}
                     border-b-2 border-[#f8ca54] text-[#f8ca54] font-semibold
                 {% else %}
@@ -60,7 +63,8 @@
                     Minha Conta
                 </a>
 
-                <a href="{{ url_for('aluno.perfil') }}" class="pb-2 transition 
+                
+                <a href="" class="pb-2 transition 
                 {% if request.endpoint == 'aluno.perfil' %}
                     border-b-2 border-[#f8ca54] text-[#f8ca54] font-semibold
                 {% else %}

@@ -27,13 +27,14 @@ def login_page_aluno():
         
         # ALUNO
         user = Aluno.query.filter_by(emailAluno=inputEmailNome).first()
-        if user and user.senhaAluno == inputSenhaCpfAluno:
+        print("Aluno encontrado:", user)
+        if user and check_password_hash(user.senhaAluno, inputSenhaCpfAluno):#user.senhaAluno == inputSenhaCpfAluno
             login_user(user)
             flash("Login realizado como Aluno!", "success")
             return redirect(url_for("aluno.index_aluno"))
 
         flash("Usuário ou senha inválidos!", "error")
-        return redirect(url_for('login.login_page'))
+        return redirect(url_for('aluno.index_aluno'))
 
     # GET
     return render_template('loginAlunos.html')
@@ -61,8 +62,19 @@ def login_page_admin():
 @login_bp.route('/logout')
 @login_required
 def logout():
+    
+    if isinstance(current_user, Administrador):
+        logout_user()
+        flash("Logout realizado com sucesso (Admin)!", "success")
+        return redirect(url_for('login.login_page_admin'))
+    
+    if isinstance(current_user, Aluno):
+        logout_user()
+        flash("Logout realizado com sucesso (Aluno)!", "success")
+        return redirect(url_for('login.login_page_aluno'))
+    
     logout_user()
-    return redirect(url_for('login.login_page'))
+    return redirect(url_for('login.login_page_aluno'))
         
 #####################################################################
 

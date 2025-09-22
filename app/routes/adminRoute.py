@@ -22,8 +22,8 @@ def index_admin():
 
 @admin_bp.route('/admins/lista', methods=["GET"])
 def lista_admins():
-    lista_admin = list(Administrador.query.all())
-    return render_template('listaAdmins.html', lista_admin=lista_admin)
+    array_admin = list(Administrador.query.all())
+    return render_template('listaAdmins.html', lista_admin=array_admin)
 
 @admin_bp.route('/admins/cadastro', methods=["GET","POST"])
 def cadastro_admins():
@@ -68,7 +68,8 @@ def deletar_admin(id:int):
 
 @admin_bp.route('/alunos/lista', methods=["GET"])
 def lista_alunos():
-    return render_template('listaAlunos.html')
+    array_alunos = Aluno.query.all()
+    return render_template('listaAlunos.html', array_alunos=array_alunos)
 
 
 @admin_bp.route('/alunos/cadastro', methods=["GET","POST"])

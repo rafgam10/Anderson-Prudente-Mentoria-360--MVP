@@ -15,5 +15,15 @@ class UsuarioProduto(db.Model):
         primary_key=True
     )
     
-    aluno = db.relationship("Aluno", backref=db.backref("produtos_assoc", cascade="all, delete-orphan"))
-    produto = db.relationship("Produto", backref=db.backref("usuarios_assoc", cascade="all, delete-orphan"))
+    aluno = db.relationship(
+        "Aluno", 
+        backref=db.backref(
+            "produtos_assoc", 
+            cascade="all, delete-orphan")
+    )
+    produto = db.relationship(
+        "Produto", 
+        backref=db.backref(
+            "usuarios_assoc", 
+            cascade="all, delete-orphan")
+    )

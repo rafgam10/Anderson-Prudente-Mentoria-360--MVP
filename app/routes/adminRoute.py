@@ -7,13 +7,13 @@ from flask import (
     request
 )
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.models import db, Administrador
+from app.models import db, Administrador, Aluno, Produto
 
 admin_bp = Blueprint("admin", __name__, url_prefix='/admin')
 
 
 #### Página Admin Principal
-@admin_bp.route('/', methods=["GET"])
+@admin_bp.route('/home', methods=["GET"])
 def index_admin():
     return render_template('homeAdmin.html')
 
@@ -34,7 +34,7 @@ def cadastro_admins():
         novo_Admin = Administrador(
             nomeAdmin=nomeAdminInput, 
             emailAdmin=emailAdminInput,
-            senhaAdmin=senhaAdminInput
+            senhaAdmin=generate_password_hash(senhaAdminInput)
         )
         print("Obj Admin criando...")
         
@@ -79,6 +79,35 @@ def cadastro_aluno():
         inputSenhaAluno = request.form.get('senhaAluno')
         inputCPFAluno = request.form.get('cpfAluno')
         
+        produtos_marcados = request.form.getlist('produtos')
+        
+        # Exibir dados coletados.
+        print("Nome:", inputNomeAluno)
+        print("Email:", inputEmailAluno)
+        print("Senha:", inputSenhaAluno)
+        print("CPF:", inputCPFAluno)
+        print("Produtos selecionados:", produtos_marcados)
+        
+        # Inserir alunos no DB:
+        novo_aluno = Aluno(
+            nomeAluno=inputNomeAluno,
+            emailAluno=inputEmailAluno,
+            senhaAluno=generate_password_hash(inputSenhaAluno),
+            CPFAluno=inputCPFAluno
+        )
+            
+        # Busca os produtos selecionado no DB:
+        if produtos_marcados:
+            produtos_db = Produto.query.filter(Produto.nomeProduto.in_(produtos_marcados)).all()
+            novo_aluno.produtos.extend(produtos_db)
+            
+        
+        db.session.add(novo_aluno)
+        db.session.commit()
+        print("Registro inserido no Banco de dados...")
+        
+        flash(f"Aluno {inputNomeAluno} cadastrado com sucesso!", "success")
+        return redirect(url_for('admin.cadastro_aluno'))
     
     return render_template('cadastroAlunos.html')
 

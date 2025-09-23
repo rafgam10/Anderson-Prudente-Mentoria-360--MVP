@@ -17,8 +17,9 @@ admin_bp = Blueprint("admin", __name__, url_prefix='/admin')
 def index_admin():
     return render_template('homeAdmin.html')
 
-
-#### Gerenciamento de Administradores do Painel Admin.
+###########################################################
+#### Gerenciamento de Administradores do Painel Admin.#####
+###########################################################
 
 @admin_bp.route('/admins/lista', methods=["GET"])
 def lista_admins():
@@ -64,7 +65,9 @@ def editar_admin(id:int):
 def deletar_admin(id:int):
     pass
 
-##### Gerenciamento de Alunos no rota Admin.
+#################################################
+##### Gerenciamento de Alunos no rota Admin.#####
+#################################################
 
 @admin_bp.route('/alunos/lista', methods=["GET"])
 def lista_alunos():

@@ -23,6 +23,11 @@
                     <img src="{{ url_for('static', filename='img/icone.webp') }}" alt="Logo" class="px-2 h-6 w-auto">
                 </div>
             </div>
+            <a href="{{ url_for('login.logout') }}"
+                class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors hover:bg-[#2a2a2a] text-red-400">
+                <i class="ph ph-sign-out text-lg"></i>
+                Sair
+            </a>
         </header>
         <!-- ---------------------------- -->
 

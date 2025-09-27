@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Mentoria 360° - Aluno{% endblock %}</title>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="icon" href="{{ url_for('static', filename='img/logoicon.jpg') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="{{ url_for('static', filename='output.css') }}" rel="stylesheet">
 </head>
 
@@ -36,43 +38,9 @@
             </div>
 
             <div class="mt-12 px-6">
-                <h1 class="text-xl sm:text-2xl font-bold text-white">Maria Ellen Alve Silva</h1>
+                <h1 class="text-xl sm:text-2xl font-bold text-white"> nome do usuário</h1>
             </div>
 
-
-            <!-- faz as rota do jeito q eu ja adiantei aq chefe -->
-            <div class="mt-6 px-6 border-b border-[#2a2a2a] flex gap-6 text-sm sm:text-base">
-                
-                
-                <a href="{{ url_for('aluno.cursos_page1') }}" class="pb-2 transition 
-                {% if request.endpoint == 'aluno.cursos_page1' %}
-                    border-b-2 border-[#f8ca54] text-[#f8ca54] font-semibold
-                {% else %}
-                    text-gray-400 hover:text-white
-                {% endif %}">
-                    Meus Cursos
-                </a>
-
-                
-                <a href="" class="pb-2 transition 
-                {% if request.endpoint == 'aluno.conta' %}
-                    border-b-2 border-[#f8ca54] text-[#f8ca54] font-semibold
-                {% else %}
-                    text-gray-400 hover:text-white
-                {% endif %}">
-                    Minha Conta
-                </a>
-
-                
-                <a href="" class="pb-2 transition 
-                {% if request.endpoint == 'aluno.perfil' %}
-                    border-b-2 border-[#f8ca54] text-[#f8ca54] font-semibold
-                {% else %}
-                    text-gray-400 hover:text-white
-                {% endif %}">
-                    Perfil
-                </a>
-            </div>
 
         </div>
 

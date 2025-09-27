@@ -30,3 +30,8 @@ CREATE TABLE IF NOT EXISTS usuarios_produtos(
 );
 
 
+INSERT INTO produtos (nomeProduto) VALUES 
+('MPS'),
+('DOP');
+
+

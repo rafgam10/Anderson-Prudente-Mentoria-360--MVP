@@ -29,11 +29,12 @@
                 </div>
 
                 <div class="flex flex-col p-1 sm:flex-row gap-2">
-                    <button onclick="openModal('João da Silva', 'joao@email.com', '123.456.789-00', 'MPS+DOP')"
+                    <button onclick="openModal({{aluno.id}}, '{{aluno.nomeAluno}}', '{{aluno.emailAluno}}', '{{aluno.CPFAluno}}', '{% for p in aluno.produtos %}{{p.nomeProduto}}{% if not loop.last %}+{% endif %}{% endfor %}')"
                         class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
                         <i class="ph ph-pencil-simple"></i> Editar
                     </button>
                     <button
+                        onclick="deletarAluno({{aluno.id}})"
                         class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
                         <i class="ph ph-trash"></i> Deletar
                     </button>
@@ -137,8 +138,13 @@
     const modal = document.getElementById('editModal');
     const form = document.getElementById('editForm');
 
-    function openModal(nome, email, cpf, produto) {
+    let alunoId = null;
+
+    function openModal(id, nome, email, cpf, produto) {
+        
+        alunoId = id;
         modal.classList.remove('hidden');
+        
         form.nome.value = nome;
         form.email.value = email;
         form.cpf.value = cpf;
@@ -149,15 +155,46 @@
         modal.classList.add('hidden');
     }
 
-    form.addEventListener('submit', (e) => {
+    async function deletarAluno(id){
+        if(!confirm("Tem certeza que deseja excluir este aluno?")){
+            return;
+        }
+
+        const resp = await fetch(`/admin/alunos/deletar/${id}`, {
+            method: "DELETE"
+        });
+
+        if(resp.ok) {
+            const result = await resp.json();
+            alert(result.message);
+            location.reload();
+        }else{
+            alert("Erro ao deletar aluno.");
+        }
+    }
+
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        console.log('Salvando:', {
+        const payload = {
             nome: form.nome.value,
             email: form.email.value,
             cpf: form.cpf.value,
             produto: form.produto.value
+        };
+
+        const resp = await fetch(`/admin/alunos/editar/${alunoId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
         });
+
+        if (resp.ok) {
+            location.reload(); // recarrega para ver atualização
+        } else {
+            console.error("Erro ao editar aluno");
+        }
+
         closeModal();
     });
 </script>

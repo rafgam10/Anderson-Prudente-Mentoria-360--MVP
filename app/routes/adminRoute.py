@@ -4,6 +4,7 @@ from flask import (
     redirect,
     url_for,
     flash,
+    jsonify,
     request
 )
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -119,10 +120,34 @@ def cadastro_aluno():
 
 
 @admin_bp.route('/alunos/editar/<int:id>', methods=["PATCH"])
-def editar_aluno(id:int):
-    pass
+def editar_aluno(id:int) -> None:
+    data = request.get_json()
+    
+    aluno = Aluno.query.get_or_404(id)
+    
+    aluno.nomeAluno = data.get("nome", aluno.nomeAluno)
+    aluno.emailAluno = data.get("email", aluno.emailAluno)
+    aluno.CPFAluno = data.get("cpf", aluno.CPFAluno)
+    
+    produto_input = data.get("produto")
+    aluno.produtos.clear()
+    
+    if produto_input:
+        nomes_produtos = produto_input.split("+")
+        produtos_db = Produto.query.filter(Produto.nomeProduto.in_(nomes_produtos)).all()
+        aluno.produtos.extend(produtos_db)
+        
+    db.session.commit()
+    print(f"Aluno {aluno.nomeAluno} atualizado com sucesso")
+    return jsonify({"message": f"Aluno {aluno.nomeAluno} atualizado com sucesso"})
 
 
 @admin_bp.route('/alunos/deletar/<int:id>', methods=["DELETE"])
-def deletar_aluno(id:int):
-    pass
+def deletar_aluno(id:int) -> None:
+    aluno = Aluno.query.get_or_404(id)
+    
+    db.session.delete(aluno)
+    db.session.commit()
+    
+    print(f"Aluno {aluno.nomeAluno} removido com sucesso")
+    return jsonify({"message": f"Aluno {aluno.nomeAluno} removido com sucesso"})

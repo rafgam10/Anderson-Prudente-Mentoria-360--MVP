@@ -30,11 +30,12 @@
                 </div>
 
                 <div class="flex flex-col p-1 sm:flex-row gap-2">
-                    <button onclick="openModal('Admin Master', 'admin@email.com', 'senhalegal')"
+                    <button onclick="openModal({{ admin.id }}, '{{ admin.nomeAdmin }}', '{{ admin.emailAdmin }}')"
                         class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
                         <i class="ph ph-pencil-simple"></i> Editar
                     </button>
                     <button
+                        onclick="deletarAdmin({{ admin.id }})"
                         class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
                         <i class="ph ph-trash"></i> Deletar
                     </button>
@@ -69,7 +70,7 @@
                     class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
             </div>
             <div>
-                <label class="text-sm text-gray-300">Senha</label>
+                <label class="text-sm text-gray-300">Senha (digite para nova senha)</label>
                 <input type="password" name="senha"
                     class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
             </div>
@@ -89,25 +90,61 @@
     const modal = document.getElementById('editModal');
     const form = document.getElementById('editForm');
 
-    function openModal(nome, email, senha) {
+    let adminId = null;
+
+    function openModal(id, nome, email, senha) {
+
+        adminId = id
         modal.classList.remove('hidden');
+        
         form.nome.value = nome;
         form.email.value = email;
-        form.senha.value = senha;
+        form.senha.value = '';
     }
 
     function closeModal() {
         modal.classList.add('hidden');
     }
 
-    form.addEventListener('submit', (e) => {
+    async function deletarAdmin(id){
+        if(!confirm("Tem certeza que deseja excluir este aluno?")){
+            return;
+        }
+
+        const resp = await fetch(`/admin/admins/deletar/${id}`, {
+            method: "DELETE"
+        });
+
+        if(resp.ok){
+            const result = await resp.json();
+            alert(result.message);
+            location.reload();
+        }else{
+            alert("Erro ao deletar aluno.")
+        }
+
+    }
+
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        console.log('Salvando ADM:', {
+        const payload = {
             nome: form.nome.value,
             email: form.email.value,
-            senha: form.senha.value,
+            senha: form.senha.value
+        };
+
+        const resp = await fetch(`/admin/admins/editar/${adminId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
         });
+
+        if(resp.ok){
+            location.reload();
+        }else{
+            console.error("Erro ao editar Admin");
+        }
         closeModal();
     });
 </script>

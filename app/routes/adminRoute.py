@@ -32,7 +32,7 @@ def cadastro_admins():
     if request.method == "POST":
         nomeAdminInput = request.form.get('nomeAdmin')
         emailAdminInput = request.form.get('emailAdmin')
-        senhaAdminInput = generate_password_hash(request.form.get('senhaAdmin'))
+        senhaAdminInput = request.form.get('senhaAdmin')
         
         novo_Admin = Administrador(
             nomeAdmin=nomeAdminInput, 
@@ -58,13 +58,44 @@ def cadastro_admins():
 
 
 @admin_bp.route('/admins/editar/<int:id>', methods=["PATCH"])
-def editar_admin(id:int):
-    pass
+def editar_admin(id:int) -> None:
+    data = request.get_json()
+    
+    admin = Administrador.query.get(id)
+    if not admin:
+        return jsonify({"error": "Administrador não encontrado"}), 404
+    
+    admin.nomeAdmin = data.get("nome", admin.nomeAdmin)
+    admin.emailAdmin = data.get("email", admin.emailAdmin)
+    
+    if data.get("senha"):
+        admin.senhaAdmin = generate_password_hash(data["senha"])
+    
+    try:
+        db.session.commit()
+        print(f"Admin atualizado com sucesso")
+        return jsonify({"message": "Administrador atualizado com sucesso!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Erro ao atualizar administrador: {str(e)}"}), 500
+
 
 
 @admin_bp.route('/admins/deletar/<int:id>', methods=["DELETE"])
 def deletar_admin(id:int):
-    pass
+    admin = Administrador.query.get(id)
+    if not admin:
+        return jsonify({"error": "Administrador não encontrado"}), 404
+    
+    try:
+        db.session.delete(admin)
+        db.session.commit()
+        print("Admin Removido com Sucesso no DB!")
+        return jsonify({"message": "Administrador deletado com sucesso!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Erro ao deletar administrador: {str(e)}"}), 500
+        
 
 #################################################
 ##### Gerenciamento de Alunos no rota Admin.#####

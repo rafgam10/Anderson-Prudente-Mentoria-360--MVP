@@ -18,6 +18,14 @@ from app.models import db, Aluno, Administrador
 
 login_bp = Blueprint("login", __name__, url_prefix='/login')
 
+
+@login_bp.route("/", endpoint="login_page")
+def escolher_login():
+    # exemplo: manda para o login de aluno
+    return redirect(url_for("login.login_page_aluno"))
+
+
+
 @login_bp.route("/aluno", methods=["GET", "POST"])
 def login_page_aluno():
     if request.method == "POST":
@@ -28,13 +36,20 @@ def login_page_aluno():
         # ALUNO
         user = Aluno.query.filter_by(emailAluno=inputEmailNome).first()
         print("Aluno encontrado:", user)
-        if user and check_password_hash(user.senhaAluno, inputSenhaCpfAluno):#user.senhaAluno == inputSenhaCpfAluno
+        # if user and check_password_hash(user.senhaAluno, inputSenhaCpfAluno):#user.senhaAluno == inputSenhaCpfAluno
+        if user and inputSenhaCpfAluno == user.senhaAluno or inputSenhaCpfAluno == user.CPFAluno:
+            login_user(user)
+            flash("Login realizado como Aluno!", "success")
+            return redirect(url_for("aluno.index_aluno"))
+        
+        elif user and check_password_hash(user.senhaAluno, inputSenhaCpfAluno) or check_password_hash(user.CPFAluno, inputSenhaCpfAluno):
             login_user(user)
             flash("Login realizado como Aluno!", "success")
             return redirect(url_for("aluno.index_aluno"))
 
         flash("Usuário ou senha inválidos!", "error")
-        return redirect(url_for('aluno.index_aluno'))
+        print("Não entrou no Login")
+        return redirect(url_for('login.login_page_aluno'))
 
     # GET
     return render_template('loginAlunos.html')
@@ -55,7 +70,17 @@ def login_page_admin():
             print("Acesso ao Admin")
             flash("Login realizado como Admin!", "success")
             return redirect(url_for("admin.index_admin"))
-
+        
+        elif user and check_password_hash(user.senhaAdmin, inputSenhaCpfAluno):
+            login_user(user)
+            print("Acesso ao Admin")
+            flash("Login realizado como Admin!", "success")
+            return redirect(url_for("admin.index_admin"))
+        
+        flash("Usuário ou senha inválidos!", "error")
+        print("Não entrou no Login")
+        return redirect(url_for('login.login_page_admin'))
+        
     # GET
     return render_template('loginAdmin.html')
         

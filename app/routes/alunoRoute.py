@@ -6,8 +6,9 @@ from flask import (
     flash,
     request
 )
+from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.models import db, Aluno
+from app.models import db, Aluno, Produto
 
 aluno_bp = Blueprint("aluno", __name__,url_prefix='/aluno')
 
@@ -16,7 +17,19 @@ aluno_bp = Blueprint("aluno", __name__,url_prefix='/aluno')
 def index_aluno():
     
     # Aqui fica a página principal com uma Navbar no centro dos produtos.
-    return render_template("homeAlunos.html")
+    cursos_aluno = current_user.produtos
+    
+    todos_cursos = Produto.query.all()
+    
+    desbloqueados = cursos_aluno
+    bloqueados = [curso for curso in todos_cursos if curso not in cursos_aluno]
+    
+    
+    return render_template("homeAlunos.html",
+                           desbloqueados=desbloqueados,
+                           bloqueados=bloqueados)
+    
+    # return render_template("homeAlunos.html")
 
 
 #### Mapa mental do BOP para visualização.

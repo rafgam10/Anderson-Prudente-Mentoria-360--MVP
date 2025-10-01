@@ -9,63 +9,38 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-9 justify-center">
 
         <!-- Card desbloqueado 1 -->
-        <div
-            class="bg-[#171717] border border-[#2a2a2a] hover:border-gray-500 rounded-lg p-0 flex items-center justify-center overflow-hidden">
-            <a onclick="openMindmap(' url do mindmeister aqui ')"
-                class="w-full h-full p-0 m-0 border-none bg-transparent cursor-pointer">
-                <img src="{{ url_for('static', filename='img/capa-dop.webp') }}" alt="dop"
-                    class="w-full h-full object-cover">
-            </a>
-        </div>
+        {% for curso in desbloqueados %}
+            <div class="bg-[#171717] border border-[#2a2a2a] hover:border-gray-500 rounded-lg p-0 flex items-center justify-center overflow-hidden">
+                <a onclick="openMindmap('url_do_{{ curso.nomeProduto }}')"
+                    class="w-full h-full p-0 m-0 border-none bg-transparent cursor-pointer">
+                    <img src="{{ url_for('static', filename='img/capa-' ~ curso.nomeProduto|lower ~ '.webp') }}" 
+                        alt="{{ curso.nomeProduto }}" 
+                        class="w-full h-full object-cover">
+                </a>
+            </div>
+        {% endfor %}
 
-        <!-- Card desbloqueado 2 -->
-        <div
-            class="bg-[#171717] border border-[#2a2a2a] hover:border-gray-500 rounded-lg p-0 flex items-center justify-center overflow-hidden">
-            <a onclick="openMindmap(' url do mindmeister aqui ')"
-                class="w-full h-full p-0 m-0 border-none bg-transparent cursor-pointer">
-                <img src="{{ url_for('static', filename='img/capa-mps.webp') }}" alt="mps"
-                    class="w-full h-full object-cover">
-            </a>
-        </div>
-
-        <div class="relative bg-[#171717] border border-[#2a2a2a] rounded-lg p-0 flex items-center justify-center overflow-hidden group"
-            onmouseenter="restartAnimation(this)">
-            <a class="w-full h-full p-0 m-0 border-none bg-transparent cursor-pointer">
-                <img src="{{ url_for('static', filename='img/capa-dop.webp') }}" alt="dop"
-                    class="w-full h-full object-cover">
-            </a>
-            <div class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center">
-                <div class="anim flex flex-col items-center justify-center">
-                    <i class="ph-duotone text-5xl ph-lock text-white"></i>
-                    <b class="text-white">Este conteúdo está bloqueado.</b>
-                    <span class="text-sm text-gray-300">Para desbloqueá-lo, clique em saiba mais.</span>
-                    <button onclick="openModal()"
-                        class="my-4 px-4 py-2 bg-white text-black rounded-md text-sm font-medium hover:bg-gray-300">
-                        Saiba mais
-                    </button>
+        <!-- Cursos bloqueados -->
+        {% for curso in bloqueados %}
+            <div class="relative bg-[#171717] border border-[#2a2a2a] rounded-lg p-0 flex items-center justify-center overflow-hidden group">
+                <a class="w-full h-full p-0 m-0 border-none bg-transparent cursor-pointer">
+                    <img src="{{ url_for('static', filename='img/capa-' ~ curso.nomeProduto|lower ~ '.webp') }}" 
+                        alt="{{ curso.nomeProduto }}" 
+                        class="w-full h-full object-cover">
+                </a>
+                <div class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center">
+                    <div class="anim flex flex-col items-center justify-center">
+                        <i class="ph-duotone text-5xl ph-lock text-white"></i>
+                        <b class="text-white">Este conteúdo está bloqueado.</b>
+                        <span class="text-sm text-gray-300">Para desbloqueá-lo, clique em saiba mais.</span>
+                        <button onclick="openModal()"
+                                class="my-4 px-4 py-2 bg-white text-black rounded-md text-sm font-medium hover:bg-gray-300">
+                            Saiba mais
+                        </button>
+                    </div>
                 </div>
             </div>
-
-        </div>
-
-        <div class="relative bg-[#171717] border border-[#2a2a2a] rounded-lg p-0 flex items-center justify-center overflow-hidden group"
-            onmouseenter="restartAnimation(this)">
-            <a class="w-full h-full p-0 m-0 border-none bg-transparent cursor-pointer">
-                <img src="{{ url_for('static', filename='img/capa-mps.webp') }}" alt="dop"
-                    class="w-full h-full object-cover">
-            </a>
-            <div class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center">
-                <div class="anim flex flex-col items-center justify-center">
-                    <i class="ph-duotone text-5xl ph-lock text-white"></i>
-                    <b class="text-white">Este conteúdo está bloqueado.</b>
-                    <span class="text-sm text-gray-300">Para desbloqueá-lo, clique em saiba mais.</span>
-                    <button onclick="openModal()"
-                        class="my-4 px-4 py-2 bg-white text-black rounded-md text-sm font-medium hover:bg-gray-300">
-                        Saiba mais
-                    </button>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 

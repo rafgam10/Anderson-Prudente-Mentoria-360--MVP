@@ -16,21 +16,28 @@
 
         <!-- talvez eu tire (ver depois ) -->
         <header
-            class="bg-[#171717] border-b border-[#2a2a2a] px-4 sm:px-8 py-3 flex items-center justify-center sm:justify-between">
+            class="bg-[#171717] border-b border-[#2a2a2a] px-4 sm:px-8 py-3 flex items-center justify-between">
             <div class="flex items-center gap-6">
                 <div class="flex flex-row items-center">
                     <img src="{{ url_for('static', filename='img/icone.png') }}" alt="Logo" class="px-2 h-10 w-auto">
                 </div>
             </div>
-            <a href="{{ url_for('login.logout') }}"
-                class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors hover:bg-[#2a2a2a] text-red-400">
-                <i class="ph ph-sign-out text-lg"></i>
-                Sair
-            </a>
+            <div class="flex sm:gap-4">
+                <button onclick="openEventosModal()"
+                    class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors hover:bg-[#2a2a2a] text-white">
+                    <i class="ph ph-calendar-dots text-lg"></i>
+                    <span class="hidden sm:inline">eventos</span>
+                </button>
+
+                <a href="{{ url_for('login.logout') }}"
+                    class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors hover:bg-[#2a2a2a] text-red-400">
+                    <i class="ph ph-sign-out text-lg"></i>
+                    <span class="hidden sm:inline">Sair</span>
+                </a>
+                
+            </div>
         </header>
         <!-- ---------------------------- -->
-
-
 
         <div class="flex flex-col w-full">
 
@@ -45,12 +52,114 @@
                 <h1 class="text-xl sm:text-2xl font-bold text-white">{% block nome %} {% endblock %}</h1>
             </div>
 
-
         </div>
 
         {% block content %}
 
         {% endblock %}
+
+        <!-- Modal de Eventos -->
+        <div id="eventosModal" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50 p-4">
+            <div class="bg-[#171717] w-full max-w-4xl rounded-lg border border-[#2a2a2a] max-h-[90vh] overflow-hidden">
+                <div class="p-6 border-b border-[#2a2a2a]">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-bold text-[#f8ca54]">Eventos Disponíveis</h2>
+                        <button onclick="closeEventosModal()" class="text-gray-400 hover:text-white">
+                            <i class="ph ph-x text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4">
+
+
+
+                    
+                    <!-- Exemplo evento 1 -->
+                    <div class="card-evento text-gray-300 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] transition-colors hover:border-[#f8ca54]">        
+                        <div class="rounded-t-lg px-4 py-3 gap-2 bg-[#242424] flex justify-between items-center">
+                            <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                                <i class="ph-duotone ph-calendar text-2xl"></i>
+                                <span>Evento super mega plus hiper legal</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4">
+                            <div class="flex flex-col lg:flex-row gap-6">
+                                <div class="flex-1 space-y-2">
+                                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Inicial</p>
+                                    <p class="text-sm font-medium">20/09/2024 - 14:30</p>
+                                </div>
+                                <div class="flex-1 space-y-2">
+                                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Final</p>
+                                    <p class="text-sm font-medium">20/09/2024 - 16:45</p>
+                                </div>
+                                <div class="flex-1 space-y-2">
+                                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-microphone-stage"></i> Palestrante</p>
+                                    <p class="text-sm font-medium">jao da silva</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exemplo evento 2 -->
+                    <div class="card-evento text-gray-300 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] transition-colors hover:border-[#f8ca54]">        
+                        <div class="rounded-t-lg px-4 py-3 gap-2 bg-[#242424] flex justify-between items-center">
+                            <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                                <i class="ph-duotone ph-calendar text-2xl"></i>
+                                <span>Palestra bacana legal boa dms</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4">
+                            <div class="flex flex-col lg:flex-row gap-6">
+                                <div class="flex-1 space-y-2">
+                                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Inicial</p>
+                                    <p class="text-sm font-medium">25/09/2024 - 10:00</p>
+                                </div>
+                                <div class="flex-1 space-y-2">
+                                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Final</p>
+                                    <p class="text-sm font-medium">25/09/2024 - 12:00</p>
+                                </div>
+                                <div class="flex-1 space-y-2">
+                                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-microphone-stage"></i> Palestrante</p>
+                                    <p class="text-sm font-medium">maria alves silva</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const eventosModal = document.getElementById('eventosModal');
+
+            function openEventosModal() {
+                eventosModal.classList.remove('hidden');
+            }
+
+            function closeEventosModal() {
+                eventosModal.classList.add('hidden');
+            }
+
+            // Fechar modal ao clicar fora
+            eventosModal.addEventListener('click', (e) => {
+                if (e.target === eventosModal) {
+                    closeEventosModal();
+                }
+            });
+
+            // Fechar modal com ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !eventosModal.classList.contains('hidden')) {
+                    closeEventosModal();
+                }
+            });
+        </script>
 
 </body>
 

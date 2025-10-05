@@ -8,7 +8,8 @@ from flask import (
     request
 )
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.models import db, Administrador, Aluno, Produto
+from app.models import db, Administrador, Aluno, Produto, PalestrasEventos
+from datetime import datetime
 
 admin_bp = Blueprint("admin", __name__, url_prefix='/admin')
 
@@ -182,3 +183,79 @@ def deletar_aluno(id:int) -> None:
     
     print(f"Aluno {aluno.nomeAluno} removido com sucesso")
     return jsonify({"message": f"Aluno {aluno.nomeAluno} removido com sucesso"})
+
+
+#################################################
+##### Gerenciamento de Eventos no rota Admin.####
+#################################################
+
+@admin_bp.route("/eventos/listar", methods=["GET"])
+def listar_eventos():
+    eventos = PalestrasEventos.query.all()
+    return render_template('listaEventos.html', eventos=eventos)
+
+
+@admin_bp.route("/eventos/cadastrar", methods=["GET","POST"])
+def cadastrar_evento():
+    if "POST" == request.method:
+        try:
+            nome_evento = request.form.get('nomeEvento')
+            data_inicial = request.form.get('dataInicial')
+            hora_inicial = request.form.get('horaInicial')
+            data_final = request.form.get('dataFinal')
+            hora_final = request.form.get('horaFinal')
+            nome_palestrante = request.form.get('nomePalestrante')
+            
+            data_inicial = datetime.strptime(data_inicial, '%Y-%m-%d').date()
+            data_final = datetime.strptime(data_final, '%Y-%m-%d').date()
+            
+            novo_evento = PalestrasEventos(
+                nomeEvento=nome_evento,
+                dataInicial=data_inicial,
+                dataFinal=data_final,
+                nomePalestrate=nome_palestrante
+            )
+            print(f"Obj evento criado - {novo_evento}")
+            db.session.add(novo_evento)
+            db.session.commit()
+            print(f"Adicioando ao Banco de Dados.")
+            
+            flash("Evento cadastrado com sucesso!", 'success')
+            return redirect(url_for('admin.cadastrar_evento'))
+        
+        except Exception as e:
+            db.session.rollback()
+            print("Erro ao cadastrar evento:", e)
+            flash(f"Erro ao cadastrar evento: {str(e)}", "error")
+            return redirect(url_for('admin.cadastrar_evento'))
+    
+    return render_template("cadastroEventos.html")
+
+@admin_bp.route("/eventos/editar/<int:id>", methods=["POST"])
+def editar_evento(id:int) -> None:
+    evento = PalestrasEventos.query.get_or_404(id)
+
+    nome_evento = request.form.get('nomeEvento')
+    data_inicial = request.form.get('dataInicial')
+    data_final = request.form.get('dataFinal')
+    nome_palestrante = request.form.get('nomePalestrante')
+
+    if nome_evento:
+        evento.nomeEvento = nome_evento
+    if data_inicial:
+        evento.dataInicial = datetime.strptime(data_inicial, '%Y-%m-%d').date()
+    if data_final:
+        evento.dataFinal = datetime.strptime(data_final, '%Y-%m-%d').date()
+    if nome_palestrante:
+        evento.nomePalestrante = nome_palestrante
+
+    db.session.commit()
+    flash("Evento atualizado com sucesso!", "success")
+    return jsonify({"success": True, "message": "Evento atualizado!"})
+
+@admin_bp.route("/eventos/deletar/<int:id>", methods=["DELETE"])
+def deletar_evento(id:int) -> None:
+    evento = PalestrasEventos.query.get_or_404(id)
+    db.session.delete(evento)
+    db.session.commit()
+    return jsonify({"message": "Evento deletado com sucesso!"}), 200

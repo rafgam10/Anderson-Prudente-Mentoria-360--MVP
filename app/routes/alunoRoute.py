@@ -14,7 +14,13 @@ aluno_bp = Blueprint("aluno", __name__,url_prefix='/aluno')
 
 
 @aluno_bp.route('/home', methods=["GET"])
+@login_required
 def index_aluno():
+    
+    aluno_id = current_user.id
+    print(f"Aluno logado ID: {aluno_id}")
+    
+    aluno = Aluno.query.filter_by(id=aluno_id).first()
     
     # Aqui fica a página principal com uma Navbar no centro dos produtos.
     cursos_aluno = current_user.produtos
@@ -26,8 +32,10 @@ def index_aluno():
     
     
     return render_template("homeAlunos.html",
-                           desbloqueados=desbloqueados,
-                           bloqueados=bloqueados)
+                            desbloqueados=desbloqueados,
+                            bloqueados=bloqueados,
+                            aluno=aluno
+                        )
     
     # return render_template("homeAlunos.html")
 

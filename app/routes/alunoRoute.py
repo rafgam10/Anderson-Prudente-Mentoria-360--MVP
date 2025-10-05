@@ -23,7 +23,11 @@ def index_aluno():
     aluno = Aluno.query.filter_by(id=aluno_id).first()
     
     # Aqui fica a página principal com uma Navbar no centro dos produtos.
-    cursos_aluno = current_user.produtos
+    if isinstance(current_user, Aluno):
+        cursos_aluno = current_user.produtos
+    else:
+        return redirect(url_for('admin.index_admin'))  # exemplo
+
     
     todos_cursos = Produto.query.all()
     

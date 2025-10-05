@@ -29,6 +29,14 @@ CREATE TABLE IF NOT EXISTS usuarios_produtos(
     FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS palestras_eventos (
+	id int AUTO_INCREMENT PRIMARY KEY,
+	nomeEvento VARCHAR(255) not null,
+	dataInicial DATE NOT NULL,
+	dataFinal DATE NOT NULL,
+	nomePalestrate VARCHAR(150) NOT NULL 
+);
+
 
 INSERT INTO produtos (nomeProduto) VALUES 
 ('MPS'),

@@ -17,7 +17,7 @@
         <!-- Card desbloqueado 1 -->
         {% for curso in desbloqueados %}
             <div class="bg-[#171717] border border-[#2a2a2a] hover:border-gray-500 rounded-lg p-0 flex items-center justify-center overflow-hidden">
-                <a onclick="openMindmap('url_do_{{ curso.nomeProduto }}')"
+                <a onclick="openMindmap('{{ curso.nomeProduto }}')"
                     class="w-full h-full p-0 m-0 border-none bg-transparent cursor-pointer">
                     <img src="{{ url_for('static', filename='img/capa-' ~ curso.nomeProduto|lower ~ '.webp') }}" 
                         alt="{{ curso.nomeProduto }}" 
@@ -51,19 +51,18 @@
 </div>
 
 
-    <div id="mindmapModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl shadow-xl w-[95%] max-w-5xl h-[80%] relative flex p-2 flex-col">
+<div id="mindmapModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-xl w-[95%] max-w-5xl h-[80%] relative flex p-2 flex-col">
 
-            <button onclick="closeMindmap()" class="absolute top-2 right-4 text-gray-600 hover:text-black text-2xl">
-                ✕
-            </button>
+        <button onclick="closeMindmap()" class="absolute top-2 right-4 text-gray-600 hover:text-black text-2xl">
+            ✕
+        </button>
 
-            <div class="flex-1">
-                <iframe id="mindmapFrame" src="" class="w-full h-full rounded-b-xl border-none"></iframe>
-            </div>
+        <div class="flex-1">
+            <iframe id="mindmapFrame" src="" class="w-full h-full rounded-b-xl border-none"></iframe>
         </div>
     </div>
-    
+</div>
 
 <div id="infoModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
     <div class="bg-white text-black rounded-xl shadow-xl max-w-md w-[90%] p-6 relative">
@@ -79,6 +78,111 @@
             class="w-full flex items-center justify-center py-2 px-4 bg-black text-white rounded-lg hover:bg-gray-800">
             Ver planos
         </a>
+    </div>
+</div>
+
+<!-- Modal de Atividades para o Aluno -->
+<div id="atividadesModal" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-[#171717] w-full max-w-4xl rounded-lg border border-[#2a2a2a] max-h-[90vh] overflow-hidden">
+        <div class="p-6 border-b border-[#2a2a2a]">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-[#f8ca54]" id="modalTitulo">Minhas Atividades</h2>
+                <button onclick="closeAtividadesModal()" class="text-gray-400 hover:text-white">
+                    <i class="ph ph-x text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4">
+            <!-- Atividade 1 - MPS -->
+            <div class="card-atividade text-gray-300 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] transition-colors hover:border-[#f8ca54]">        
+                <div class="rounded-t-lg px-4 py-3 gap-2 bg-[#242424] flex justify-between items-center">
+                    <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                        <i class="ph-duotone ph-notebook text-2xl"></i>
+                        <span>Workshop de Desenvolvimento Pessoal</span>
+                    </div>
+                </div>
+
+                <div class="p-4">
+                    <div class="flex flex-col lg:flex-row gap-6">
+                        <div class="flex-1 space-y-2">
+                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
+                            <p class="text-sm font-medium">Uma atividade focada no crescimento pessoal e profissional dos alunos</p>
+                        </div>
+                        <div class="flex-1 space-y-2">
+                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
+                            <p class="text-sm font-medium">20/09/2024 - 14:30</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
+                        <div class="flex-1 space-y-2">
+                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
+                            <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
+                                Palestra
+                            </span>
+                        </div>
+                        <div class="flex-1 space-y-2">
+                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
+                            <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                                Fase 1
+                            </span>
+                        </div>
+                        <div class="flex-1 space-y-2">
+                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
+                            <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                                MPS
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Atividade 2 - DOP -->
+            <div class="card-atividade text-gray-300 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] transition-colors hover:border-[#f8ca54]">        
+                <div class="rounded-t-lg px-4 py-3 gap-2 bg-[#242424] flex justify-between items-center">
+                    <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                        <i class="ph-duotone ph-notebook text-2xl"></i>
+                        <span>Mentoria Individual - Carreira</span>
+                    </div>
+                </div>
+
+                <div class="p-4">
+                    <div class="flex flex-col lg:flex-row gap-6">
+                        <div class="flex-1 space-y-2">
+                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
+                            <p class="text-sm font-medium">Sessão individual para orientação profissional e planejamento de carreira</p>
+                        </div>
+                        <div class="flex-1 space-y-2">
+                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
+                            <p class="text-sm font-medium">25/09/2024 - 10:00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
+                        <div class="flex-1 space-y-2">
+                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
+                            <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
+                                Mentoria
+                            </span>
+                        </div>
+                        <div class="flex-1 space-y-2">
+                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
+                            <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                                Fase 2
+                            </span>
+                        </div>
+                        <div class="flex-1 space-y-2">
+                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
+                            <span class="px-2 py-1 bg-[#cd3f07] text-white text-sm font-semibold rounded-md">
+                                DOP
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -100,12 +204,19 @@
         document.getElementById("infoModal").classList.add("hidden");
     }
 
-    function openMindmap(url) {
-        const modal = document.getElementById("mindmapModal");
-        const frame = document.getElementById("mindmapFrame");
-        frame.src = url + "?embed=1";
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
+    function openMindmap(curso) {
+        // Se for MPS ou DOP, abre o modal de atividades
+        if (curso === 'MPS' || curso === 'DOP') {
+            document.getElementById("modalTitulo").textContent = `Atividades - ${curso}`;
+            openAtividadesModal();
+        } else {
+            // Para outros cursos, mantém o comportamento original do mindmap
+            const modal = document.getElementById("mindmapModal");
+            const frame = document.getElementById("mindmapFrame");
+            frame.src = "https://exemplo.com/mindmap-" + curso.toLowerCase() + "?embed=1";
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
     }
 
     function closeMindmap() {
@@ -115,6 +226,38 @@
         modal.classList.remove("flex");
         modal.classList.add("hidden");
     }
+
+    function openAtividadesModal() {
+        document.getElementById("atividadesModal").classList.remove("hidden");
+        document.getElementById("atividadesModal").classList.add("flex");
+    }
+
+    function closeAtividadesModal() {
+        document.getElementById("atividadesModal").classList.remove("flex");
+        document.getElementById("atividadesModal").classList.add("hidden");
+    }
+
+    // Fechar modal ao clicar fora
+    document.getElementById('atividadesModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('atividadesModal')) {
+            closeAtividadesModal();
+        }
+    });
+
+    // Fechar modal com ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (!document.getElementById('atividadesModal').classList.contains('hidden')) {
+                closeAtividadesModal();
+            }
+            if (!document.getElementById('mindmapModal').classList.contains('hidden')) {
+                closeMindmap();
+            }
+            if (!document.getElementById('infoModal').classList.contains('hidden')) {
+                closeModal();
+            }
+        }
+    });
 </script>
 
 {% endblock %}

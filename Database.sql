@@ -42,4 +42,7 @@ INSERT INTO produtos (nomeProduto) VALUES
 ('MPS'),
 ('DOP');
 
+insert into administradores (nomeAdmin, emailAdmin, senhaAdmin) VALUES
+('Marlon', 'marlon@gmail.com', 'admin123');
+
 

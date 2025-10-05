@@ -1,0 +1,242 @@
+{% extends "baseAdm.html" %}
+
+{% block title %}Lista de Atividades | Mentoria 360° - ADM{% endblock %}
+
+{% block navbar_title %}Lista de Atividades{% endblock %}
+
+{% block content %}
+<div class="space-y-4">
+
+    <!-- Barra de pesquisa -->
+    <div class="p-4 mb-6 sticky top-0 bg-[#101010] border-b border-[#2a2a2a] z-20">
+        <div class="flex flex-col sm:flex-row gap-3 items-center">
+            <div class="relative flex-1 w-full">
+                <i class="ph ph-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input id="pesquisa-atividade" type="text" placeholder="Buscar atividade..."
+                    class="w-full pl-10 pr-4 py-2 bg-[#171717] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+            </div>
+        </div>
+    </div>
+
+    <!-- exempo 1 ae-->
+    <div class="card-atividade mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">        
+        <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+            <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                <i class="ph-duotone ph-notebook text-2xl"></i>
+                <span>Workshop de Desenvolvimento Pessoal</span>
+            </div>
+            <div class="flex flex-col p-1 sm:flex-row gap-2">
+                <button onclick="openModal('Workshop de Desenvolvimento Pessoal', 'Uma atividade focada no crescimento pessoal e profissional dos alunos', '2024-09-20', '14:30', 'palestra', 'fase1', 'MPS')"
+                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-pencil-simple"></i> Editar
+                </button>
+                <button
+                    onclick="deletarAtividade(1)"
+                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-trash"></i> Deletar
+                </button>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <div class="flex flex-col p-1 lg:flex-row gap-6">
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
+                    <p class="text-sm font-medium">Uma atividade focada no crescimento pessoal e profissional dos alunos</p>
+                </div>
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
+                    <p class="text-sm font-medium">20/09/2024 - 14:30</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
+                    <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
+                        Palestra
+                    </span>
+                </div>
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
+                    <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                        Fase 1
+                    </span>
+                </div>
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
+                    <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                        MPS
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- exempro 2 -->
+    <div class="card-atividade mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">        
+        <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+            <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                <i class="ph-duotone ph-notebook text-2xl"></i>
+                <span>Mentoria Individual - Carreira</span>
+            </div>
+            <div class="flex flex-col p-1 sm:flex-row gap-2">
+                <button onclick="openModal('Mentoria Individual - Carreira', 'Sessão individual para orientação profissional e planejamento de carreira', '2024-09-25', '10:00', 'mentoria', 'fase2', 'DOP')"
+                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-pencil-simple"></i> Editar
+                </button>
+                <button
+                    onclick="deletarAtividade(2)"
+                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-trash"></i> Deletar
+                </button>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <div class="flex flex-col p-1 lg:flex-row gap-6">
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
+                    <p class="text-sm font-medium">Sessão individual para orientação profissional e planejamento de carreira</p>
+                </div>
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
+                    <p class="text-sm font-medium">25/09/2024 - 10:00</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
+                    <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
+                        Mentoria
+                    </span>
+                </div>
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
+                    <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                        Fase 2
+                    </span>
+                </div>
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
+                    <span class="px-2 py-1 bg-[#cd3f07] text-white text-sm font-semibold rounded-md">
+                        DOP
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div id="editModal" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50">
+    <div class="bg-[#171717] w-full max-w-2xl rounded-lg p-6 m-4 max-h-[90vh] overflow-y-auto">
+        <h2 class="text-lg font-bold text-[#f8ca54] mb-4">Editar Atividade</h2>
+        <form id="editForm" class="space-y-4">
+            <div>
+                <label class="text-sm text-gray-300">Nome da Atividade</label>
+                <input type="text" name="nomeAtividade"
+                    class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+            </div>
+            <div>
+                <label class="text-sm text-gray-300">Descrição</label>
+                <textarea name="descricaoAtividade" rows="4"
+                    class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white resize-none"></textarea>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm text-gray-300">Data</label>
+                    <input type="date" name="dataAtividade"
+                        class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+                </div>
+                <div>
+                    <label class="text-sm text-gray-300">Hora</label>
+                    <input type="time" name="horaAtividade"
+                        class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+                </div>
+            </div>
+
+            <div>
+                <label class="text-sm text-gray-300">Tipo de Atividade</label>
+                <select name="tipoAtividade" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+                    <option value="palestra">Palestra</option>
+                    <option value="mentoria">Mentoria</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="text-sm text-gray-300">Fase</label>
+                <select name="faseAtividade" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+                    <option value="fase1">Fase 1</option>
+                    <option value="fase2">Fase 2</option>
+                    <option value="fase3">Fase 3</option>
+                    <option value="fase4">Fase 4</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="text-sm text-gray-300">Programa</label>
+                <select name="programaAtividade" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+                    <option value="DOP">DOP</option>
+                    <option value="MPS">MPS</option>
+                </select>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-4">
+                <button type="button" onclick="closeModal()"
+                    class="px-4 py-2 rounded bg-[#2c456c] text-white hover:bg-[#281d5f]">Cancelar</button>
+                <button type="submit"
+                    class="px-4 py-2 rounded bg-[#e28813] text-white hover:bg-[#c4610a]">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('editModal');
+    const form = document.getElementById('editForm');
+
+    function openModal(nomeAtividade, descricaoAtividade, dataAtividade, horaAtividade, tipoAtividade, faseAtividade, programaAtividade) {
+        modal.classList.remove('hidden');
+        
+        form.nomeAtividade.value = nomeAtividade;
+        form.descricaoAtividade.value = descricaoAtividade;
+        form.dataAtividade.value = dataAtividade;
+        form.horaAtividade.value = horaAtividade;
+        form.tipoAtividade.value = tipoAtividade;
+        form.faseAtividade.value = faseAtividade;
+        form.programaAtividade.value = programaAtividade;
+    }
+
+    function closeModal() {
+        modal.classList.add('hidden');
+    }
+
+    function deletarAtividade(id){
+        if(!confirm("Tem certeza que deseja excluir esta atividade?")){
+            return;
+        }
+        console.log('Deletando atividade:', id);
+        // fazer isso ae né
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        console.log('Salvando Atividade:', {
+            nomeAtividade: form.nomeAtividade.value,
+            descricaoAtividade: form.descricaoAtividade.value,
+            dataAtividade: form.dataAtividade.value,
+            horaAtividade: form.horaAtividade.value,
+            tipoAtividade: form.tipoAtividade.value,
+            faseAtividade: form.faseAtividade.value,
+            programaAtividade: form.programaAtividade.value
+        });
+        closeModal();
+    });
+</script>
+{% endblock %}

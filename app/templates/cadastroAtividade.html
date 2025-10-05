@@ -1,0 +1,80 @@
+{% extends "baseAdm.html" %}
+
+{% block title %}Criar Atividades | Mentoria 360° - ADM{% endblock %}
+{% block navbar_title %}Criar nova Atividade{% endblock %}
+
+{% block content %}
+    <div class="bg-[#101010] flex flex-col items-center justify-center min-h-screen p-4 sm:p-6">
+        <!-- fazer o action ai certinho do forms-->
+        <form action=" " method="post" class="w-full max-w-2xl bg-[#171717] rounded-lg border border-[#2a2a2a] p-6 sm:p-10 shadow-lg">
+            <h3 class="text-xl sm:text-2xl font-bold text-white mb-6 text-center">Cadastro de Atividade</h3>
+            
+            
+            <div class="relative mb-4 sm:mb-6">
+                <input type="text" name="nomeAtividade" placeholder="Nome da Atividade"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <i class="ph ph-notebook absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            
+            <div class="relative mb-4 sm:mb-6">
+                <textarea name="descricaoAtividade" placeholder="Descrição da atividade (explique a tarefa)"
+                    rows="2"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54] resize-none"></textarea>
+                <i class="ph ph-textbox absolute right-3 top-4 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 sm:mb-6">
+                <div class="relative">
+                    <input type="date" name="dataAtividade" 
+                        class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                    <i class="ph ph-calendar-blank absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div class="relative">
+                    <input type="time" name="horaAtividade"
+                        class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                    <i class="ph ph-clock absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+
+            <div class="relative mb-4 sm:mb-6">
+                <select name="tipoAtividade"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54] appearance-none">
+                    <option value="" disabled selected>Selecione o Tipo de Atividade</option>
+                    <option value="palestra">Palestra</option>
+                    <option value="mentoria">Mentoria</option>
+                    <option value="outro">Outro</option>
+                </select>
+                <i class="ph ph-caret-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+            </div>
+
+            <div class="relative mb-4 sm:mb-6">
+                <select name="faseAtividade"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54] appearance-none">
+                    <option value="" disabled selected>Selecione a Fase</option>
+                    <option value="fase1">Fase 1</option>
+                    <option value="fase2">Fase 2</option>
+                    <option value="fase3">Fase 3</option>
+                    <option value="fase4">Fase 4</option>
+                </select>
+                <i class="ph ph-caret-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+            </div>
+
+            <div class="relative mb-6">
+                <select name="programaAtividade"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54] appearance-none">
+                    <option value="" disabled selected>Selecione o Programa</option>
+                    <option value="DOP">DOP</option>
+                    <option value="MPS">MPS</option>
+                </select>
+                <i class="ph ph-caret-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-2 sm:py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-base sm:text-lg">
+                <i class="ph ph-plus-circle text-lg sm:text-xl"></i>
+                Criar Atividade
+            </button>
+        </form>
+    </div>
+{% endblock %}

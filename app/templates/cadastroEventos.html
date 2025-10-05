@@ -1,0 +1,43 @@
+{% extends "baseAdm.html" %}
+
+{% block title %}Cadastro de Eventos | Mentoria 360° - ADM{% endblock %}
+{% block navbar_title %}Cadastrar novo Evento{% endblock %}
+
+{% block content %}
+    <div class="bg-[#101010] flex flex-col items-center justify-center h-full p-4 sm:p-6">
+        <!-- muda ai o action do form fi! dalee -->
+        <form action=" " method="post" class="w-full max-w-lg bg-[#171717] rounded-lg border border-[#2a2a2a] p-6 sm:p-10 shadow-lg">
+            <h3 class="text-xl sm:text-2xl font-bold text-white mb-6 text-center">Cadastro de Evento</h3>
+            
+            <div class="relative mb-4 sm:mb-6">
+                <input type="text" name="nomeEvento" placeholder="Nome do Evento"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <i class="ph ph-calendar absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            <div class="relative mb-4 sm:mb-6">
+                <input type="datetime-local" name="dataInicial" placeholder="Data Inicial"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <i class="ph ph-calendar-blank absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            <div class="relative mb-4 sm:mb-6">
+                <input type="datetime-local" name="dataFinal" placeholder="Data Final"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <i class="ph ph-calendar-blank absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            <div class="relative mb-6">
+                <input type="text" name="nomePalestrante" placeholder="Nome do Palestrante"
+                    class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+                <i class="ph ph-microphone-stage absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-2 sm:py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-base sm:text-lg">
+                <i class="ph ph-calendar-plus text-lg sm:text-xl"></i>
+                Cadastrar Evento
+            </button>
+        </form>
+    </div>
+{% endblock %}

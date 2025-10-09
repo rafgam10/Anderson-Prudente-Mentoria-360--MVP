@@ -8,7 +8,15 @@ from flask import (
     request
 )
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.models import db, Administrador, Aluno, Produto, PalestrasEventos
+from app.models import (
+    db,
+    Administrador,
+    Aluno,
+    Produto,
+    PalestrasEventos,
+    Fase,
+    Atividade
+)
 from datetime import datetime
 
 admin_bp = Blueprint("admin", __name__, url_prefix='/admin')
@@ -212,9 +220,12 @@ def cadastrar_evento():
             novo_evento = PalestrasEventos(
                 nomeEvento=nome_evento,
                 dataInicial=data_inicial,
+                horaInicial=hora_inicial,
                 dataFinal=data_final,
-                nomePalestrate=nome_palestrante
+                horaFinal=hora_final,
+                nomePalestrante=nome_palestrante
             )
+            
             print(f"Obj evento criado - {novo_evento}")
             db.session.add(novo_evento)
             db.session.commit()
@@ -259,3 +270,106 @@ def deletar_evento(id:int) -> None:
     db.session.delete(evento)
     db.session.commit()
     return jsonify({"message": "Evento deletado com sucesso!"}), 200
+
+
+#################################################
+### Gerenciamento de Atividades no rota Admin.###
+#################################################
+
+@admin_bp.route("/atividades/listar", methods=["GET"])
+def listar_atividades():
+    atividades = Atividade.query.all()
+    fases = Fase.query.all()
+    return render_template('listaAtividades.html', atividades=atividades, fases=fases)
+
+
+@admin_bp.route("/atividades/cadastrar", methods=["GET", "POST"])
+def cadastrar_atividades():
+    if request.method == "POST":
+        try:
+            nome = request.form.get("nomeAtividade")
+            descricao = request.form.get("descricaoAtividade")
+            data_str = request.form.get("dataAtividade")
+            hora_str = request.form.get("horaAtividade")
+            plataforma = request.form.get("plataformaAtividade")
+            fase_id_str = request.form.get("faseAtividade")
+
+            if not fase_id_str:
+                flash("Selecione uma fase antes de cadastrar.", "error")
+                return redirect(url_for("admin.cadastrar_atividades"))
+
+            fase_id = int(fase_id_str)
+
+
+            # Conversão de data e hora
+            data = datetime.strptime(data_str, "%Y-%m-%d").date()
+            hora = datetime.strptime(hora_str, "%H:%M").time()
+
+            nova_atividade = Atividade(
+                nome_atividade=nome,
+                descricao=descricao,
+                data=data,
+                hora=hora,
+                plataforma=plataforma,
+                fase_id=int(fase_id)
+            )
+
+            db.session.add(nova_atividade)
+            db.session.commit()
+            flash("Atividade cadastrada com sucesso!", "success")
+            return redirect(url_for("admin.cadastrar_atividades"))
+        
+        except Exception as e:
+            db.session.rollback()
+            print("Erro ao cadastrar atividade:", e)
+            flash(f"Erro ao cadastrar atividade: {e}", "error")
+            return redirect(url_for("admin.cadastrar_atividades"))
+
+    # GET - para preencher o select de fases dinamicamente
+    fases = Fase.query.all()
+    print(f"{fases}")
+    return render_template("cadastroAtividade.html", fases=fases)
+
+@admin_bp.route("/atividades/editar/<int:id>", methods=["POST"])
+def editar_atividade(id: int):
+    atividade = Atividade.query.get_or_404(id)
+
+    data = request.get_json()
+
+    nome_atividade = data.get('nomeAtividade')
+    descricao_atividade = data.get('descricaoAtividade')
+    data_atividade = data.get('dataAtividade')
+    hora_atividade = data.get('horaAtividade')
+    plataforma = data.get('tipoAtividade')
+    fase_id = data.get('faseAtividade')
+    programa = data.get('programaAtividade')
+
+    if nome_atividade:
+        atividade.nome_atividade = nome_atividade
+    if descricao_atividade:
+        atividade.descricao = descricao_atividade
+    if data_atividade:
+        atividade.data = datetime.strptime(data_atividade, '%Y-%m-%d').date()
+    if hora_atividade:
+        atividade.hora = datetime.strptime(hora_atividade, '%H:%M').time()  # ✅ formato corrigido
+    if plataforma:
+        atividade.plataforma = plataforma
+    if fase_id:
+        atividade.fase_id = int(fase_id)
+    if programa:
+        atividade.plataforma = programa  # ou outro campo correto para 'programa'
+
+    db.session.commit()
+    flash("Atividade atualizada com sucesso!", "success")
+    return jsonify({"success": True, "message": "Atividade atualizada!"})
+
+
+# -------------------------------
+# DELETAR ATIVIDADE
+# -------------------------------
+@admin_bp.route("/atividades/deletar/<int:id>", methods=["DELETE"])
+def deletar_atividade(id: int):
+    atividade = Atividade.query.get_or_404(id)
+    db.session.delete(atividade)
+    db.session.commit()
+    return jsonify({"message": "Atividade deletada com sucesso!"}), 200

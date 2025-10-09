@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="flex flex-col p-1 sm:flex-row gap-2">
-                        <button onclick="openModalEditar({{ evento.id }}, '{{ evento.nomeEvento }}', '{{ evento.dataInicial }}', '{{ evento.dataFinal }}', '{{ evento.nomePalestrate }}')"
+                        <button onclick="openModalEditar({{ evento.id }}, '{{ evento.nomeEvento }}', '{{ evento.dataInicial }}', '{{ evento.dataFinal }}', '{{ evento.nomePalestrante }}')"
                             class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
                             <i class="ph ph-pencil-simple"></i> Editar
                         </button>
@@ -46,15 +46,15 @@
                     <div class="flex flex-col p-1 lg:flex-row gap-6">
                         <div class="flex-1 space-y-2">
                             <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Inicial</p>
-                            <p class="text-sm font-medium">{{evento.dataInicial}}</p>
+                            <p class="text-sm font-medium">{{evento.dataInicial.strftime('%d/%m/%Y')}} - {{evento.horaInicial.strftime('%H:%M')}}</p>
                         </div>
                         <div class="flex-1 space-y-2">
                             <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Final</p>
-                            <p class="text-sm font-medium">{{evento.dataFinal}}</p>
+                            <p class="text-sm font-medium">{{evento.dataFinal.strftime('%d/%m/%Y')}} - {{evento.horaFinal.strftime('%H:%M')}}</p>
                         </div>
                         <div class="flex-1 space-y-2">
                             <p class="text-sm text-[#f8ca54]"><i class="ph ph-microphone-stage"></i> Palestrante</p>
-                            <p class="text-sm font-medium">{{evento.nomePalestrate}}</p>
+                            <p class="text-sm font-medium">{{evento.nomePalestrante}}</p>
                         </div>
                     </div>
                 </div>

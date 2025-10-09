@@ -1,0 +1,7 @@
+Acesso a VPS da mentoria anderson prudente:
+
+senha root: R4f3l@VPS2025
+
+acesso do SSH: ssh root@72.60.250.37
+senha do SSH: Vps@S$h2025!Raf
+

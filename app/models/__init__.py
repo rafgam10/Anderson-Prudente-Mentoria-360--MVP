@@ -7,3 +7,5 @@ from app.models.Administrador import Administrador
 from app.models.Produto import Produto
 from app.models.usuario_produto import UsuarioProduto
 from app.models.Palestras_Eventos import PalestrasEventos
+from app.models.Fase import Fase
+from app.models.Atividade import Atividade

@@ -18,115 +18,72 @@
         </div>
     </div>
 
-    <!-- exempo 1 ae-->
-    <div class="card-atividade mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">        
-        <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-            <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-                <i class="ph-duotone ph-notebook text-2xl"></i>
-                <span>Workshop de Desenvolvimento Pessoal</span>
+    {% for atividade in atividades %}
+        <!-- exempo 1 ae-->
+        <div class="card-atividade mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">        
+            <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+                <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                    <i class="ph-duotone ph-notebook text-2xl"></i>
+                    <span>{{atividade.nome_atividade}}</span>
+                </div>
+                <div class="flex flex-col p-1 sm:flex-row gap-2">
+                    <button onclick="openModal(
+                    {{atividade.id}},
+                    '{{atividade.nome_atividade | escape}}',
+                    '{{atividade.descricao | escape}}',
+                    '{{atividade.data}}',
+                    '{{atividade.hora}}',
+                    '{{atividade.plataforma  | escape}}',
+                    {{atividade.fase.id_fase}},   <!-- id numérico -->
+                    '{{atividade.plataforma  | escape}}'
+                )"
+                        class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+                        <i class="ph ph-pencil-simple"></i> Editar
+                    </button>
+                    <button
+                        onclick="deletarAtividade({{ atividade.id }})"
+                        class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+                        <i class="ph ph-trash"></i> Deletar
+                    </button>
+                </div>
             </div>
-            <div class="flex flex-col p-1 sm:flex-row gap-2">
-                <button onclick="openModal('Workshop de Desenvolvimento Pessoal', 'Uma atividade focada no crescimento pessoal e profissional dos alunos', '2024-09-20', '14:30', 'palestra', 'fase1', 'MPS')"
-                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
-                    <i class="ph ph-pencil-simple"></i> Editar
-                </button>
-                <button
-                    onclick="deletarAtividade(1)"
-                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
-                    <i class="ph ph-trash"></i> Deletar
-                </button>
-            </div>
-        </div>
 
-        <div class="p-4">
-            <div class="flex flex-col p-1 lg:flex-row gap-6">
-                <div class="flex-1 space-y-2">
-                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
-                    <p class="text-sm font-medium">Uma atividade focada no crescimento pessoal e profissional dos alunos</p>
+            <div class="p-4">
+                <div class="flex flex-col p-1 lg:flex-row gap-6">
+                    <div class="flex-1 space-y-2">
+                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
+                        <p class="text-sm font-medium">{{atividade.descricao}}</p>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
+                        <p class="text-sm font-medium">{{atividade.data.strftime('%d/%m/%Y')}} - {{atividade.hora.strftime('%H:%M')}}</p>
+                    </div>
                 </div>
-                <div class="flex-1 space-y-2">
-                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
-                    <p class="text-sm font-medium">20/09/2024 - 14:30</p>
-                </div>
-            </div>
-            
-            <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
-                <div class="flex-1 space-y-2">
-                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
-                    <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
-                        Palestra
-                    </span>
-                </div>
-                <div class="flex-1 space-y-2">
-                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
-                    <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
-                        Fase 1
-                    </span>
-                </div>
-                <div class="flex-1 space-y-2">
-                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
-                    <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
-                        MPS
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- exempro 2 -->
-    <div class="card-atividade mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">        
-        <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-            <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-                <i class="ph-duotone ph-notebook text-2xl"></i>
-                <span>Mentoria Individual - Carreira</span>
-            </div>
-            <div class="flex flex-col p-1 sm:flex-row gap-2">
-                <button onclick="openModal('Mentoria Individual - Carreira', 'Sessão individual para orientação profissional e planejamento de carreira', '2024-09-25', '10:00', 'mentoria', 'fase2', 'DOP')"
-                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
-                    <i class="ph ph-pencil-simple"></i> Editar
-                </button>
-                <button
-                    onclick="deletarAtividade(2)"
-                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
-                    <i class="ph ph-trash"></i> Deletar
-                </button>
-            </div>
-        </div>
-
-        <div class="p-4">
-            <div class="flex flex-col p-1 lg:flex-row gap-6">
-                <div class="flex-1 space-y-2">
-                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
-                    <p class="text-sm font-medium">Sessão individual para orientação profissional e planejamento de carreira</p>
-                </div>
-                <div class="flex-1 space-y-2">
-                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
-                    <p class="text-sm font-medium">25/09/2024 - 10:00</p>
-                </div>
-            </div>
-            
-            <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
-                <div class="flex-1 space-y-2">
-                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
-                    <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
-                        Mentoria
-                    </span>
-                </div>
-                <div class="flex-1 space-y-2">
-                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
-                    <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
-                        Fase 2
-                    </span>
-                </div>
-                <div class="flex-1 space-y-2">
-                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
-                    <span class="px-2 py-1 bg-[#cd3f07] text-white text-sm font-semibold rounded-md">
-                        DOP
-                    </span>
+                
+                <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
+                    <div class="flex-1 space-y-2">
+                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
+                        <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
+                            Mentoria
+                        </span>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
+                        <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                            Fase {{atividade.fase.id_fase}}
+                        </span>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
+                        <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                            {{atividade.plataforma}}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endfor %}
+    
 
 </div>
 
@@ -171,10 +128,9 @@
             <div>
                 <label class="text-sm text-gray-300">Fase</label>
                 <select name="faseAtividade" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-                    <option value="fase1">Fase 1</option>
-                    <option value="fase2">Fase 2</option>
-                    <option value="fase3">Fase 3</option>
-                    <option value="fase4">Fase 4</option>
+                    {% for fase in fases %}
+                        <option value="{{fase.id_fase}}">{{fase.nome_fase}}</option>
+                    {% endfor %}
                 </select>
             </div>
 
@@ -200,7 +156,10 @@
     const modal = document.getElementById('editModal');
     const form = document.getElementById('editForm');
 
-    function openModal(nomeAtividade, descricaoAtividade, dataAtividade, horaAtividade, tipoAtividade, faseAtividade, programaAtividade) {
+    let atividadeId = null;
+
+    function openModal(id, nomeAtividade, descricaoAtividade, dataAtividade, horaAtividade, tipoAtividade, faseAtividade, programaAtividade) {
+        atividadeId = id;
         modal.classList.remove('hidden');
         
         form.nomeAtividade.value = nomeAtividade;
@@ -216,16 +175,57 @@
         modal.classList.add('hidden');
     }
 
-    function deletarAtividade(id){
+    async function deletarAtividade(id){
         if(!confirm("Tem certeza que deseja excluir esta atividade?")){
             return;
         }
         console.log('Deletando atividade:', id);
-        // fazer isso ae né
+
+        const resp = await fetch(`/admin/atividades/deletar/${id}`, {
+            method: "DELETE"
+        });
+
+        if(resp.ok){
+            const result = await resp.json();
+            alert(result.message);
+            location.reload();
+        }else{
+            alert("Erro ao deletar atividade!")
+        }
     }
 
-    form.addEventListener('submit', (e) => {
+
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        let hora = form.horaAtividade.value;
+        if (hora.length === 8) { // ex: "13:30:00"
+            hora = hora.substring(0, 5); // fica "13:30"
+        }
+
+        const payload = {
+            nomeAtividade: form.nomeAtividade.value,
+            descricaoAtividade: form.descricaoAtividade.value,
+            dataAtividade: form.dataAtividade.value,
+            horaAtividade: hora,
+            tipoAtividade: form.tipoAtividade.value,
+            faseAtividade: form.faseAtividade.value,
+            programaAtividade: form.programaAtividade.value
+        };
+
+        const resp = await fetch(`/admin/atividades/editar/${atividadeId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (resp.ok) {
+            const result = await resp.json();
+            alert(result.message);
+            location.reload();
+        } else {
+            alert("Erro ao salvar alterações");
+        }
 
         console.log('Salvando Atividade:', {
             nomeAtividade: form.nomeAtividade.value,
@@ -238,5 +238,9 @@
         });
         closeModal();
     });
+
+
+
+
 </script>
 {% endblock %}

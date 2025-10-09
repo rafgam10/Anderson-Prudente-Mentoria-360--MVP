@@ -4,9 +4,39 @@
 {% block navbar_title %}Meus cursos{% endblock %}
 
 {% block nome %} 
-
     {{ aluno.nomeAluno }}
+{% endblock %}
 
+{% block eventos %}
+    {% for evento in eventos %}
+                        <!-- Exemplo evento 1 -->
+                        <div class="card-evento text-gray-300 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] transition-colors hover:border-[#f8ca54]">        
+                            <div class="rounded-t-lg px-4 py-3 gap-2 bg-[#242424] flex justify-between items-center">
+                                <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                                    <i class="ph-duotone ph-calendar text-2xl"></i>
+                                    <span>{{evento.nomeEvento}}</span>
+                                </div>
+                            </div>
+
+                            <div class="p-4">
+                                <div class="flex flex-col lg:flex-row gap-6">
+                                    <div class="flex-1 space-y-2">
+                                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Inicial</p>
+                                        <p class="text-sm font-medium">{{evento.dataInicial.strftime("%d/%m/%Y")}} - 14:30</p>
+                                    </div>
+                                    <div class="flex-1 space-y-2">
+                                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Final</p>
+                                        <p class="text-sm font-medium">{{evento.dataFinal.strftime("%d/%m/%Y")}} - 16:45</p>
+                                    </div>
+                                    <div class="flex-1 space-y-2">
+                                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-microphone-stage"></i> Palestrante</p>
+                                        <p class="text-sm font-medium">{{evento.nomePalestrante}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+    {% endfor %}
 {% endblock %}
 
 {% block content %}
@@ -81,6 +111,10 @@
     </div>
 </div>
 
+
+
+
+
 <!-- Modal de Atividades para o Aluno -->
 <div id="atividadesModal" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50 p-4">
     <div class="bg-[#171717] w-full max-w-4xl rounded-lg border border-[#2a2a2a] max-h-[90vh] overflow-hidden">
@@ -94,93 +128,99 @@
         </div>
         
         <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4">
-            <!-- Atividade 1 - MPS -->
-            <div class="card-atividade text-gray-300 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] transition-colors hover:border-[#f8ca54]">        
-                <div class="rounded-t-lg px-4 py-3 gap-2 bg-[#242424] flex justify-between items-center">
-                    <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-                        <i class="ph-duotone ph-notebook text-2xl"></i>
-                        <span>Workshop de Desenvolvimento Pessoal</span>
+            
+            {% for atividade in atividades_mps %}
+                <!-- Atividade 1 - MPS -->
+                <div class="card-atividade text-gray-300 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] transition-colors hover:border-[#f8ca54]">        
+                    <div class="rounded-t-lg px-4 py-3 gap-2 bg-[#242424] flex justify-between items-center">
+                        <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                            <i class="ph-duotone ph-notebook text-2xl"></i>
+                            <span>{{atividade.nome_atividade}}</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="p-4">
-                    <div class="flex flex-col lg:flex-row gap-6">
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
-                            <p class="text-sm font-medium">Uma atividade focada no crescimento pessoal e profissional dos alunos</p>
+                    <div class="p-4">
+                        <div class="flex flex-col lg:flex-row gap-6">
+                            <div class="flex-1 space-y-2">
+                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
+                                <p class="text-sm font-medium">{{atividade.descricao}}</p>
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
+                                <p class="text-sm font-medium">{{atividade.data.strftime("%d/%m/%Y")}} - 14:30</p>
+                            </div>
                         </div>
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
-                            <p class="text-sm font-medium">20/09/2024 - 14:30</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
-                            <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
-                                Palestra
-                            </span>
-                        </div>
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
-                            <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
-                                Fase 1
-                            </span>
-                        </div>
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
-                            <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
-                                MPS
-                            </span>
+                        
+                        <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
+                            <div class="flex-1 space-y-2">
+                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
+                                <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
+                                    Palestra
+                                </span>
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
+                                <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                                    Fase {{atividade.fase.id_fase}}
+                                </span>
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
+                                <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                                    {{atividade.plataforma}}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
 
-            <!-- Atividade 2 - DOP -->
-            <div class="card-atividade text-gray-300 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] transition-colors hover:border-[#f8ca54]">        
-                <div class="rounded-t-lg px-4 py-3 gap-2 bg-[#242424] flex justify-between items-center">
-                    <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-                        <i class="ph-duotone ph-notebook text-2xl"></i>
-                        <span>Mentoria Individual - Carreira</span>
-                    </div>
-                </div>
 
-                <div class="p-4">
-                    <div class="flex flex-col lg:flex-row gap-6">
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
-                            <p class="text-sm font-medium">Sessão individual para orientação profissional e planejamento de carreira</p>
-                        </div>
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
-                            <p class="text-sm font-medium">25/09/2024 - 10:00</p>
+            {% for atividade in atividades_dop %}
+                <!-- Atividade 2 - DOP -->
+                <div class="card-atividade text-gray-300 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] transition-colors hover:border-[#f8ca54]">        
+                    <div class="rounded-t-lg px-4 py-3 gap-2 bg-[#242424] flex justify-between items-center">
+                        <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                            <i class="ph-duotone ph-notebook text-2xl"></i>
+                            <span>{{ atividade.nome_atividade }}</span>
                         </div>
                     </div>
-                    
-                    <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
-                            <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
-                                Mentoria
-                            </span>
+
+                    <div class="p-4">
+                        <div class="flex flex-col lg:flex-row gap-6">
+                            <div class="flex-1 space-y-2">
+                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
+                                <p class="text-sm font-medium">{{ atividade.descricao }}</p>
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
+                                <p class="text-sm font-medium">{{atividade.data.strftime("%d/%m/%Y")}} - 10:00</p>
+                            </div>
                         </div>
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
-                            <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
-                                Fase 2
-                            </span>
-                        </div>
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
-                            <span class="px-2 py-1 bg-[#cd3f07] text-white text-sm font-semibold rounded-md">
-                                DOP
-                            </span>
+                        
+                        <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
+                            <div class="flex-1 space-y-2">
+                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
+                                <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
+                                    Mentoria
+                                </span>
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
+                                <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                                    Fase {{atividade.fase.id_fase}}
+                                </span>
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
+                                <span class="px-2 py-1 bg-[#cd3f07] text-white text-sm font-semibold rounded-md">
+                                    {{atividade.plataforma}}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
 
         </div>
     </div>

@@ -43,9 +43,9 @@
                 Cadastro de Eventos
             </a>
             
-            <a href=" "
+            <a href="{{url_for('admin.cadastrar_atividades')}}"
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors 
-                {% if request.endpoint == 'admin.' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
+                {% if request.endpoint == 'admin.cadastrar_atividades' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
                 <i class="ph ph-plus-circle text-lg"></i>
                 Criar Atividade
             </a>
@@ -73,9 +73,9 @@
                 Lista de Eventos
             </a>
             
-            <a href=""
+            <a href="{{url_for('admin.listar_atividades')}}"
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors 
-                {% if request.endpoint == 'admin.' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
+                {% if request.endpoint == 'admin.listar_atividades' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
                 <i class="ph ph-notebook text-lg"></i>
                 Lista de Atividades
             </a>

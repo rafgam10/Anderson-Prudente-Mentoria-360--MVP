@@ -38,6 +38,7 @@ def login_page_aluno():
         print("Aluno encontrado:", user)
         # if user and check_password_hash(user.senhaAluno, inputSenhaCpfAluno):#user.senhaAluno == inputSenhaCpfAluno
         if user and inputSenhaCpfAluno == user.senhaAluno or inputSenhaCpfAluno == user.CPFAluno:
+            logout_user()
             login_user(user)
             flash("Login realizado como Aluno!", "success")
             return redirect(url_for("aluno.index_aluno"))
@@ -88,15 +89,15 @@ def login_page_admin():
 @login_required
 def logout():
     
-    if isinstance(current_user, Administrador):
-        logout_user()
-        flash("Logout realizado com sucesso (Admin)!", "success")
-        return redirect(url_for('login.login_page_admin'))
-    
     if isinstance(current_user, Aluno):
         logout_user()
         flash("Logout realizado com sucesso (Aluno)!", "success")
         return redirect(url_for('login.login_page_aluno'))
+    
+    if isinstance(current_user, Administrador):
+        logout_user()
+        flash("Logout realizado com sucesso (Admin)!", "success")
+        return redirect(url_for('login.login_page_admin'))
     
     logout_user()
     return redirect(url_for('login.login_page_aluno'))

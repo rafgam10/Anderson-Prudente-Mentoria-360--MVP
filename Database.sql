@@ -93,6 +93,8 @@ INSERT INTO fases (nome_fase) VALUES
 INSERT INTO administradores (nomeAdmin, emailAdmin, senhaAdmin) VALUES
 ('Rafael Timóteo', 'rafael@gmail.com', 'gamer');
 
+INSERT INTO administradores (nomeAdmin, emailAdmin, senhaAdmin) VALUES
+('admin', 'adm@exemplo.com', 'admin');
 
 -- ==============================
 -- Inserindo Palestras e Eventos

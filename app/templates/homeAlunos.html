@@ -64,9 +64,9 @@
                         alt="{{ curso.nomeProduto }}" 
                         class="w-full h-full object-cover">
                 </a>
-                <div class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center">
-                    <div class="anim flex flex-col items-center justify-center">
-                        <i class="ph-duotone text-5xl ph-lock text-white"></i>
+                <div class="absolute   inset-0 bg-black/80 flex flex-col items-center justify-center">
+                    <div class=" flex anim flex-col items-center justify-center">
+                        <i class="ph-duotone pt-2 text-5xl ph-lock text-white"></i>
                         <b class="text-white">Este conteúdo está bloqueado.</b>
                         <span class="text-sm text-gray-300">Para desbloqueá-lo, clique em saiba mais.</span>
                         <button onclick="openModal()"
@@ -95,12 +95,12 @@
 </div>
 
 <div id="infoModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
-    <div class="bg-white text-black rounded-xl shadow-xl max-w-md w-[90%] p-6 relative">
+    <div class="bg-[#171717] text-white rounded-xl shadow-xl max-w-md w-[90%] p-6 relative">
         <button onclick="closeModal()" class="absolute top-2 right-3.5 text-gray-600 hover:text-black">
             ✕
         </button>
         <h2 class="text-xl font-bold mb-3">Conteúdo Bloqueado</h2>
-        <p class="text-gray-700 mb-4">
+        <p class="text-gray-300 mb-4">
             Para acessar este curso, é necessário desbloqueá-lo. Entre em contato com nosso suporte ou
             verifique os planos disponíveis.
         </p>
@@ -115,20 +115,19 @@
 
 
 
-<!-- Modal de Atividades para o Aluno -->
-<div id="atividadesModal" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50 p-4">
+<!-- Modal de Atividades MPS -->
+<div id="atividadesModalMPS" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50 p-4">
     <div class="bg-[#171717] w-full max-w-4xl rounded-lg border border-[#2a2a2a] max-h-[90vh] overflow-hidden">
         <div class="p-6 border-b border-[#2a2a2a]">
             <div class="flex justify-between items-center">
-                <h2 class="text-xl font-bold text-[#f8ca54]" id="modalTitulo">Minhas Atividades</h2>
-                <button onclick="closeAtividadesModal()" class="text-gray-400 hover:text-white">
+                <h2 class="text-xl font-bold text-[#f8ca54]">Atividades - MPS</h2>
+                <button onclick="closeAtividadesModal('MPS')" class="text-gray-400 hover:text-white">
                     <i class="ph ph-x text-2xl"></i>
                 </button>
             </div>
         </div>
         
         <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4">
-            
             {% for atividade in atividades_mps %}
                 <!-- Atividade 1 - MPS -->
                 <div class="card-atividade text-gray-300 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] transition-colors hover:border-[#f8ca54]">        
@@ -153,14 +152,8 @@
                         
                         <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
                             <div class="flex-1 space-y-2">
-                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
-                                <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
-                                    Palestra
-                                </span>
-                            </div>
-                            <div class="flex-1 space-y-2">
                                 <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
-                                <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                                <span class="px-2 py-1 bg-[#19569b] text-white text-sm font-semibold rounded-md">
                                     Fase {{atividade.fase.id_fase}}
                                 </span>
                             </div>
@@ -174,8 +167,23 @@
                     </div>
                 </div>
             {% endfor %}
+        </div>
+    </div>
+</div>
 
-
+<!-- Modal de Atividades DOP -->
+<div id="atividadesModalDOP" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50 p-4">
+    <div class="bg-[#171717] w-full max-w-4xl rounded-lg border border-[#2a2a2a] max-h-[90vh] overflow-hidden">
+        <div class="p-6 border-b border-[#2a2a2a]">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-[#f8ca54]">Atividades - DOP</h2>
+                <button onclick="closeAtividadesModal('DOP')" class="text-gray-400 hover:text-white">
+                    <i class="ph ph-x text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4">
             {% for atividade in atividades_dop %}
                 <!-- Atividade 2 - DOP -->
                 <div class="card-atividade text-gray-300 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] transition-colors hover:border-[#f8ca54]">        
@@ -200,14 +208,8 @@
                         
                         <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
                             <div class="flex-1 space-y-2">
-                                <p class="text-sm text-[#f8ca54]"><i class="ph ph-tag"></i> Tipo</p>
-                                <span class="px-2 py-1 bg-[#2c456c] text-white text-sm font-semibold rounded-md">
-                                    Mentoria
-                                </span>
-                            </div>
-                            <div class="flex-1 space-y-2">
                                 <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
-                                <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                                <span class="px-2 py-1 bg-[#19569b] text-white text-sm font-semibold rounded-md">
                                     Fase {{atividade.fase.id_fase}}
                                 </span>
                             </div>
@@ -221,7 +223,6 @@
                     </div>
                 </div>
             {% endfor %}
-
         </div>
     </div>
 </div>
@@ -245,10 +246,13 @@
     }
 
     function openMindmap(curso) {
-        // Se for MPS ou DOP, abre o modal de atividades
-        if (curso === 'MPS' || curso === 'DOP') {
-            document.getElementById("modalTitulo").textContent = `Atividades - ${curso}`;
-            openAtividadesModal();
+        // Se for MPS, abre o modal de atividades MPS
+        if (curso === 'MPS') {
+            openAtividadesModal('MPS');
+        } 
+        // Se for DOP, abre o modal de atividades DOP
+        else if (curso === 'DOP') {
+            openAtividadesModal('DOP');
         } else {
             // Para outros cursos, mantém o comportamento original do mindmap
             const modal = document.getElementById("mindmapModal");
@@ -267,28 +271,64 @@
         modal.classList.add("hidden");
     }
 
-    function openAtividadesModal() {
-        document.getElementById("atividadesModal").classList.remove("hidden");
-        document.getElementById("atividadesModal").classList.add("flex");
+    function openAtividadesModal(plataforma) {
+        if (plataforma === 'MPS') {
+            document.getElementById("atividadesModalMPS").classList.remove("hidden");
+            document.getElementById("atividadesModalMPS").classList.add("flex");
+        } else if (plataforma === 'DOP') {
+            document.getElementById("atividadesModalDOP").classList.remove("hidden");
+            document.getElementById("atividadesModalDOP").classList.add("flex");
+        }
     }
 
-    function closeAtividadesModal() {
-        document.getElementById("atividadesModal").classList.remove("flex");
-        document.getElementById("atividadesModal").classList.add("hidden");
+    function closeAtividadesModal(plataforma) {
+        if (plataforma === 'MPS') {
+            document.getElementById("atividadesModalMPS").classList.remove("flex");
+            document.getElementById("atividadesModalMPS").classList.add("hidden");
+        } else if (plataforma === 'DOP') {
+            document.getElementById("atividadesModalDOP").classList.remove("flex");
+            document.getElementById("atividadesModalDOP").classList.add("hidden");
+        }
     }
 
-    // Fechar modal ao clicar fora
-    document.getElementById('atividadesModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('atividadesModal')) {
-            closeAtividadesModal();
+    // Adicionar event listeners para hover nos cards bloqueados
+    function setupHoverAnimations() {
+        const cardsBloqueados = document.querySelectorAll('.relative.bg-\\[\\#171717\\]'); // Seleciona os cards bloqueados
+        
+        cardsBloqueados.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                restartAnimation(card);
+            });
+            
+            // Opcional: resetar quando o mouse sair
+            card.addEventListener('mouseleave', () => {
+                const el = card.querySelector(".anim");
+                el.classList.remove("animate__animated", "animate__headShake");
+            });
+        });
+    }
+
+    // Fechar modais ao clicar fora
+    document.getElementById('atividadesModalMPS').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('atividadesModalMPS')) {
+            closeAtividadesModal('MPS');
+        }
+    });
+
+    document.getElementById('atividadesModalDOP').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('atividadesModalDOP')) {
+            closeAtividadesModal('DOP');
         }
     });
 
     // Fechar modal com ESC
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            if (!document.getElementById('atividadesModal').classList.contains('hidden')) {
-                closeAtividadesModal();
+            if (!document.getElementById('atividadesModalMPS').classList.contains('hidden')) {
+                closeAtividadesModal('MPS');
+            }
+            if (!document.getElementById('atividadesModalDOP').classList.contains('hidden')) {
+                closeAtividadesModal('DOP');
             }
             if (!document.getElementById('mindmapModal').classList.contains('hidden')) {
                 closeMindmap();
@@ -298,6 +338,12 @@
             }
         }
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        setupHoverAnimations();
+    });
+
+
 </script>
 
 {% endblock %}

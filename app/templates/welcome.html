@@ -12,28 +12,27 @@
     <link href="{{ url_for('static', filename='scrollbar.css') }}" rel="stylesheet">
 </head>
 
-<body class="overflow-hidden bg-[url('/static/img/foto-detalhe-direita.png')] bg-no-repeat bg-right bg-contain min-h-screen bg-[#101010] flex flex-col items-center justify-center p-4 sm:p-6">
+<body class="overflow-hidden bg-[url('/static/img/foto-detalhe-direita.png')] bg-no-repeat bg-right-top bg-contain min-h-screen bg-[#101010] flex flex-col items-center justify-center p-4 sm:p-6 relative">
 
-    <div class="flex flex-col items-center mb-5 sm:mb-10 animate__animated animate__fadeInDown">
+    <!-- Adicione uma camada overlay para garantir que o conteúdo fique acima -->
+    <div class="absolute inset-0 bg-[#101010]/80 z-0"></div>
+
+    <div class="flex flex-col items-center mb-5 sm:mb-10 animate__animated animate__fadeInDown z-10">
         <img src="{{ url_for('static', filename='img/icone.png') }}" alt="Logo" class="h-15 w-auto sm:h-25 mb-0">
     </div>
 
-
-
     <button type="button" 
             onclick='window.location.href="{{ url_for("login.redireciona_login") }}"'
-            class="animate__animated animate__fadeInUp w-40 sm:w-80 bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-2 sm:py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-base sm:text-lg">
+            class="animate__animated animate__fadeInUp w-40 sm:w-80 bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-2 sm:py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-base sm:text-lg z-10 relative cursor-pointer">
         <i class="ph ph-door-open text-lg sm:text-xl"></i>
         Acessar
     </button>
 
-
-
     <!-- detalhes imagens -->
     <img src="{{ url_for('static', filename='img/detalhe1.png') }}"
-        class="absolute top-[-10px] left-[-10px] h-80 md:h-120 w-auto blur-xs animate__animated animate__pulse">
+        class="absolute top-[-10px] left-[-10px] h-80 md:h-120 w-auto blur-xs animate__animated animate__pulse z-0">
     <img src="{{ url_for('static', filename='img/detalhe2.png') }}"
-        class="absolute bottom-[-8px] right-[-8px] h-90 md:h-120 blur-xs w-auto animate__animated animate__pulse">
+        class="absolute bottom-[-8px] right-[-8px] h-90 md:h-120 blur-xs w-auto animate__animated animate__pulse z-0">
 
 </body>
 

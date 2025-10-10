@@ -248,15 +248,21 @@ def editar_evento(id:int) -> None:
 
     nome_evento = request.form.get('nomeEvento')
     data_inicial = request.form.get('dataInicial')
+    hora_inicial = request.form.get('horaInicial')
     data_final = request.form.get('dataFinal')
+    hora_final = request.form.get('horaFinal')
     nome_palestrante = request.form.get('nomePalestrante')
 
     if nome_evento:
         evento.nomeEvento = nome_evento
     if data_inicial:
         evento.dataInicial = datetime.strptime(data_inicial, '%Y-%m-%d').date()
+    if hora_inicial:
+        evento.horaInicial = hora_inicial
     if data_final:
         evento.dataFinal = datetime.strptime(data_final, '%Y-%m-%d').date()
+    if hora_inicial:
+        evento.horaFinal = hora_final
     if nome_palestrante:
         evento.nomePalestrante = nome_palestrante
 

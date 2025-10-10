@@ -30,7 +30,15 @@
                     </div>
 
                     <div class="flex flex-col p-1 sm:flex-row gap-2">
-                        <button onclick="openModalEditar({{ evento.id }}, '{{ evento.nomeEvento }}', '{{ evento.dataInicial }}', '{{ evento.dataFinal }}', '{{ evento.nomePalestrante }}')"
+                        <button onclick="openModalEditar(
+                                  {{ evento.id }},
+                                 '{{ evento.nomeEvento }}', 
+                                 '{{ evento.dataInicial }}', 
+                                 '{{ evento.horaInicial }}',
+                                 '{{ evento.dataFinal }}', 
+                                 '{{ evento.horaFinal }}',
+                                 '{{ evento.nomePalestrante }}'
+                                )"
                             class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
                             <i class="ph ph-pencil-simple"></i> Editar
                         </button>

@@ -6,3 +6,8 @@ acesso do SSH: ssh root@72.60.250.37
 senha do SSH: Vps@S$h2025!Raf
 
 Token Github: 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
+
+**** Mysql:
+Usuário: flaskapp
+Senha: flask123
+

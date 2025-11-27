@@ -43,12 +43,21 @@
                 Cadastro de Eventos
             </a>
             
+            <a href="{{ url_for('mentoria.cadastrar_mentorias') }}"
+                class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors 
+                {% if request.endpoint == 'admin.cadastrar_evento' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
+                <i class="ph ph-calendar-plus text-lg"></i>
+                Cadastro de Mentorias
+            </a>
+
             <a href="{{url_for('admin.cadastrar_atividades')}}"
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors 
                 {% if request.endpoint == 'admin.cadastrar_atividades' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
                 <i class="ph ph-plus-circle text-lg"></i>
                 Criar Atividade
             </a>
+
+
             <div class="border-t border-[#2a2a2a]" ></div>
 
             <a href="{{url_for('admin.lista_alunos')}}"
@@ -71,6 +80,13 @@
                 {% if request.endpoint == 'admin.listar_eventos' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
                 <i class="ph ph-calendar-check text-lg"></i>
                 Lista de Eventos
+            </a>
+
+            <a href="{{url_for('mentoria.listar_mentorias')}}"
+                class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors 
+                {% if request.endpoint == 'admin.listar_atividades' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 {% endif %}">
+                <i class="ph ph-notebook text-lg"></i>
+                Lista de Mentorias
             </a>
             
             <a href="{{url_for('admin.listar_atividades')}}"

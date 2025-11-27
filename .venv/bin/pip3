@@ -1,4 +1,6 @@
-#!/home/rafael/Documentos/Anderson-Prudente-Mentoria-360--MVP/.venv/bin/python3
+#!/bin/sh
+'''exec' "/home/rafael/Projetos Feelancer/Anderson-Prudente-Mentoria-360--MVP/.venv/bin/python3" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys

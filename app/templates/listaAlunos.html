@@ -20,69 +20,69 @@
 
     {% for aluno in array_alunos %}
 
-        <div class="card-aluno mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">        
+    <div class="card-aluno mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
 
-            <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-                <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-                    <i class="ph-duotone ph-student text-2xl"></i>
-                    <span>{{aluno.nomeAluno}}</span>
-                </div>
-
-                <div class="flex flex-col p-1 sm:flex-row gap-2">
-                    <button onclick="openModal({{aluno.id}}, '{{aluno.nomeAluno}}', '{{aluno.emailAluno}}', '{{aluno.CPFAluno}}', '{% for p in aluno.produtos %}{{p.nomeProduto}}{% if not loop.last %}+{% endif %}{% endfor %}')"
-                        class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
-                        <i class="ph ph-pencil-simple"></i> Editar
-                    </button>
-                    <button
-                        onclick="deletarAluno({{aluno.id}})"
-                        class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
-                        <i class="ph ph-trash"></i> Deletar
-                    </button>
-                </div>
+        <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+            <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                <i class="ph-duotone ph-student text-2xl"></i>
+                <span>{{aluno.nomeAluno}}</span>
             </div>
 
-            <div class="p-4">
-                <div class="flex flex-col p-1 lg:flex-row gap-6">
-                    <div class="flex-1 space-y-2">
-                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
-                        <p class="text-sm font-medium">{{aluno.emailAluno}}</p>
-                    </div>
-                    <div class="flex-1 space-y-2">
-                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-identification-card"></i> CPF</p>
-                        <p class="text-sm font-medium">{{aluno.CPFAluno}}</p>
-                    </div>
-                    <div class="flex-1 space-y-2">
-                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Produtos</p>
-                        <div class="flex gap-2">
-
-                            <div class="flex gap-2">
-                                {% if aluno.produtos %}
-                                    {% for produto in aluno.produtos %}
-                                        {% if produto.nomeProduto == "MPS" %}
-                                            <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
-                                                {{ produto.nomeProduto }}
-                                            </span>
-                                        {% elif produto.nomeProduto == "DOP" %}
-                                            <span class="px-2 py-1 bg-[#cd3f07] text-white text-sm font-semibold rounded-md">
-                                                {{ produto.nomeProduto }}
-                                            </span>
-                                        {% else %}
-                                            <span class="px-2 py-1 bg-gray-500 text-white text-sm font-semibold rounded-md">
-                                                {{ produto.nomeProduto }}
-                                            </span>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% else %}
-                                    <span class="text-sm text-gray-400">Sem produtos</span>
-                                {% endif %}
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+            <div class="flex flex-col p-1 sm:flex-row gap-2">
+                <button
+                    onclick="openModal({{aluno.id}}, '{{aluno.nomeAluno}}', '{{aluno.emailAluno}}', '{{aluno.CPFAluno}}', '{% for p in aluno.produtos %}{{p.nomeProduto}}{% if not loop.last %}+{% endif %}{% endfor %}')"
+                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-pencil-simple"></i> Editar
+                </button>
+                <button onclick="deletarAluno({{aluno.id}})"
+                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-trash"></i> Deletar
+                </button>
             </div>
-
         </div>
+
+        <div class="p-4">
+            <div class="flex flex-col p-1 lg:flex-row gap-6">
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
+                    <p class="text-sm font-medium">{{aluno.emailAluno}}</p>
+                </div>
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-identification-card"></i> CPF</p>
+                    <p class="text-sm font-medium">{{aluno.CPFAluno}}</p>
+                </div>
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Produtos</p>
+                    <div class="flex gap-2">
+
+                        <div class="flex gap-2">
+                            {% if aluno.produtos %}
+                            {% for produto in aluno.produtos %}
+                            {% if produto.nomeProduto == "MPS" %}
+                            <span class="px-2 py-1 bg-[#7aa404] text-white text-sm font-semibold rounded-md">
+                                {{ produto.nomeProduto }}
+                            </span>
+                            {% elif produto.nomeProduto == "DOP" %}
+                            <span class="px-2 py-1 bg-[#cd3f07] text-white text-sm font-semibold rounded-md">
+                                {{ produto.nomeProduto }}
+                            </span>
+                            {% else %}
+                            <span class="px-2 py-1 bg-gray-500 text-white text-sm font-semibold rounded-md">
+                                {{ produto.nomeProduto }}
+                            </span>
+                            {% endif %}
+                            {% endfor %}
+                            {% else %}
+                            <span class="text-sm text-gray-400">Sem produtos</span>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
     {% endfor %}
 
@@ -141,10 +141,10 @@
     let alunoId = null;
 
     function openModal(id, nome, email, cpf, produto) {
-        
+
         alunoId = id;
         modal.classList.remove('hidden');
-        
+
         form.nome.value = nome;
         form.email.value = email;
         form.cpf.value = cpf;
@@ -155,8 +155,8 @@
         modal.classList.add('hidden');
     }
 
-    async function deletarAluno(id){
-        if(!confirm("Tem certeza que deseja excluir este aluno?")){
+    async function deletarAluno(id) {
+        if (!confirm("Tem certeza que deseja excluir este aluno?")) {
             return;
         }
 
@@ -164,18 +164,18 @@
             method: "DELETE"
         });
 
-        if(resp.ok) {
+        if (resp.ok) {
             const result = await resp.json();
             alert(result.message);
             location.reload();
-        }else{
+        } else {
             alert("Erro ao deletar aluno.");
         }
     }
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const payload = {
             nome: form.nome.value,
             email: form.email.value,

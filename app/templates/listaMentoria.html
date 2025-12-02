@@ -1,0 +1,231 @@
+{% extends 'baseAdm.html' %}
+
+{% block title %}
+Lista de Mentorias | Mentoria 360° - ADM
+{% endblock %}
+
+
+{% block content %}
+<div class="space-y-4">
+  <!-- Barra de pesquisa -->
+  <div class="p-4 mb-6 sticky top-0 bg-[#101010] border-b border-[#2a2a2a] z-20">
+    <div class="flex flex-col sm:flex-row gap-3 items-center">
+      <div class="relative flex-1 w-full">
+        <i class="ph ph-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        <input id="pesquisa-mentoria" type="text" placeholder="Buscar mentoria..."
+          class="w-full pl-10 pr-4 py-2 bg-[#171717] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+      </div>
+    </div>
+  </div>
+
+  <!-- Mentoria 1 -->
+  <div class="card-mentoria mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
+    <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+      <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+        <i class="ph-duotone ph-book-bookmark text-2xl"></i>
+        <span>Mentoria de Desenvolvimento Front-end</span>
+      </div>
+      <div class="flex flex-col p-1 sm:flex-row gap-2">
+        <button onclick="openModal(1, 'Mentoria de Desenvolvimento Front-end')"
+          class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+          <i class="ph ph-pencil-simple"></i> Editar
+        </button>
+        <button onclick="deletarMentoria(1)"
+          class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+          <i class="ph ph-trash"></i> Deletar
+        </button>
+      </div>
+    </div>
+    <div class="p-4">
+      <div class="flex flex-col p-1 lg:flex-row gap-6">
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-list-checks"></i> Quantidade de Entregáveis</p>
+          <p class="text-sm font-medium">3 entregáveis</p>
+        </div>
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar"></i> Data de Criação</p>
+          <p class="text-sm font-medium">15/03/2024</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Mentoria 2 -->
+  <div class="card-mentoria mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
+    <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+      <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+        <i class="ph-duotone ph-book-bookmark text-2xl"></i>
+        <span>Mentoria de Gestão de Projetos</span>
+      </div>
+      <div class="flex flex-col p-1 sm:flex-row gap-2">
+        <button onclick="openModal(2, 'Mentoria de Gestão de Projetos')"
+          class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+          <i class="ph ph-pencil-simple"></i> Editar
+        </button>
+        <button onclick="deletarMentoria(2)"
+          class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+          <i class="ph ph-trash"></i> Deletar
+        </button>
+      </div>
+    </div>
+    <div class="p-4">
+      <div class="flex flex-col p-1 lg:flex-row gap-6">
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-list-checks"></i> Quantidade de Entregáveis</p>
+          <p class="text-sm font-medium">4 entregáveis</p>
+        </div>
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar"></i> Data de Criação</p>
+          <p class="text-sm font-medium">10/02/2024</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Mentoria 3 -->
+  <div class="card-mentoria mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
+    <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+      <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+        <i class="ph-duotone ph-book-bookmark text-2xl"></i>
+        <span>Mentoria de Data Science</span>
+      </div>
+      <div class="flex flex-col p-1 sm:flex-row gap-2">
+        <button onclick="openModal(3, 'Mentoria de Data Science')"
+          class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+          <i class="ph ph-pencil-simple"></i> Editar
+        </button>
+        <button onclick="deletarMentoria(3)"
+          class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+          <i class="ph ph-trash"></i> Deletar
+        </button>
+      </div>
+    </div>
+    <div class="p-4">
+      <div class="flex flex-col p-1 lg:flex-row gap-6">
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-list-checks"></i> Quantidade de Entregáveis</p>
+          <p class="text-sm font-medium">2 entregáveis</p>
+        </div>
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar"></i> Data de Criação</p>
+          <p class="text-sm font-medium">05/04/2024</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div id="editModal" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50">
+  <div class="bg-[#171717] w-full max-w-md rounded-lg p-6 m-4">
+    <h2 class="text-lg font-bold text-[#f8ca54] mb-4">Editar Mentoria</h2>
+    <form id="editForm" class="space-y-4">
+      <div>
+        <label class="text-sm text-gray-300">Nome da Mentoria</label>
+        <input type="text" name="nomeMentoria"
+          class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+      </div>
+      <div class="flex justify-end gap-2">
+        <button type="button" onclick="closeModal()"
+          class="px-4 py-2 rounded bg-[#2c456c] text-white hover:bg-[#281d5f]">Cancelar</button>
+        <button type="submit" class="px-4 py-2 rounded bg-[#e28813] text-white hover:bg-[#c4610a]">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('editModal');
+  const form = document.getElementById('editForm');
+
+  let mentoriaId = null;
+
+  function openModal(id, nome) {
+    mentoriaId = id;
+    modal.classList.remove('hidden');
+
+    form.nomeMentoria.value = nome;
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+  }
+
+  async function deletarMentoria(id) {
+    if (!confirm("Tem certeza que deseja excluir esta mentoria?")) {
+      return;
+    }
+
+    // Simulação - em produção seria:
+    // const resp = await fetch(`/admin/mentorias/deletar/${id}`, {
+    //     method: "DELETE"
+    // });
+
+    console.log(`Deletando mentoria ${id}`);
+    setTimeout(() => {
+      alert(`Mentoria ${id} deletada com sucesso!`);
+      // location.reload();
+    }, 500);
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      nomeMentoria: form.nomeMentoria.value
+    };
+
+    console.log('Editando mentoria:', payload);
+
+    // Simulação - em produção seria:
+    // const resp = await fetch(`/admin/mentorias/editar/${mentoriaId}`, {
+    //     method: "PATCH",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(payload)
+    // });
+
+    setTimeout(() => {
+      alert(`Mentoria "${payload.nomeMentoria}" editada com sucesso!`);
+      closeModal();
+      // location.reload();
+    }, 500);
+  });
+
+  // Filtro de pesquisa
+  const pesquisaInput = document.getElementById('pesquisa-mentoria');
+  if (pesquisaInput) {
+    pesquisaInput.addEventListener('input', function () {
+      const termo = this.value.toLowerCase();
+      const cards = document.querySelectorAll('.card-mentoria');
+
+      cards.forEach(card => {
+        const titulo = card.querySelector('span').textContent.toLowerCase();
+        if (titulo.includes(termo)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  // Fechar modal ao clicar fora
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Fechar modal com ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+</script>
+
+{% endblock %}

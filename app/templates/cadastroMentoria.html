@@ -1,0 +1,432 @@
+{% import "components.html" as components %}
+{% extends 'baseAdm.html' %}
+
+{% block title %}
+Criar Mentoria | Mentoria 360° - ADM
+{% endblock %}
+{% block navbar_title %}
+Cadastro de Mentoria
+{% endblock %}
+
+{% block content %}
+<div class="bg-[#101010] flex flex-col items-center justify-center min-h-screen p-4 sm:p-6">
+  <form method="post" class="w-full max-w-4xl bg-[#171717] rounded-lg border border-[#2a2a2a] p-6 sm:p-10 shadow-lg">
+    <h3 class="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-7 text-center">Cadastro de Mentoria</h3>
+
+    <!-- Nome da Mentoria -->
+    <div class="mb-6">
+      <label class="block text-white font-medium mb-2">Nome da Mentoria</label>
+      <div class="relative">
+        <input type="text" name="nomeMentoria" placeholder="Digite o nome da mentoria"
+          class="w-full text-base sm:text-lg pl-4 pr-10 py-3 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]" />
+        <i class="ph ph-book-bookmark absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+      </div>
+    </div>
+
+    <!-- Seção de Entregáveis -->
+    <div class="mb-6">
+      <label class="block text-white font-medium mb-2">Entregáveis</label>
+
+      <!-- Seletor de Entregável Existente -->
+      <div class="flex gap-3 mb-4">
+        <div class="relative flex-1">
+          <select id="selectEntregavel"
+            class="w-full text-base sm:text-lg pl-4 pr-10 py-3 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54] appearance-none">
+            <option value="" disabled selected>Selecione um entregável existente</option>
+            <option value="projeto_final">Projeto Final</option>
+            <option value="apresentacao">Apresentação</option>
+            <option value="relatorio">Relatório Técnico</option>
+            <option value="prototipo">Protótipo</option>
+            <option value="plano_acao">Plano de Ação</option>
+          </select>
+          <i
+            class="ph ph-caret-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+        </div>
+
+        <button type="button" id="btnAdicionarEntregavel"
+          class="bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white font-medium py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 whitespace-nowrap">
+          <i class="ph ph-plus"></i>
+          Adicionar
+        </button>
+      </div>
+
+      <!-- Botão para Criar Novo Entregável -->
+      <button type="button" id="btnNovoEntregavel"
+        class="w-full bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white font-medium py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 mb-6">
+        <i class="ph ph-plus-circle"></i>
+        Criar Novo Entregável
+      </button>
+
+      <!-- Lista de Entregáveis Adicionados -->
+      <div class="border border-[#2a2a2a] rounded-lg overflow-hidden">
+        <div class="bg-[#2a2a2a] px-4 py-3">
+          <h4 class="text-white font-medium">Entregáveis Adicionados</h4>
+        </div>
+
+        <div id="listaEntregaveis" class="min-h-[200px] p-4">
+          <!-- Os entregáveis serão adicionados aqui dinamicamente -->
+          <p id="listaVazia" class="text-gray-500 text-center py-8">Nenhum entregável adicionado ainda</p>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit"
+      class="w-full mt-6 bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-base sm:text-lg">
+      {{ components.iconMentorias() }}
+      Criar Mentoria
+    </button>
+  </form>
+</div>
+
+<!-- Modal para Criar Novo Entregável -->
+<div id="modalNovoEntregavel"
+  class="fixed inset-0 bg-[#00000084] bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
+  <div class="bg-[#171717] border border-[#2a2a2a] rounded-lg w-full max-w-md p-6 shadow-xl">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-white">Criar Novo Entregável</h3>
+      <button type="button" id="btnFecharModal" class="text-gray-400 hover:text-white transition-colors"><i
+          class="ph ph-x text-xl"></i></button>
+    </div>
+
+    <div class="mb-6">
+      <label class="block text-white font-medium mb-2">Nome do Entregável</label>
+      <div class="relative">
+        <input type="text" id="nomeNovoEntregavelModal" placeholder="Digite o nome do entregável"
+          class="w-full text-base sm:text-lg pl-4 pr-10 py-3 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]" />
+        <i class="ph ph-file-text absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+      </div>
+      <p class="text-gray-400 text-sm mt-2">O entregável será adicionado à lista atual e ao seletor para uso futuro.</p>
+    </div>
+
+    <div class="flex gap-3">
+      <button type="button" id="btnCancelarModal"
+        class="flex-1 bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white font-medium py-3 px-4 rounded-md transition-colors">Cancelar</button>
+      <button type="button" id="btnCriarModal"
+        class="flex-1 bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2">
+        <i class="ph ph-check"></i>
+        Criar Entregável
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Template para Entregável -->
+<template id="templateEntregavel">
+  <div
+    class="entregavel-item group flex items-center justify-between p-3 border border-[#2a2a2a] rounded-lg mb-2 bg-[#101010] hover:bg-[#1a1a1a] transition-colors">
+    <div class="flex items-center gap-3">
+      <button type="button" class="mover cursor-move text-gray-400 hover:text-white"><i
+          class="ph ph-dots-six-vertical text-lg"></i></button>
+      <span class="text-white font-medium ordem">1.</span>
+      <span class="text-white nome-entregavel">Nome do Entregável</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button type="button" class="mover-cima text-gray-400 hover:text-white p-1"><i
+          class="ph ph-arrow-up"></i></button>
+      <button type="button" class="mover-baixo text-gray-400 hover:text-white p-1"><i
+          class="ph ph-arrow-down"></i></button>
+      <button type="button" class="remover text-red-400 hover:text-red-300 p-1"><i class="ph ph-trash"></i></button>
+    </div>
+    <input type="hidden" name="entregaveis[]" value="" />
+  </div>
+</template>
+
+<!-- Scripts -->
+<script>
+  // Elementos do DOM
+  const selectEntregavel = document.getElementById('selectEntregavel')
+  const btnAdicionarEntregavel = document.getElementById('btnAdicionarEntregavel')
+  const btnNovoEntregavel = document.getElementById('btnNovoEntregavel')
+  const modalNovoEntregavel = document.getElementById('modalNovoEntregavel')
+  const nomeNovoEntregavelModal = document.getElementById('nomeNovoEntregavelModal')
+  const btnCriarModal = document.getElementById('btnCriarModal')
+  const btnFecharModal = document.getElementById('btnFecharModal')
+  const btnCancelarModal = document.getElementById('btnCancelarModal')
+  const listaEntregaveis = document.getElementById('listaEntregaveis')
+  const listaVazia = document.getElementById('listaVazia')
+  const templateEntregavel = document.getElementById('templateEntregavel')
+
+  // Array para armazenar entregáveis
+  let entregaveis = []
+  let proximoId = 1
+
+  // Abrir modal
+  btnNovoEntregavel.addEventListener('click', () => {
+    modalNovoEntregavel.classList.remove('hidden')
+    nomeNovoEntregavelModal.value = ''
+    nomeNovoEntregavelModal.focus()
+  })
+
+  // Fechar modal
+  function fecharModal() {
+    modalNovoEntregavel.classList.add('hidden')
+    nomeNovoEntregavelModal.value = ''
+  }
+
+  btnFecharModal.addEventListener('click', fecharModal)
+  btnCancelarModal.addEventListener('click', fecharModal)
+
+  // Fechar modal ao clicar fora
+  modalNovoEntregavel.addEventListener('click', (e) => {
+    if (e.target === modalNovoEntregavel) {
+      fecharModal()
+    }
+  })
+
+  // Adicionar entregável existente
+  btnAdicionarEntregavel.addEventListener('click', () => {
+    if (selectEntregavel.value) {
+      const nome = selectEntregavel.options[selectEntregavel.selectedIndex].text
+      const valor = selectEntregavel.value
+      adicionarEntregavel(nome, valor)
+      selectEntregavel.value = ''
+    }
+  })
+
+  // Criar novo entregável via modal
+  btnCriarModal.addEventListener('click', () => {
+    const nome = nomeNovoEntregavelModal.value.trim()
+    if (nome) {
+      const valor = 'novo_' + Date.now()
+      adicionarEntregavel(nome, valor)
+
+      // Adicionar ao select também
+      const option = document.createElement('option')
+      option.value = valor
+      option.textContent = nome
+      selectEntregavel.appendChild(option)
+
+      // Fechar modal e limpar
+      fecharModal()
+    }
+  })
+
+  // Função para adicionar entregável à lista
+  function adicionarEntregavel(nome, valor) {
+    // Remover mensagem de lista vazia
+    if (listaVazia) {
+      listaVazia.remove()
+    }
+
+    // Criar novo item baseado no template
+    const clone = templateEntregavel.content.cloneNode(true)
+    const item = clone.querySelector('.entregavel-item')
+    const spanNome = clone.querySelector('.nome-entregavel')
+    const spanOrdem = clone.querySelector('.ordem')
+    const hiddenInput = clone.querySelector('input[type="hidden"]')
+
+    // Configurar o item
+    item.dataset.id = proximoId
+    spanNome.textContent = nome
+    spanOrdem.textContent = entregaveis.length + 1 + '.'
+    hiddenInput.value = JSON.stringify({ nome: nome, valor: valor, ordem: entregaveis.length + 1 })
+
+    // Adicionar eventos
+    const btnRemover = clone.querySelector('.remover')
+    const btnMoverCima = clone.querySelector('.mover-cima')
+    const btnMoverBaixo = clone.querySelector('.mover-baixo')
+    const btnMover = clone.querySelector('.mover')
+
+    btnRemover.addEventListener('click', () => removerEntregavel(proximoId))
+    btnMoverCima.addEventListener('click', () => moverEntregavel(proximoId, 'cima'))
+    btnMoverBaixo.addEventListener('click', () => moverEntregavel(proximoId, 'baixo'))
+
+    // Tornar arrastável
+    tornarArrastavel(item)
+
+    // Adicionar à lista
+    listaEntregaveis.appendChild(clone)
+
+    // Adicionar ao array
+    entregaveis.push({
+      id: proximoId,
+      nome: nome,
+      valor: valor,
+      ordem: entregaveis.length + 1,
+      elemento: item
+    })
+
+    proximoId++
+  }
+
+  // Função para remover entregável
+  function removerEntregavel(id) {
+    const index = entregaveis.findIndex((e) => e.id === id)
+    if (index !== -1) {
+      // Remover do DOM
+      entregaveis[index].elemento.remove()
+
+      // Remover do array
+      entregaveis.splice(index, 1)
+
+      // Atualizar ordens
+      atualizarOrdens()
+
+      // Mostrar mensagem se lista estiver vazia
+      if (entregaveis.length === 0) {
+        const p = document.createElement('p')
+        p.id = 'listaVazia'
+        p.className = 'text-gray-500 text-center py-8'
+        p.textContent = 'Nenhum entregável adicionado ainda'
+        listaEntregaveis.appendChild(p)
+      }
+    }
+  }
+
+  // Função para mover entregável
+  function moverEntregavel(id, direcao) {
+    const index = entregaveis.findIndex((e) => e.id === id)
+    if (index !== -1) {
+      const novoIndex = direcao === 'cima' ? index - 1 : index + 1
+
+      // Verificar se o movimento é válido
+      if (novoIndex >= 0 && novoIndex < entregaveis.length) {
+        // Trocar posições no array
+        ;[entregaveis[index], entregaveis[novoIndex]] = [entregaveis[novoIndex], entregaveis[index]]
+
+        // Atualizar DOM
+        if (direcao === 'cima') {
+          listaEntregaveis.insertBefore(entregaveis[index].elemento, entregaveis[novoIndex].elemento)
+        } else {
+          listaEntregaveis.insertBefore(entregaveis[novoIndex].elemento, entregaveis[index].elemento.nextSibling)
+        }
+
+        // Atualizar ordens
+        atualizarOrdens()
+      }
+    }
+  }
+
+  //--------------------------------------------------------------------
+
+  //drag and drop (por enquanto gpt, ainda é necessário vê se tá ok)
+
+  // Função para tornar item arrastável
+  function tornarArrastavel(elemento) {
+    elemento.setAttribute('draggable', 'true')
+
+    elemento.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', elemento.dataset.id)
+      elemento.classList.add('opacity-50', 'dragging')
+    })
+
+    elemento.addEventListener('dragend', () => {
+      elemento.classList.remove('opacity-50', 'dragging')
+    })
+
+    elemento.addEventListener('dragover', (e) => {
+      e.preventDefault()
+      const afterElement = getDragAfterElement(listaEntregaveis, e.clientY)
+      const draggable = document.querySelector('.dragging')
+      if (draggable && afterElement == null) {
+        listaEntregaveis.appendChild(draggable)
+      } else if (draggable && afterElement.element) {
+        listaEntregaveis.insertBefore(draggable, afterElement.element)
+      }
+    })
+  }
+
+  // de drag and drop
+  function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.entregavel-item:not(.dragging)')]
+
+    return draggableElements.reduce(
+      (closest, child) => {
+        const box = child.getBoundingClientRect()
+        const offset = y - box.top - box.height / 2
+
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child }
+        } else {
+          return closest
+        }
+      },
+      { offset: Number.NEGATIVE_INFINITY }
+    )
+  }
+
+  // de drag and drop
+  listaEntregaveis.addEventListener('dragover', (e) => {
+    e.preventDefault()
+  })
+
+  listaEntregaveis.addEventListener('drop', (e) => {
+    e.preventDefault()
+    const id = e.dataTransfer.getData('text/plain')
+    const elemento = document.querySelector(`.entregavel-item[data-id="${id}"]`)
+    elemento.classList.remove('dragging')
+
+    // Atualizar array com nova ordem
+    const novosElementos = [...listaEntregaveis.querySelectorAll('.entregavel-item')]
+    entregaveis.sort((a, b) => {
+      const indexA = novosElementos.findIndex((el) => el.dataset.id == a.id)
+      const indexB = novosElementos.findIndex((el) => el.dataset.id == b.id)
+      return indexA - indexB
+    })
+
+    // Atualizar ordens
+    atualizarOrdens()
+  })
+
+  //--------------------------------------------------------------------
+
+  // Função para atualizar números de ordem
+  // Rafael, vê isso, não sei se impacta na estão do db n a hora de salvar :>
+  function atualizarOrdens() {
+    const items = listaEntregaveis.querySelectorAll('.entregavel-item')
+    items.forEach((item, index) => {
+      const ordemSpan = item.querySelector('.ordem')
+      const hiddenInput = item.querySelector('input[type="hidden"]')
+
+      if (ordemSpan) {
+        ordemSpan.textContent = index + 1 + '.'
+      }
+
+      if (hiddenInput) {
+        const data = JSON.parse(hiddenInput.value)
+        data.ordem = index + 1
+        hiddenInput.value = JSON.stringify(data)
+      }
+
+      // Atualizar ordem no array
+      const id = parseInt(item.dataset.id)
+      const entregavel = entregaveis.find((e) => e.id === id)
+      if (entregavel) {
+        entregavel.ordem = index + 1
+      }
+    })
+  }
+
+  nomeNovoEntregavelModal.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      btnCriarModal.click()
+    }
+  })
+
+  // fazer o esc fechar o modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modalNovoEntregavel.classList.contains('hidden')) {
+      fecharModal()
+    }
+  })
+</script>
+
+<style>
+  .entregavel-item {
+    transition: all 0.2s ease;
+  }
+
+  .entregavel-item.dragging {
+    opacity: 0.5;
+  }
+
+  .mover {
+    cursor: move;
+  }
+
+  .mover:hover {
+    cursor: move;
+  }
+</style>
+{% endblock %}

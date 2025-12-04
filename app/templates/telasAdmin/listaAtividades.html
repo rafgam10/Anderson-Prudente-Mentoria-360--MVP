@@ -1,5 +1,8 @@
 {% extends "telasAdmin/baseAdm.html" %}
 
+{# Importar as macros #}
+{% from "components/modal.html" import criar_modal, criar_modal_acao %}
+
 {% block title %}Lista de Atividades | Mentoria 360° - ADM{% endblock %}
 
 {% block navbar_title %}Lista de Atividades{% endblock %}
@@ -19,212 +22,246 @@
     </div>
 
     {% for atividade in atividades %}
-        <!-- exempo 1 ae-->
-        <div class="card-atividade mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">        
-            <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-                <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-                    <i class="ph-duotone ph-notebook text-2xl"></i>
-                    <span>{{atividade.nome_atividade}}</span>
-                </div>
-                <div class="flex flex-col p-1 sm:flex-row gap-2">
-                    <button onclick="openModal(
+    <!-- exempo 1 ae-->
+    <div
+        class="card-atividade mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
+        <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+            <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                <i class="ph-duotone ph-notebook text-2xl"></i>
+                <span>{{atividade.nome_atividade}}</span>
+            </div>
+            <div class="flex flex-col p-1 sm:flex-row gap-2">
+                <button onclick="openModalEditar(
                     {{atividade.id}},
                     '{{atividade.nome_atividade | escape}}',
                     '{{atividade.descricao | escape}}',
                     '{{atividade.data}}',
                     '{{atividade.hora}}',
-                    '{{atividade.plataforma  | escape}}',
-                    {{atividade.fase.id_fase}},   <!-- id numérico -->
-                    '{{atividade.plataforma  | escape}}'
+                    '{{atividade.plataforma | escape}}',
+                    {{atividade.fase.id_fase}},
+                    '{{atividade.plataforma | escape}}'
                 )"
-                        class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
-                        <i class="ph ph-pencil-simple"></i> Editar
-                    </button>
-                    <button
-                        onclick="deletarAtividade({{ atividade.id }})"
-                        class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
-                        <i class="ph ph-trash"></i> Deletar
-                    </button>
+                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-pencil-simple"></i> Editar
+                </button>
+                <button onclick="abrirModalDeletar({{atividade.id}}, '{{atividade.nome_atividade | escape}}')"
+                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-trash"></i> Deletar
+                </button>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <div class="flex flex-col p-1 lg:flex-row gap-6">
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
+                    <p class="text-sm font-medium">{{atividade.descricao}}</p>
+                </div>
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
+                    <p class="text-sm font-medium">{{atividade.data.strftime('%d/%m/%Y')}} -
+                        {{atividade.hora.strftime('%H:%M')}}</p>
                 </div>
             </div>
 
-            <div class="p-4">
-                <div class="flex flex-col p-1 lg:flex-row gap-6">
-                    <div class="flex-1 space-y-2">
-                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-textbox"></i> Descrição</p>
-                        <p class="text-sm font-medium">{{atividade.descricao}}</p>
-                    </div>
-                    <div class="flex-1 space-y-2">
-                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data e Hora</p>
-                        <p class="text-sm font-medium">{{atividade.data.strftime('%d/%m/%Y')}} - {{atividade.hora.strftime('%H:%M')}}</p>
-                    </div>
+            <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
+                    <span class="px-2 py-1 bg-[#19569b] text-white text-sm font-semibold rounded-md">
+                        Fase {{atividade.fase.id_fase}}
+                    </span>
                 </div>
-                
-                <div class="flex flex-col p-1 lg:flex-row gap-6 mt-4">
-                    <div class="flex-1 space-y-2">
-                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-stairs"></i> Fase</p>
-                        <span class="px-2 py-1 bg-[#19569b] text-white text-sm font-semibold rounded-md">
-                            Fase {{atividade.fase.id_fase}}
-                        </span>
-                    </div>
-                    <div class="flex-1 space-y-2">
-                        <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
-                    <span class="px-2 py-1 {% if atividade.plataforma == 'MPS' %} bg-[#7aa404] {% endif %} {% if atividade.plataforma == 'DOP' %} bg-[#cd3f07] {% endif %} text-white text-sm font-semibold rounded-md">
-                            {{atividade.plataforma}}
-                        </span>
-                    </div>
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Programa</p>
+                    <span
+                        class="px-2 py-1 {% if atividade.plataforma == 'MPS' %} bg-[#7aa404] {% endif %} {% if atividade.plataforma == 'DOP' %} bg-[#cd3f07] {% endif %} text-white text-sm font-semibold rounded-md">
+                        {{atividade.plataforma}}
+                    </span>
                 </div>
             </div>
         </div>
-    {% endfor %}
-    
-
-</div>
-
-<!-- Modal -->
-<div id="editModal" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50">
-    <div class="bg-[#171717] w-full max-w-2xl rounded-lg p-6 m-4 max-h-[90vh] overflow-y-auto">
-        <h2 class="text-lg font-bold text-[#f8ca54] mb-4">Editar Atividade</h2>
-        <form id="editForm" class="space-y-4">
-            <div>
-                <label class="text-sm text-gray-300">Nome da Atividade</label>
-                <input type="text" name="nomeAtividade"
-                    class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-            </div>
-            <div>
-                <label class="text-sm text-gray-300">Descrição</label>
-                <textarea name="descricaoAtividade" rows="4"
-                    class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white resize-none"></textarea>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="text-sm text-gray-300">Data</label>
-                    <input type="date" name="dataAtividade"
-                        class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-                </div>
-                <div>
-                    <label class="text-sm text-gray-300">Hora</label>
-                    <input type="time" name="horaAtividade"
-                        class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-                </div>
-            </div>
-            <div>
-                <label class="text-sm text-gray-300">Fase</label>
-                <select name="faseAtividade" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-                    {% for fase in fases %}
-                        <option value="{{fase.id_fase}}">{{fase.nome_fase}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div>
-                <label class="text-sm text-gray-300">Programa</label>
-                <select name="programaAtividade" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-                    <option value="DOP">DOP</option>
-                    <option value="MPS">MPS</option>
-                </select>
-            </div>
-
-            <div class="flex justify-end gap-2 pt-4">
-                <button type="button" onclick="closeModal()"
-                    class="px-4 py-2 rounded bg-[#2c456c] text-white hover:bg-[#281d5f]">Cancelar</button>
-                <button type="submit"
-                    class="px-4 py-2 rounded bg-[#e28813] text-white hover:bg-[#c4610a]">Salvar</button>
-            </div>
-        </form>
     </div>
+    {% endfor %}
+
+
 </div>
 
+<!-- MODAL DE EDIÇÃO -->
+{% call criar_modal('modal-editar', 'Editar Atividade', 'max-w-2xl') %}
+<form id="editForm" class="space-y-4">
+    <div>
+        <label class="text-sm text-gray-300">Nome da Atividade</label>
+        <input type="text" name="nomeAtividade"
+            class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+    </div>
+    <div>
+        <label class="text-sm text-gray-300">Descrição</label>
+        <textarea name="descricaoAtividade" rows="4"
+            class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white resize-none"></textarea>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+            <label class="text-sm text-gray-300">Data</label>
+            <input type="date" name="dataAtividade"
+                class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+        </div>
+        <div>
+            <label class="text-sm text-gray-300">Hora</label>
+            <input type="time" name="horaAtividade"
+                class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+        </div>
+    </div>
+    <div>
+        <label class="text-sm text-gray-300">Fase</label>
+        <select name="faseAtividade" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+            {% for fase in fases %}
+            <option value="{{fase.id_fase}}">{{fase.nome_fase}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label class="text-sm text-gray-300">Programa</label>
+        <select name="programaAtividade" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+            <option value="DOP">DOP</option>
+            <option value="MPS">MPS</option>
+        </select>
+    </div>
+</form>
+{% endcall %}
+
+<!-- MODAL DE DELETAR -->
+{% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
+<div class="text-center py-4">
+    <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
+    <p class="text-gray-300 mb-2">Tem certeza que deseja excluir esta atividade?</p>
+    <p class="text-lg font-semibold text-[#f8ca54]" id="atividade-deletar-nome"></p>
+    <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
+</div>
+{% endcall %}
+{% endblock %}
+
+{% block scripts %}
 <script>
-    const modal = document.getElementById('editModal');
-    const form = document.getElementById('editForm');
-
+    // Variáveis globais
     let atividadeId = null;
+    let atividadeDeletandoId = null;
 
-    function openModal(id, nomeAtividade, descricaoAtividade, dataAtividade, horaAtividade, tipoAtividade, faseAtividade, programaAtividade) {
+    // FUNÇÃO ORIGINAL QUE FUNCIONAVA - mantendo o mesmo nome
+    function openModalEditar(id, nomeAtividade, descricaoAtividade, dataAtividade, horaAtividade, tipoAtividade, faseAtividade, programaAtividade) {
         atividadeId = id;
+
+        const modal = document.getElementById('modal-editar');
         modal.classList.remove('hidden');
-        
-        form.nomeAtividade.value = nomeAtividade;
-        form.descricaoAtividade.value = descricaoAtividade;
-        form.dataAtividade.value = dataAtividade;
-        form.horaAtividade.value = horaAtividade;
-        form.tipoAtividade.value = tipoAtividade;
-        form.faseAtividade.value = faseAtividade;
-        form.programaAtividade.value = programaAtividade;
+
+        const form = document.getElementById('editForm');
+        if (form) {
+            form.nomeAtividade.value = nomeAtividade;
+            form.descricaoAtividade.value = descricaoAtividade;
+            form.dataAtividade.value = dataAtividade;
+            form.horaAtividade.value = horaAtividade;
+            form.tipoAtividade.value = tipoAtividade;
+            form.faseAtividade.value = faseAtividade;
+            form.programaAtividade.value = programaAtividade;
+        }
     }
 
+    // Função para fechar modal (original)
     function closeModal() {
+        const modal = document.getElementById('modal-editar');
         modal.classList.add('hidden');
     }
 
-    async function deletarAtividade(id){
-        if(!confirm("Tem certeza que deseja excluir esta atividade?")){
-            return;
-        }
-        console.log('Deletando atividade:', id);
+    // Função para abrir modal de deletar
+    function abrirModalDeletar(id, nome) {
+        atividadeDeletandoId = id;
 
-        const resp = await fetch(`/admin/atividades/deletar/${id}`, {
-            method: "DELETE"
-        });
-
-        if(resp.ok){
-            const result = await resp.json();
-            alert(result.message);
-            location.reload();
-        }else{
-            alert("Erro ao deletar atividade!")
+        const nomeElement = document.getElementById('atividade-deletar-nome');
+        if (nomeElement) {
+            nomeElement.textContent = nome;
         }
+
+        abrirModal('modal-deletar');
     }
 
+    // Configurar formulário de edição (mantendo lógica original)
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('editForm');
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+                let hora = form.horaAtividade.value;
+                if (hora.length === 8) { // ex: "13:30:00"
+                    hora = hora.substring(0, 5); // fica "13:30"
+                }
 
-        let hora = form.horaAtividade.value;
-        if (hora.length === 8) { // ex: "13:30:00"
-            hora = hora.substring(0, 5); // fica "13:30"
+                const payload = {
+                    nomeAtividade: form.nomeAtividade.value,
+                    descricaoAtividade: form.descricaoAtividade.value,
+                    dataAtividade: form.dataAtividade.value,
+                    horaAtividade: hora,
+                    tipoAtividade: form.tipoAtividade.value,
+                    faseAtividade: form.faseAtividade.value,
+                    programaAtividade: form.programaAtividade.value
+                };
+
+                const resp = await fetch(`/admin/atividades/editar/${atividadeId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                if (resp.ok) {
+                    const result = await resp.json();
+                    alert(result.message);
+                    closeModal();
+                    location.reload();
+                } else {
+                    alert("Erro ao salvar alterações");
+                }
+            });
         }
 
-        const payload = {
-            nomeAtividade: form.nomeAtividade.value,
-            descricaoAtividade: form.descricaoAtividade.value,
-            dataAtividade: form.dataAtividade.value,
-            horaAtividade: hora,
-            tipoAtividade: form.tipoAtividade.value,
-            faseAtividade: form.faseAtividade.value,
-            programaAtividade: form.programaAtividade.value
-        };
+        // Filtro de pesquisa
+        const pesquisaInput = document.getElementById('pesquisa-atividade');
+        if (pesquisaInput) {
+            pesquisaInput.addEventListener('input', function () {
+                const termo = this.value.toLowerCase();
+                const cards = document.querySelectorAll('.card-atividade');
 
-        const resp = await fetch(`/admin/atividades/editar/${atividadeId}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-
-        if (resp.ok) {
-            const result = await resp.json();
-            alert(result.message);
-            location.reload();
-        } else {
-            alert("Erro ao salvar alterações");
+                cards.forEach(card => {
+                    const titulo = card.querySelector('span').textContent.toLowerCase();
+                    if (titulo.includes(termo)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
         }
-
-        console.log('Salvando Atividade:', {
-            nomeAtividade: form.nomeAtividade.value,
-            descricaoAtividade: form.descricaoAtividade.value,
-            dataAtividade: form.dataAtividade.value,
-            horaAtividade: form.horaAtividade.value,
-            tipoAtividade: form.tipoAtividade.value,
-            faseAtividade: form.faseAtividade.value,
-            programaAtividade: form.programaAtividade.value
-        });
-        closeModal();
     });
 
+    window.acaoModal = async function (modalId) {
+        if (modalId === 'modal-deletar' && atividadeDeletandoId) {
+            const resp = await fetch(`/admin/atividades/deletar/${atividadeDeletandoId}`, {
+                method: "DELETE"
+            });
 
-
+            if (resp.ok) {
+                const result = await resp.json();
+                alert(result.message);
+                fecharModal('modal-deletar');
+                location.reload();
+            } else {
+                alert("Erro ao deletar atividade!");
+                fecharModal('modal-deletar');
+            }
+        } else {
+            fecharModal(modalId);
+        }
+    };
 
 </script>
 {% endblock %}

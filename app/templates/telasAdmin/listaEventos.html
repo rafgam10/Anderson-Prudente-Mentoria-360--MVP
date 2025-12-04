@@ -1,5 +1,8 @@
 {% extends "telasAdmin/baseAdm.html" %}
 
+{# Importar as macros #}
+{% from "components/modal.html" import criar_modal, criar_modal_acao %}
+
 {% block title %}Lista de Eventos | Mentoria 360° - ADM{% endblock %}
 
 {% block navbar_title %}Lista de Eventos{% endblock %}
@@ -18,182 +21,218 @@
         </div>
     </div>
 
-
-        {% for evento in eventos %}
-
-            <div class="card-evento mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">        
-
-                <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-                    <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-                        <i class="ph-duotone ph-calendar text-2xl"></i>
-                        <span>{{evento.nomeEvento}}</span>
-                    </div>
-
-                    <div class="flex flex-col p-1 sm:flex-row gap-2">
-                        <button onclick="openModalEditar(
-                                  {{ evento.id }},
-                                 '{{ evento.nomeEvento }}', 
-                                 '{{ evento.dataInicial }}', 
-                                 '{{ evento.horaInicial }}',
-                                 '{{ evento.dataFinal }}', 
-                                 '{{ evento.horaFinal }}',
-                                 '{{ evento.nomePalestrante }}'
-                                )"
-                            class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
-                            <i class="ph ph-pencil-simple"></i> Editar
-                        </button>
-                        <button
-                            onclick="deletarEvento({{evento.id}})"
-                            class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
-                            <i class="ph ph-trash"></i> Deletar
-                        </button>
-                    </div>
-                </div>
-
-                <div class="p-4">
-                    <div class="flex flex-col p-1 lg:flex-row gap-6">
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Inicial</p>
-                            <p class="text-sm font-medium">{{evento.dataInicial.strftime('%d/%m/%Y')}} - {{evento.horaInicial.strftime('%H:%M')}}</p>
-                        </div>
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Final</p>
-                            <p class="text-sm font-medium">{{evento.dataFinal.strftime('%d/%m/%Y')}} - {{evento.horaFinal.strftime('%H:%M')}}</p>
-                        </div>
-                        <div class="flex-1 space-y-2">
-                            <p class="text-sm text-[#f8ca54]"><i class="ph ph-microphone-stage"></i> Palestrante</p>
-                            <p class="text-sm font-medium">{{evento.nomePalestrante}}</p>
-                        </div>
-                    </div>
-                </div>
-
+    {% for evento in eventos %}
+    <div class="card-evento mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
+        <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+            <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                <i class="ph-duotone ph-calendar text-2xl"></i>
+                <span>{{evento.nomeEvento}}</span>
             </div>
 
-        {% endfor %}
-
-</div>
-
-<!-- Modal -->
-<div id="editModal" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50">
-    <div class="bg-[#171717] w-full max-w-md rounded-lg p-6 m-4">
-        <h2 class="text-lg font-bold text-[#f8ca54] mb-4">Editar Evento</h2>
-        <form id="editForm" class="space-y-4">
-            <div>
-                <label class="text-sm text-gray-300">Nome do Evento</label>
-                <input type="text" name="nomeEvento"
-                    class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+            <div class="flex flex-col p-1 sm:flex-row gap-2">
+                <button onclick="abrirModalEditar(
+                              {{ evento.id }},
+                             '{{ evento.nomeEvento }}', 
+                             '{{ evento.dataInicial }}', 
+                             '{{ evento.horaInicial }}',
+                             '{{ evento.dataFinal }}', 
+                             '{{ evento.horaFinal }}',
+                             '{{ evento.nomePalestrante }}'
+                            )"
+                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-pencil-simple"></i> Editar
+                </button>
+                <button onclick="abrirModalDeletar({{evento.id}}, '{{evento.nomeEvento}}')"
+                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-trash"></i> Deletar
+                </button>
             </div>
-            
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="text-sm text-gray-300">Data Inicial</label>
-                    <input type="date" name="dataInicial"
-                        class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-                </div>
-                <div>
-                    <label class="text-sm text-gray-300">Hora Inicial</label>
-                    <input type="time" name="horaInicial"
-                        class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-                </div>
-            </div>
+        </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="text-sm text-gray-300">Data Final</label>
-                    <input type="date" name="dataFinal"
-                        class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+        <div class="p-4">
+            <div class="flex flex-col p-1 lg:flex-row gap-6">
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Inicial</p>
+                    <p class="text-sm font-medium">{{evento.dataInicial.strftime('%d/%m/%Y')}} -
+                        {{evento.horaInicial.strftime('%H:%M')}}</p>
                 </div>
-                <div>
-                    <label class="text-sm text-gray-300">Hora Final</label>
-                    <input type="time" name="horaFinal"
-                        class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar-blank"></i> Data Final</p>
+                    <p class="text-sm font-medium">{{evento.dataFinal.strftime('%d/%m/%Y')}} -
+                        {{evento.horaFinal.strftime('%H:%M')}}</p>
+                </div>
+                <div class="flex-1 space-y-2">
+                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-microphone-stage"></i> Palestrante</p>
+                    <p class="text-sm font-medium">{{evento.nomePalestrante}}</p>
                 </div>
             </div>
-
-            <div>
-                <label class="text-sm text-gray-300">Palestrante</label>
-                <input type="text" name="nomePalestrante"
-                    class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-            </div>
-
-            <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeModal()"
-                    class="px-4 py-2 rounded bg-[#2c456c] text-white hover:bg-[#281d5f]">Cancelar</button>
-                <button type="submit"
-                    class="px-4 py-2 rounded bg-[#e28813] text-white hover:bg-[#c4610a]">Salvar</button>
-            </div>
-        </form>
+        </div>
     </div>
+    {% endfor %}
+
 </div>
 
+<!-- MODAL DE EDIÇÃO -->
+{% call criar_modal('modal-editar', 'Editar Evento', 'max-w-md') %}
+<form id="modal-editar-form" class="space-y-4" enctype="multipart/form-data">
+    <div>
+        <label class="text-sm text-gray-300">Nome do Evento</label>
+        <input type="text" name="nomeEvento" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <label class="text-sm text-gray-300">Data Inicial</label>
+            <input type="date" name="dataInicial"
+                class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+        </div>
+        <div>
+            <label class="text-sm text-gray-300">Hora Inicial</label>
+            <input type="time" name="horaInicial"
+                class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <label class="text-sm text-gray-300">Data Final</label>
+            <input type="date" name="dataFinal"
+                class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+        </div>
+        <div>
+            <label class="text-sm text-gray-300">Hora Final</label>
+            <input type="time" name="horaFinal"
+                class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+        </div>
+    </div>
+
+    <div>
+        <label class="text-sm text-gray-300">Palestrante</label>
+        <input type="text" name="nomePalestrante"
+            class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+    </div>
+</form>
+{% endcall %}
+
+<!-- MODAL DE DELETAR -->
+{% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
+<div class="text-center py-4">
+    <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
+    <p class="text-gray-300 mb-2">Tem certeza que deseja excluir este evento?</p>
+    <p class="text-lg font-semibold text-[#f8ca54]" id="evento-deletar-nome"></p>
+    <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
+</div>
+{% endcall %}
+{% endblock %}
+
+{% block scripts %}
 <script>
-    const modal = document.getElementById('editModal');
-    const form = document.getElementById('editForm');
-    let eventoIdEdicao = null;
+    // Variáveis globais
+    let eventoEditandoId = null;
+    let eventoDeletandoId = null;
 
-    function openModalEditar(id, nomeEvento, dataInicial, horaInicial, dataFinal, horaFinal, nomePalestrante) {
-        eventoIdEdicao = id;
-        modal.classList.remove('hidden');
-        
-        form.nomeEvento.value = nomeEvento;
-        form.dataInicial.value = dataInicial;
-        form.horaInicial.value = horaInicial;
-        form.dataFinal.value = dataFinal;
-        form.horaFinal.value = horaFinal;
-        form.nomePalestrante.value = nomePalestrante;
+    // Função para abrir modal de edição
+    function abrirModalEditar(id, nomeEvento, dataInicial, horaInicial, dataFinal, horaFinal, nomePalestrante) {
+        eventoEditandoId = id;
+
+        // Preencher o formulário
+        const form = document.getElementById('modal-editar-form');
+        if (form) {
+            form.nomeEvento.value = nomeEvento;
+            form.dataInicial.value = dataInicial;
+            form.horaInicial.value = horaInicial;
+            form.dataFinal.value = dataFinal;
+            form.horaFinal.value = horaFinal;
+            form.nomePalestrante.value = nomePalestrante;
+        }
+
+        abrirModal('modal-editar');
     }
 
-    function closeModal() {
-        modal.classList.add('hidden');
-        eventoIdEdicao = null;
-        form.reset();
+    // Função para abrir modal de deletar
+    function abrirModalDeletar(id, nome) {
+        eventoDeletandoId = id;
+
+        const nomeElement = document.getElementById('evento-deletar-nome');
+        if (nomeElement) {
+            nomeElement.textContent = nome;
+        }
+
+        abrirModal('modal-deletar');
     }
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const dados = new FormData(form);
+    // Configurar formulário de edição
+    document.addEventListener('DOMContentLoaded', function () {
+        const editForm = document.getElementById('modal-editar-form');
+        if (editForm) {
+            editForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const dados = new FormData(editForm);
 
-        try {
-            const response = await fetch(`/admin/eventos/editar/${eventoIdEdicao}`, {
-                method: "POST",
-                body: dados
+                try {
+                    const response = await fetch(`/admin/eventos/editar/${eventoEditandoId}`, {
+                        method: "POST",
+                        body: dados
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log(result.message);
+                        fecharModal('modal-editar');
+                        location.reload();
+                    } else {
+                        console.log("Erro ao editar evento");
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
             });
+        }
 
-            if(response.ok){
-                const result = await response.json(); // se o backend retornar JSON
-                console.log(result.message); 
-                closeModal(); // fecha o modal antes de recarregar
-                location.reload(); // recarrega a página
-            } else {
-                console.log("Erro ao editar evento");
-            }
-        } catch (err){
-            console.log(err);
+        // Filtro de pesquisa
+        const pesquisaInput = document.getElementById('pesquisa-evento');
+        if (pesquisaInput) {
+            pesquisaInput.addEventListener('input', function () {
+                const termo = this.value.toLowerCase();
+                const cards = document.querySelectorAll('.card-evento');
+
+                cards.forEach(card => {
+                    const titulo = card.querySelector('span').textContent.toLowerCase();
+                    if (titulo.includes(termo)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
         }
     });
 
+    window.acaoModal = async function (modalId) {
+        if (modalId === 'modal-deletar' && eventoDeletandoId) {
+            try {
+                const response = await fetch(`/admin/eventos/deletar/${eventoDeletandoId}`, {
+                    method: 'DELETE'
+                });
 
-    async function deletarEvento(id) {
-        const confirmar = confirm("Tem certeza que deseja deletar este evento?");
-        if (!confirmar) return;
-
-        try {
-            const response = await fetch(`/admin/eventos/deletar/${id}`, {
-                method: 'DELETE'
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                alert(data.message);
-                location.reload(); // Atualiza a lista sem precisar redirecionar manualmente
-            } else {
-                console.error("Erro ao deletar evento");
-                alert("Não foi possível deletar o evento.");
+                if (response.ok) {
+                    const data = await response.json();
+                    fecharModal('modal-deletar');
+                    location.reload();
+                } else {
+                    console.error("Erro ao deletar evento");
+                    alert("Não foi possível deletar o evento.");
+                    fecharModal('modal-deletar');
+                }
+            } catch (error) {
+                console.error("Erro na requisição:", error);
+                alert("Ocorreu um erro inesperado.");
+                fecharModal('modal-deletar');
             }
-        } catch (error) {
-            console.error("Erro na requisição:", error);
-            alert("Ocorreu um erro inesperado.");
+        } else {
+            fecharModal(modalId);
         }
-    }
+    };
+
 </script>
 {% endblock %}

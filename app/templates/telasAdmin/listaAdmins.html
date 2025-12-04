@@ -1,13 +1,14 @@
 {% extends "telasAdmin/baseAdm.html" %}
 
+{# Importar as macros #}
+{% from "components/modal.html" import criar_modal, criar_modal_acao %}
+
 {% block title %}Lista de Adms | Mentoria 360° - ADM{% endblock %}
 
 {% block navbar_title %}Lista de Administradores{% endblock %}
 
-{% block fases %} 
-
-    {{ fases }}
-
+{% block fases %}
+{{ fases }}
 {% endblock %}
 
 {% block content %}
@@ -27,131 +28,164 @@
 
     <!-- Aqui fica todos os cards de Administradores -->
     {% for admin in lista_admin %}
-        <div class="card-adm mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
+    <div class="card-adm mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
 
-            <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-                <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-                    <i class="ph-duotone ph-user-gear text-2xl"></i>
-                    <span>Admin Master - {{ admin.nomeAdmin }}</span>
-                </div>
-
-                <div class="flex flex-col p-1 sm:flex-row gap-2">
-                    <button onclick="openModal({{ admin.id }}, '{{ admin.nomeAdmin }}', '{{ admin.emailAdmin }}')"
-                        class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
-                        <i class="ph ph-pencil-simple"></i> Editar
-                    </button>
-                    <button
-                        onclick="deletarAdmin({{ admin.id }})"
-                        class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
-                        <i class="ph ph-trash"></i> Deletar
-                    </button>
-                </div>
+        <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+            <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+                <i class="ph-duotone ph-user-gear text-2xl"></i>
+                <span>Admin Master - {{ admin.nomeAdmin }}</span>
             </div>
 
-            <div class="p-4 flex flex-col lg:flex-row gap-6">
-                <div class="flex-1 space-y-2">
-                    <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
-                    <p class="text-sm font-medium">{{ admin.emailAdmin }}</p>
-                </div>
+            <div class="flex flex-col p-1 sm:flex-row gap-2">
+                <button onclick="abrirModalEditar({{ admin.id }}, '{{ admin.nomeAdmin }}', '{{ admin.emailAdmin }}')"
+                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-pencil-simple"></i> Editar
+                </button>
+                <button onclick="abrirModalDeletar({{ admin.id }}, '{{ admin.nomeAdmin }}')"
+                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+                    <i class="ph ph-trash"></i> Deletar
+                </button>
             </div>
         </div>
+
+        <div class="p-4 flex flex-col lg:flex-row gap-6">
+            <div class="flex-1 space-y-2">
+                <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
+                <p class="text-sm font-medium">{{ admin.emailAdmin }}</p>
+            </div>
+        </div>
+    </div>
     {% endfor %}
 
 </div>
 
-
-<!-- Modal -->
-<div id="editModal" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50">
-    <div class="bg-[#171717] w-full max-w-md rounded-lg p-6 m-4">
-        <h2 class="text-lg font-bold text-[#f8ca54] mb-4">Editar Administrador</h2>
-        <form id="editForm" class="space-y-4">
-            <div>
-                <label class="text-sm text-gray-300">Nome</label>
-                <input type="text" name="nome"
-                    class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-            </div>
-            <div>
-                <label class="text-sm text-gray-300">Email</label>
-                <input type="email" name="email"
-                    class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-            </div>
-            <div>
-                <label class="text-sm text-gray-300">Senha (digite para nova senha)</label>
-                <input type="password" name="senha"
-                    class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-            </div>
-
-            <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeModal()"
-                    class="px-4 py-2 rounded bg-[#2c456c] text-white hover:bg-[#281d5f]">Cancelar</button>
-                <button type="submit"
-                    class="px-4 py-2 rounded bg-[#e28813] text-white hover:bg-[#c4610a]">Salvar</button>
-            </div>
-        </form>
+<!-- MODAL DE EDIÇÃO -->
+{% call criar_modal('modal-editar', 'Editar Administrador', 'max-w-md') %}
+<form id="modal-editar-form" class="space-y-4">
+    <div>
+        <label class="text-sm text-gray-300">Nome</label>
+        <input type="text" name="nome" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
     </div>
+    <div>
+        <label class="text-sm text-gray-300">Email</label>
+        <input type="email" name="email" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+    </div>
+    <div>
+        <label class="text-sm text-gray-300">Senha (digite para nova senha)</label>
+        <input type="password" name="senha" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+    </div>
+</form>
+{% endcall %}
+
+<!-- MODAL DE DELETAR -->
+{% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
+<div class="text-center py-4">
+    <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
+    <p class="text-gray-300 mb-2">Tem certeza que deseja excluir este administrador?</p>
+    <p class="text-lg font-semibold text-[#f8ca54]" id="admin-deletar-nome"></p>
+    <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
 </div>
+{% endcall %}
+{% endblock %}
 
-
+{% block scripts %}
 <script>
-    const modal = document.getElementById('editModal');
-    const form = document.getElementById('editForm');
+    // Variáveis globais
+    let adminEditandoId = null;
+    let adminDeletandoId = null;
 
-    let adminId = null;
+    // Função para abrir modal de edição
+    function abrirModalEditar(id, nome, email) {
+        adminEditandoId = id;
 
-    function openModal(id, nome, email, senha) {
-
-        adminId = id
-        modal.classList.remove('hidden');
-        
-        form.nome.value = nome;
-        form.email.value = email;
-        form.senha.value = '';
-    }
-
-    function closeModal() {
-        modal.classList.add('hidden');
-    }
-
-    async function deletarAdmin(id){
-        if(!confirm("Tem certeza que deseja excluir este aluno?")){
-            return;
+        // Preencher o formulário
+        const form = document.getElementById('modal-editar-form');
+        if (form) {
+            form.nome.value = nome;
+            form.email.value = email;
+            form.senha.value = '';
         }
 
-        const resp = await fetch(`/admin/admins/deletar/${id}`, {
-            method: "DELETE"
-        });
-
-        if(resp.ok){
-            const result = await resp.json();
-            alert(result.message);
-            location.reload();
-        }else{
-            alert("Erro ao deletar aluno.")
-        }
-
+        abrirModal('modal-editar');
     }
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    // Função para abrir modal de deletar
+    function abrirModalDeletar(id, nome) {
+        adminDeletandoId = id;
 
-        const payload = {
-            nome: form.nome.value,
-            email: form.email.value,
-            senha: form.senha.value
-        };
-
-        const resp = await fetch(`/admin/admins/editar/${adminId}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-
-        if(resp.ok){
-            location.reload();
-        }else{
-            console.error("Erro ao editar Admin");
+        const nomeElement = document.getElementById('admin-deletar-nome');
+        if (nomeElement) {
+            nomeElement.textContent = nome;
         }
-        closeModal();
+
+        abrirModal('modal-deletar');
+    }
+
+    // Configurar formulário de edição
+    document.addEventListener('DOMContentLoaded', function () {
+        const editForm = document.getElementById('modal-editar-form');
+        if (editForm) {
+            editForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const payload = {
+                    nome: editForm.nome.value,
+                    email: editForm.email.value,
+                    senha: editForm.senha.value
+                };
+
+                const resp = await fetch(`/admin/admins/editar/${adminEditandoId}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                if (resp.ok) {
+                    location.reload();
+                } else {
+                    console.error("Erro ao editar Admin");
+                }
+                fecharModal('modal-editar');
+            });
+        }
+
+        // Filtro de pesquisa
+        const pesquisaInput = document.getElementById('pesquisa-adm');
+        if (pesquisaInput) {
+            pesquisaInput.addEventListener('input', function () {
+                const termo = this.value.toLowerCase();
+                const cards = document.querySelectorAll('.card-adm');
+
+                cards.forEach(card => {
+                    const titulo = card.querySelector('span').textContent.toLowerCase();
+                    if (titulo.includes(termo)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
     });
+
+    window.acaoModal = async function (modalId) {
+        if (modalId === 'modal-deletar' && adminDeletandoId) {
+            const resp = await fetch(`/admin/admins/deletar/${adminDeletandoId}`, {
+                method: "DELETE"
+            });
+
+            if (resp.ok) {
+                const result = await resp.json();
+                fecharModal('modal-deletar');
+                location.reload();
+            } else {
+                alert("Erro ao deletar administrador.");
+                fecharModal('modal-deletar');
+            }
+        } else {
+            fecharModal(modalId);
+        }
+    };
+
 </script>
 {% endblock %}

@@ -1,0 +1,417 @@
+{% extends 'telasAdmin/baseAdm.html' %}
+
+{# Importar as macros #}
+{% from "components/modal.html" import criar_modal, criar_modal_acao %}
+
+{% block title %}Lista de Alunos | Mentoria 360° - ADM{% endblock %}
+
+{% block navbar_title %}Lista de Alunos{% endblock %}
+
+{% block content %}
+<div class="space-y-4">
+
+  <!-- Barra de pesquisa -->
+  <div class="p-4 mb-6 sticky top-0 bg-[#101010] border-b border-[#2a2a2a] z-20">
+    <div class="flex flex-col sm:flex-row gap-3 items-center">
+      <div class="relative flex-1 w-full">
+        <i class="ph ph-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        <input id="pesquisa-aluno" type="text" placeholder="Buscar aluno..."
+          class="w-full pl-10 pr-4 py-2 bg-[#171717] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
+      </div>
+    </div>
+  </div>
+
+  {% for aluno in array_alunos %}
+  <div
+    class="card-aluno mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors cursor-pointer hover:border-[#535353]"
+    onclick="abrirModalDetalhes()">
+
+    <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+      <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+        <i class="ph-duotone ph-student text-2xl"></i>
+        <span>{{aluno.nomeAluno}}</span>
+      </div>
+
+      <div class="flex flex-col p-1 sm:flex-row gap-2">
+        <button
+          class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors"
+          onclick="event.stopPropagation(); abrirModalEditar({{aluno.id}}, '{{aluno.nomeAluno}}', '{% for p in aluno.produtos %}{{p.nomeProduto}}{% if not loop.last %}+{% endif %}{% endfor %}')">
+          <i class="ph ph-pencil-simple"></i> Editar
+        </button>
+        <button
+          class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors"
+          onclick="event.stopPropagation(); abrirModalDeletar({{aluno.id}}, '{{aluno.nomeAluno}}')">
+          <i class="ph ph-trash"></i> Deletar
+        </button>
+      </div>
+    </div>
+
+    <div class="p-4">
+      <div class="flex flex-col p-1 lg:flex-row gap-6">
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
+          <p class="text-sm font-medium">{{aluno.emailAluno}}</p>
+        </div>
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-identification-card"></i> CPF</p>
+          <p class="text-sm font-medium">{{aluno.CPFAluno}}</p>
+        </div>
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Mentoria</p>
+          <div class="flex gap-2">
+            {% if aluno.produtos %}
+            {% for produto in aluno.produtos %}
+            <span class="px-2 py-1 bg-[#e77c09] text-white text-sm font-semibold rounded-md">
+              {{ produto.nomeProduto }}
+            </span>
+            {% endfor %}
+            {% else %}
+            <span class="text-sm text-gray-400">Sem produtos</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rodapé do card -->
+    <div
+      class="rounded-b-lg px-2 py-2 bg-[#242424] border-t border-[#2a2a2a] flex flex-col sm:flex-row justify-baseline gap-10 items-center">
+      <div class="flex items-center gap-2">
+        <i class="ph ph-calendar text-[#f8ca54]"></i>
+        <span class="text-sm text-gray-300">Data da última reunião: <span class="font-semibold">01/12/2024</span></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <i class="ph ph-users text-[#f8ca54]"></i>
+        <span class="text-sm text-gray-300">Nº total de reuniões: <span class="font-semibold">12</span></span>
+      </div>
+    </div>
+
+  </div>
+
+  {% endfor %}
+
+</div>
+
+<!-- MODAL DE EDIÇÃO -->
+{% call criar_modal('modal-editar', 'Editar Aluno', 'max-w-md') %}
+<form id="modal-editar-form" class="space-y-4">
+  <div>
+    <label class="text-sm text-gray-300">Nome</label>
+    <input type="text" name="nome" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+  </div>
+  <div>
+    <label class="text-sm text-gray-300">Mentoria</label>
+    <select name="produto" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+      <option value="MPS">MPS</option>
+      <option value="DOP">DOP</option>
+      <option value="MPS+DOP">MPS + DOP</option>
+    </select>
+  </div>
+</form>
+{% endcall %}
+
+<!-- MODAL DE DETALHES -->
+{% call criar_modal('modal-detalhes', 'Detalhes do aluno', 'max-w-2xl') %}
+<div class="space-y-6">
+  <!-- Lista de Entregáveis -->
+  <div class="flex w-full max-h-100 overflow-scroll">
+    <div class="space-y-3 w-full">
+      <!-- Entregável 1 -->
+      <button onclick="abrirModalEntregavel('Logo', 'entregue', '2024-11-15')"
+        class="w-full py-2 px-4 bg-[#242424] rounded-lg border border-[#2a2a2a] hover:border-[#535353] transition-colors flex justify-between items-center group">
+        <div class="flex items-center gap-3">
+          <i class="ph ph-check-circle text-green-600 transition-colors"></i>
+
+          <div class="text-left">
+            <h4 class="font-medium text-white">Logo</h4>
+            <p class="text-sm text-green-600">Entregue em: <span class="font-semibold">15/11/2024</span></p>
+          </div>
+        </div>
+      </button>
+
+      <!-- Entregável 2 -->
+      <button onclick="abrirModalEntregavel('Site', 'pendente', '')"
+        class="w-full py-2 px-4 bg-[#242424] rounded-lg border border-[#2a2a2a] hover:border-[#535353] transition-colors flex justify-between items-center group">
+        <div class="flex items-center gap-3">
+          <i class="ph ph-minus-circle text-gray-400 transition-colors"></i>
+          <div class="text-left">
+            <h4 class="font-medium text-white">Site</h4>
+            <p class="text-sm text-gray-400">Pendente</p>
+          </div>
+        </div>
+      </button>
+
+      <button onclick="abrirModalEntregavel('logo 2', 'pendente', '')"
+        class="w-full py-2 px-4 bg-[#242424] rounded-lg border border-[#2a2a2a] hover:border-[#535353] transition-colors flex justify-between items-center group">
+        <div class="flex items-center gap-3">
+          <i class="ph ph-minus-circle text-gray-400 transition-colors"></i>
+          <div class="text-left">
+            <h4 class="font-medium text-white">logo 2</h4>
+            <p class="text-sm text-gray-400">Pendente</p>
+          </div>
+        </div>
+      </button>
+
+
+    </div>
+  </div>
+
+  <!-- Botão para adicionar reunião -->
+  <div class="pt-4 border-t border-[#2a2a2a]">
+    <button onclick="abrirModalNovaReuniao()"
+      class="w-full py-3 px-4 bg-[#f8ca55] hover:bg-[#d7ac3f] text-black font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
+      <i class="ph ph-calendar-plus"></i>
+      Adicionar Nova Reunião
+    </button>
+  </div>
+</div>
+{% endcall %}
+
+<!-- MODAL PARA EDITAR ENTREGÁVEL -->
+{% call criar_modal('modal-entregavel', 'Editar Entregavel', 'max-w-md') %}
+<form id="modal-entregavel-form" class="space-y-4">
+  <h3 class="text-lg font-semibold text-[#d59423] mb-4" id="entregavel-titulo">Editar Entregável</h3>
+
+  <div>
+    <label class="text-sm text-gray-300">Status</label>
+    <select id="entregavel-status" name="status"
+      class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+      <option value="pendente">Pendente</option>
+      <option value="entregue">Entregue</option>
+    </select>
+  </div>
+
+  <div id="entregavel-data-container" class="hidden">
+    <label class="text-sm text-gray-300">Data de Entrega</label>
+    <input type="date" id="entregavel-data" name="data_entrega"
+      class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+  </div>
+</form>
+{% endcall %}
+
+<!-- MODAL PARA ADICIONAR NOVA REUNIÃO -->
+{% call criar_modal('modal-nova-reuniao', 'Nova Reunião', 'max-w-md') %}
+<form id="modal-nova-reuniao-form" class="space-y-4">
+  <div>
+    <label class="text-sm text-gray-300">Data da Reunião</label>
+    <input type="date" name="data_reuniao" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+  </div>
+</form>
+{% endcall %}
+
+<!-- MODAL DE DELETAR -->
+{% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
+<div class="text-center py-4">
+  <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
+  <p class="text-gray-300 mb-2">Tem certeza que deseja excluir o aluno?</p>
+  <p class="text-lg font-semibold text-[#f8ca54]" id="aluno-deletar-nome"></p>
+  <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
+</div>
+{% endcall %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Variáveis globais
+  let alunoEditandoId = null;
+  let alunoDeletandoId = null;
+
+  let alunoDetalhesId = null;
+  let entregavelAtual = null;
+
+  // Função para abrir modal de detalhes
+  function abrirModalDetalhes(alunoId) {
+    alunoDetalhesId = alunoId;
+    abrirModal('modal-detalhes');
+  }
+
+  // Função para abrir modal de entregável
+  function abrirModalEntregavel(nomeEntregavel, status, data) {
+    entregavelAtual = nomeEntregavel;
+
+    // Atualizar título do modal
+    const tituloElement = document.getElementById('entregavel-titulo');
+    const statusSelect = document.getElementById('entregavel-status');
+    const dataContainer = document.getElementById('entregavel-data-container');
+    const dataInput = document.getElementById('entregavel-data');
+
+    if (tituloElement) {
+      tituloElement.textContent = `${nomeEntregavel}`;
+    }
+
+    if (statusSelect) {
+      statusSelect.value = status;
+
+      // Mostrar/ocultar campo de data baseado no status
+      if (status === 'entregue') {
+        dataContainer.classList.remove('hidden');
+        if (dataInput && data) {
+          dataInput.value = data;
+        }
+      } else {
+        dataContainer.classList.add('hidden');
+      }
+
+      // Adicionar listener para mudança de status
+      statusSelect.onchange = function () {
+        if (this.value === 'entregue') {
+          dataContainer.classList.remove('hidden');
+        } else {
+          dataContainer.classList.add('hidden');
+        }
+      };
+    }
+
+    abrirModal('modal-entregavel');
+  }
+
+  // Função para abrir modal de nova reunião
+  function abrirModalNovaReuniao() {
+    // Pode marcar qualquer data
+    abrirModal('modal-nova-reuniao');
+  }
+
+  // Configurar formulário de entregável
+  document.addEventListener('DOMContentLoaded', function () {
+    const formEntregavel = document.getElementById('modal-entregavel-form');
+    if (formEntregavel) {
+      formEntregavel.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const statusSelect = document.getElementById('entregavel-status');
+        const dataInput = document.getElementById('entregavel-data');
+
+        const payload = {
+          alunoId: alunoDetalhesId,
+          entregavel: entregavelAtual,
+          status: statusSelect ? statusSelect.value : 'pendente',
+          data_entrega: (statusSelect && statusSelect.value === 'entregue' && dataInput) ? dataInput.value : ''
+        };
+
+        try {
+          console.log('Salvando entregável:', payload);
+          fecharModal('modal-entregavel');
+        } catch (error) {
+          console.error('Erro:', error);
+          alert('Erro ao salvar');
+        }
+      });
+    }
+
+    // Configurar formulário de nova reunião
+    const formNovaReuniao = document.getElementById('modal-nova-reuniao-form');
+    if (formNovaReuniao) {
+      formNovaReuniao.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const dataReuniao = formData.get('data_reuniao');
+
+        const payload = {
+          alunoId: alunoDetalhesId,
+          data_reuniao: dataReuniao
+        };
+
+        try {
+          console.log('Agendando reunião:', payload);
+          alert('Reunião adicionada com sucesso!');
+          fecharModal('modal-nova-reuniao');
+        } catch (error) {
+          console.error('Erro:', error);
+          alert('Erro ao adicionar reunião');
+        }
+      });
+    }
+  });
+
+  // Função para abrir modal de detalhes (mantém o conteúdo vazio como pedido)
+  function abrirModalDetalhes() {
+    abrirModal('modal-detalhes');
+  }
+
+  // Função para abrir modal de edição
+  function abrirModalEditar(id, nome, produto) {
+    alunoEditandoId = id;
+
+    // Preencher o formulário
+    const form = document.getElementById('modal-editar-form');
+    if (form) {
+      form.nome.value = nome;
+      // Corrigir valor se for múltiplos produtos
+      const produtoValue = produto.includes('+') ? 'MPS+DOP' : produto;
+      form.produto.value = produtoValue;
+    }
+
+    abrirModal('modal-editar');
+  }
+
+  // Função para abrir modal de deletar
+  function abrirModalDeletar(id, nome) {
+    alunoDeletandoId = id;
+
+
+    const nomeElement = document.getElementById('aluno-deletar-nome');
+    if (nomeElement) {
+      nomeElement.textContent = nome;
+    }
+
+    abrirModal('modal-deletar');
+  }
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const editForm = document.getElementById('modal-editar-form');
+    if (editForm) {
+      editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const payload = {
+          nome: editForm.nome.value,
+          produto: editForm.produto.value
+        };
+
+        const resp = await fetch(`/admin/alunos/editar/${alunoEditandoId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (resp.ok) {
+          location.reload();
+        } else {
+          console.error("Erro ao editar aluno");
+        }
+
+        fecharModal('modal-editar');
+      });
+    }
+  });
+
+
+  window.acaoModal = async function (modalId) {
+    if (modalId === 'modal-deletar' && alunoDeletandoId) {
+      try {
+        const resp = await fetch(`/admin/alunos/deletar/${alunoDeletandoId}`, {
+          method: "DELETE"
+        });
+
+        if (resp.ok) {
+          const result = await resp.json();
+          fecharModal('modal-deletar');
+          location.reload();
+        } else {
+          alert("Erro ao deletar aluno.");
+          fecharModal('modal-deletar');
+        }
+      } catch (error) {
+        console.error("Erro:", error);
+        alert("Erro ao conectar com o servidor.");
+        fecharModal('modal-deletar');
+      }
+    } else {
+      fecharModal(modalId);
+    }
+  };
+
+</script>
+{% endblock %}

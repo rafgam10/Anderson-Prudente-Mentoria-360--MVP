@@ -1,0 +1,68 @@
+<!-- components/modal.html -->
+<!-- Macro para criar modais -->
+{% macro criar_modal(modal_id, titulo, tamanho='max-w-md', mostrar_fechar=true) %}
+<div id="{{ modal_id }}" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50">
+  <div class="bg-[#171717] w-full {{ tamanho }} rounded-lg p-6 m-4">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-bold text-[#f8ca54]">{{ titulo }}</h2>
+      {% if mostrar_fechar %}
+      <button onclick="fecharModal('{{ modal_id }}')" class="text-gray-400 hover:text-white">
+        <i class="ph ph-x text-xl"></i>
+      </button>
+      {% endif %}
+    </div>
+
+    <!-- Conteúdo do modal (será injetado) -->
+    <div class="modal-conteudo">
+      {{ caller() }}
+    </div>
+
+    <!-- Footer fixo com botões -->
+    <div class="mt-6 flex justify-end gap-2">
+      <button type="button" onclick="fecharModal('{{ modal_id }}')"
+        class="px-4 py-2 rounded bg-[#2c456c] text-white hover:bg-[#281d5f] transition-colors">
+        Cancelar
+      </button>
+      <button type="submit" form="{{ modal_id }}-form"
+        class="px-4 py-2 rounded bg-[#e28813] text-white hover:bg-[#c4610a] transition-colors">
+        Salvar
+      </button>
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+<!-- Macro para modal sem form (apenas botões de ação) -->
+{% macro criar_modal_acao(modal_id, titulo, tamanho='max-w-md', mostrar_fechar=true, texto_botao_acao='Salvar') %}
+<div id="{{ modal_id }}" class="fixed inset-0 bg-[#00000084] hidden flex items-center justify-center z-50">
+  <div class="bg-[#171717] w-full {{ tamanho }} rounded-lg p-6 m-4">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-bold text-[#f8ca54]">{{ titulo }}</h2>
+      {% if mostrar_fechar %}
+      <button onclick="fecharModal('{{ modal_id }}')" class="text-gray-400 hover:text-white">
+        <i class="ph ph-x text-xl"></i>
+      </button>
+      {% endif %}
+    </div>
+
+    <!-- Conteúdo do modal (será injetado) -->
+    <div class="modal-conteudo">
+      {{ caller() }}
+    </div>
+
+    <!-- Footer fixo com botões -->
+    <div class="mt-6 flex justify-end gap-2">
+      <button type="button" onclick="fecharModal('{{ modal_id }}')"
+        class="px-4 py-2 rounded bg-[#2c456c] text-white hover:bg-[#281d5f] transition-colors">
+        Cancelar
+      </button>
+      <button type="button" onclick="acaoModal('{{ modal_id }}')"
+        class="px-4 py-2 rounded bg-[#e28813] text-white hover:bg-[#c4610a] transition-colors">
+        {{ texto_botao_acao }}
+      </button>
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+<script src="{{ url_for('static', filename='js/funcoesModal.js') }}"></script>

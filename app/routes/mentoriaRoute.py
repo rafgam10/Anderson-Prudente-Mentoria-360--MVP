@@ -16,8 +16,8 @@ mentoria_bp = Blueprint("mentoria", __name__, url_prefix="/mentorias")
 
 @mentoria_bp.route("/cadastrar-mentoria", methods=["GET", "POST"])
 def cadastrar_mentorias():
-    return render_template("cadastroMentoria.html",)
+    return render_template("telasAdmin/cadastroMentoria.html",)
 
 @mentoria_bp.route("/listar-mentoria", methods=["GET"])
 def listar_mentorias():
-    return render_template("listaMentoria.html",)
+    return render_template("telasAdmin/listaMentoria.html",)

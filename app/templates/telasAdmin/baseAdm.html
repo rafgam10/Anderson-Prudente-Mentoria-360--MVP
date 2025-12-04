@@ -1,4 +1,4 @@
-{% import "components.html" as components %}
+{% import "components/icone.html" as icone %}
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -23,7 +23,7 @@
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
             <a href="{{ url_for('mentoria.cadastrar_mentorias') }}"
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors {% if request.endpoint == 'mentoria.cadastrar_mentorias' %} bg-[#f8ca54] text-[#101010] font-semibold {% else %} hover:bg-[#2a2a2a] text-gray-300 fill-gray-300 {% endif %}">
-                {{ components.iconMentorias() }}
+                {{ icone.iconMentorias() }}
                 Cadastrar Mentorias
             </a>
             <a href="{{ url_for('admin.cadastro_aluno') }}"
@@ -111,6 +111,9 @@
         </main>
     </div>
 
+    
+    <script src="{{ url_for('static', filename='js/funcoesModal.js') }}"></script>
+    {% block scripts %}{% endblock %}
     <!-- Script ai de ajudar a sidebar -->
     <script>
         const sidebar = document.getElementById("sidebar");

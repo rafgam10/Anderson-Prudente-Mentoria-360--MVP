@@ -1,5 +1,5 @@
-{% import "components.html" as components %}
-{% extends 'baseAdm.html' %}
+{% import "components/icone.html" as icone %}
+{% extends "telasAdmin/baseAdm.html" %}
 
 {% block title %}
 Criar Mentoria | Mentoria 360° - ADM
@@ -18,7 +18,7 @@ Cadastro de Mentoria
       <label class="block text-white font-medium mb-2">Nome da Mentoria</label>
       <div class="relative">
         <input type="text" name="nomeMentoria" placeholder="Digite o nome da mentoria"
-          class="w-full text-base sm:text-lg pl-4 pr-10 py-3 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]" />
+          class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
         <i class="ph ph-book-bookmark absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
       </div>
     </div>
@@ -31,7 +31,7 @@ Cadastro de Mentoria
       <div class="flex gap-3 mb-4">
         <div class="relative flex-1">
           <select id="selectEntregavel"
-            class="w-full text-base sm:text-lg pl-4 pr-10 py-3 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54] appearance-none">
+            class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54] appearance-none">
             <option value="" disabled selected>Selecione um entregável existente</option>
             <option value="projeto_final">Projeto Final</option>
             <option value="apresentacao">Apresentação</option>
@@ -44,7 +44,7 @@ Cadastro de Mentoria
         </div>
 
         <button type="button" id="btnAdicionarEntregavel"
-          class="bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white font-medium py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 whitespace-nowrap">
+          class="bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white font-medium py-2 px-4 rounded-md transition-colors flex items-center justify-center gap-2 whitespace-nowrap">
           <i class="ph ph-plus"></i>
           Adicionar
         </button>
@@ -52,14 +52,14 @@ Cadastro de Mentoria
 
       <!-- Botão para Criar Novo Entregável -->
       <button type="button" id="btnNovoEntregavel"
-        class="w-full bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white font-medium py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 mb-6">
+        class="w-full bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white font-medium py-2 px-4 rounded-md transition-colors flex items-center justify-center gap-2 mb-6">
         <i class="ph ph-plus-circle"></i>
         Criar Novo Entregável
       </button>
 
       <!-- Lista de Entregáveis Adicionados -->
       <div class="border border-[#2a2a2a] rounded-lg overflow-hidden">
-        <div class="bg-[#2a2a2a] px-4 py-3">
+        <div class="bg-[#2a2a2a] px-4 py-2">
           <h4 class="text-white font-medium">Entregáveis Adicionados</h4>
         </div>
 
@@ -72,7 +72,7 @@ Cadastro de Mentoria
 
     <button type="submit"
       class="w-full mt-6 bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-base sm:text-lg">
-      {{ components.iconMentorias() }}
+      {{ icone.iconMentorias() }}
       Criar Mentoria
     </button>
   </form>
@@ -113,7 +113,7 @@ Cadastro de Mentoria
 <!-- Template para Entregável -->
 <template id="templateEntregavel">
   <div
-    class="entregavel-item group flex items-center justify-between p-3 border border-[#2a2a2a] rounded-lg mb-2 bg-[#101010] hover:bg-[#1a1a1a] transition-colors">
+    class="entregavel-item group flex items-center justify-between p-2 border border-[#2a2a2a] rounded-lg mb-2 bg-[#101010] hover:bg-[#1a1a1a] transition-colors">
     <div class="flex items-center gap-3">
       <button type="button" class="mover cursor-move text-gray-400 hover:text-white"><i
           class="ph ph-dots-six-vertical text-lg"></i></button>

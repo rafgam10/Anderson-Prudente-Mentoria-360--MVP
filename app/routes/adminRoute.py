@@ -25,7 +25,7 @@ admin_bp = Blueprint("admin", __name__, url_prefix='/admin')
 #### Página Admin Principal
 @admin_bp.route('/home', methods=["GET"])
 def index_admin():
-    return render_template('homeAdmin.html')
+    return render_template('telasAdmin/homeAdmin.html')
 
 ###########################################################
 #### Gerenciamento de Administradores do Painel Admin.#####
@@ -34,7 +34,7 @@ def index_admin():
 @admin_bp.route('/admins/lista', methods=["GET"])
 def lista_admins():
     array_admin = list(Administrador.query.all())
-    return render_template('listaAdmins.html', lista_admin=array_admin)
+    return render_template('telasAdmin/listaAdmins.html', lista_admin=array_admin)
 
 @admin_bp.route('/admins/cadastro', methods=["GET","POST"])
 def cadastro_admins():
@@ -63,7 +63,7 @@ def cadastro_admins():
         return redirect(url_for('admin.cadastro_admins'))
     
     # GET
-    return render_template('cadastroAdmins.html')
+    return render_template('telasAdmin/cadastroAdmins.html')
 
 
 @admin_bp.route('/admins/editar/<int:id>', methods=["PATCH"])
@@ -100,10 +100,10 @@ def deletar_admin(id:int):
         db.session.delete(admin)
         db.session.commit()
         print("Admin Removido com Sucesso no DB!")
-        return jsonify({"message": "Administrador deletado com sucesso!"}), 200
+        
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": f"Erro ao deletar administrador: {str(e)}"}), 500
+        
         
 
 #################################################
@@ -113,7 +113,7 @@ def deletar_admin(id:int):
 @admin_bp.route('/alunos/lista', methods=["GET"])
 def lista_alunos():
     array_alunos = Aluno.query.all()
-    return render_template('listaAlunos.html', array_alunos=array_alunos)
+    return render_template('telasAdmin/listaAlunos.html', array_alunos=array_alunos)
 
 
 @admin_bp.route('/alunos/cadastro', methods=["GET","POST"])
@@ -156,7 +156,7 @@ def cadastro_aluno():
         flash(f"Aluno {inputNomeAluno} cadastrado com sucesso!", "success")
         return redirect(url_for('admin.cadastro_aluno'))
     
-    return render_template('cadastroAlunos.html')
+    return render_template('telasAdmin/cadastroAlunos.html')
 
 
 @admin_bp.route('/alunos/editar/<int:id>', methods=["PATCH"])
@@ -200,7 +200,7 @@ def deletar_aluno(id:int) -> None:
 @admin_bp.route("/eventos/listar", methods=["GET"])
 def listar_eventos():
     eventos = PalestrasEventos.query.all()
-    return render_template('listaEventos.html', eventos=eventos)
+    return render_template('telasAdmin/listaEventos.html', eventos=eventos)
 
 
 @admin_bp.route("/eventos/cadastrar", methods=["GET","POST"])
@@ -240,7 +240,7 @@ def cadastrar_evento():
             flash(f"Erro ao cadastrar evento: {str(e)}", "error")
             return redirect(url_for('admin.cadastrar_evento'))
     
-    return render_template("cadastroEventos.html")
+    return render_template("telasAdmin/cadastroEventos.html")
 
 @admin_bp.route("/eventos/editar/<int:id>", methods=["POST"])
 def editar_evento(id:int) -> None:
@@ -286,7 +286,7 @@ def deletar_evento(id:int) -> None:
 def listar_atividades():
     atividades = Atividade.query.all()
     fases = Fase.query.all()
-    return render_template('listaAtividades.html', atividades=atividades, fases=fases)
+    return render_template('telasAdmin/listaAtividades.html', atividades=atividades, fases=fases)
 
 
 @admin_bp.route("/atividades/cadastrar", methods=["GET", "POST"])
@@ -334,7 +334,7 @@ def cadastrar_atividades():
     # GET - para preencher o select de fases dinamicamente
     fases = Fase.query.all()
     print(f"{fases}")
-    return render_template("cadastroAtividade.html", fases=fases)
+    return render_template("telasAdmin/cadastroAtividade.html", fases=fases)
 
 @admin_bp.route("/atividades/editar/<int:id>", methods=["POST"])
 def editar_atividade(id: int):

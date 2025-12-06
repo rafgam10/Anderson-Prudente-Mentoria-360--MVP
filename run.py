@@ -32,8 +32,6 @@ def load_user(user_id):
 for bp in all_blueprints:
     app.register_blueprint(bp)
 
-with app.app_context():
-    db.create_all()
 
 
 @app.route("/")

@@ -70,6 +70,7 @@ def login_page_admin():
             login_user(user)
             print("Acesso ao Admin")
             flash("Login realizado como Admin!", "success")
+            session["nomeAdmin"] = user.nomeAdmin
             return redirect(url_for("admin.index_admin"))
         
         elif user and check_password_hash(user.senhaAdmin, inputSenhaCpfAluno):

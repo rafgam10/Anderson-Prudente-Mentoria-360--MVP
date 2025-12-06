@@ -4,6 +4,7 @@ from flask import (
     redirect,
     url_for,
     flash,
+    session,
     jsonify,
     request
 )

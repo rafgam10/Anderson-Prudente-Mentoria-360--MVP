@@ -75,7 +75,7 @@
         <div class="p-4 border-t border-[#2a2a2a]">
             <div class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors text-[#f8ca54]">
 
-                Olá, NomeAdmin!
+                Olá, {{session.nomeAdmin}}!
             </div>
             <a href="{{ url_for('login.logout') }}"
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-colors hover:bg-[#2a2a2a] text-red-400">

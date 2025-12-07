@@ -32,7 +32,7 @@ def load_user(user_id):
 for bp in all_blueprints:
     app.register_blueprint(bp)
 
-
+from app.models import *
 
 @app.route("/")
 def index():

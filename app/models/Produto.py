@@ -13,5 +13,6 @@ class Produto(db.Model):
         back_populates="produtos"
     )
     
+    
     def __repr__(self):
         return f"Produto {self.id} - {self.nomeProduto}"

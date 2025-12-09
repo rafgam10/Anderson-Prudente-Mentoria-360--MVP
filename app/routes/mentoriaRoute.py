@@ -54,7 +54,7 @@ def cadastrar_mentorias():
         db.session.commit()  # commit único
 
         flash("Mentoria criada com sucesso!", "success")
-        return redirect(url_for("mentoria.listar_mentorias"))
+        return redirect(url_for("mentoria.cadastrar_mentorias"))
     
     return render_template("telasAdmin/cadastroMentoria.html")
 

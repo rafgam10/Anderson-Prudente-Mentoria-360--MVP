@@ -16,3 +16,9 @@ class Mentoria(db.Model):
         back_populates="mentoria",
         cascade="all, delete-orphan"
     )
+    
+    
+    def __init__(self, nome, descricao, data_create):
+        self.nome = nome
+        self.descricao = descricao
+        self.data_create = data_create

@@ -13,7 +13,10 @@ class Entregavel(db.Model):
     
     nome = db.Column(db.String(255), nullable=False)
     
-    
-    
-    
+    # Relações
     mentoria = db.relationship("Mentoria", back_populates="entregaveis")
+
+    
+    def __init__(self, id_mentoria, nome):
+        self.id_mentoria = id_mentoria
+        self.nome = nome

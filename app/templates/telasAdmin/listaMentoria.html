@@ -22,101 +22,46 @@ Lista de Mentorias | Mentoria 360° - ADM
     </div>
   </div>
 
-  <!-- Mentoria 1 -->
-  <div class="card-mentoria mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
-    <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-      <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-        <i class="ph-duotone ph-book-bookmark text-2xl"></i>
-        <span>DOP-10</span>
-      </div>
-      <div class="flex flex-col p-1 sm:flex-row gap-2">
-        <button onclick="abrirModalEditar(1, 'Mentoria de Desenvolvimento Front-end')"
-          class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
-          <i class="ph ph-pencil-simple"></i> Editar
-        </button>
-        <button onclick="abrirModalDeletar(1, 'Mentoria de Desenvolvimento Front-end')"
-          class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
-          <i class="ph ph-trash"></i> Deletar
-        </button>
-      </div>
-    </div>
-    <div class="p-4">
-      <div class="flex flex-col p-1 lg:flex-row gap-6">
-        <div class="flex-1 space-y-2">
-          <p class="text-sm text-[#f8ca54]"><i class="ph ph-list-checks"></i> Quantidade de Entregáveis</p>
-          <p class="text-sm font-medium">3 entregáveis</p>
-        </div>
-        <div class="flex-1 space-y-2">
-          <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar"></i> Data de Criação</p>
-          <p class="text-sm font-medium">15/03/2024</p>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Mentoria 2 -->
-  <div class="card-mentoria mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
-    <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-      <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-        <i class="ph-duotone ph-book-bookmark text-2xl"></i>
-        <span>MPS-5</span>
-      </div>
-      <div class="flex flex-col p-1 sm:flex-row gap-2">
-        <button onclick="abrirModalEditar(2, 'Mentoria de Gestão de Projetos')"
-          class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
-          <i class="ph ph-pencil-simple"></i> Editar
-        </button>
-        <button onclick="abrirModalDeletar(2, 'Mentoria de Gestão de Projetos')"
-          class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
-          <i class="ph ph-trash"></i> Deletar
-        </button>
-      </div>
-    </div>
-    <div class="p-4">
-      <div class="flex flex-col p-1 lg:flex-row gap-6">
-        <div class="flex-1 space-y-2">
-          <p class="text-sm text-[#f8ca54]"><i class="ph ph-list-checks"></i> Quantidade de Entregáveis</p>
-          <p class="text-sm font-medium">4 entregáveis</p>
-        </div>
-        <div class="flex-1 space-y-2">
-          <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar"></i> Data de Criação</p>
-          <p class="text-sm font-medium">10/02/2024</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% for mentoria in lista_mentoria %}
 
-  <!-- Mentoria 3 -->
-  <div class="card-mentoria mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
-    <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-      <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-        <i class="ph-duotone ph-book-bookmark text-2xl"></i>
-        <span>DOP-12</span>
-      </div>
-      <div class="flex flex-col p-1 sm:flex-row gap-2">
-        <button onclick="abrirModalEditar(3, 'Mentoria de Data Science')"
-          class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
-          <i class="ph ph-pencil-simple"></i> Editar
-        </button>
-        <button onclick="abrirModalDeletar(3, 'Mentoria de Data Science')"
-          class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
-          <i class="ph ph-trash"></i> Deletar
-        </button>
-      </div>
-    </div>
-    <div class="p-4">
-      <div class="flex flex-col p-1 lg:flex-row gap-6">
-        <div class="flex-1 space-y-2">
-          <p class="text-sm text-[#f8ca54]"><i class="ph ph-list-checks"></i> Quantidade de Entregáveis</p>
-          <p class="text-sm font-medium">2 entregáveis</p>
+    <!-- Mentoria 1 -->
+    <div class="card-mentoria mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
+      <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+        <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+          <i class="ph-duotone ph-book-bookmark text-2xl"></i>
+          <span>{{mentoria.nome}}</span>
         </div>
-        <div class="flex-1 space-y-2">
-          <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar"></i> Data de Criação</p>
-          <p class="text-sm font-medium">05/04/2024</p>
+        <div class="flex flex-col p-1 sm:flex-row gap-2">
+          <button onclick="abrirModalEditar(1, 'Mentoria de Desenvolvimento Front-end')"
+            class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+            <i class="ph ph-pencil-simple"></i> Editar
+          </button>
+          <button onclick="abrirModalDeletar(1, 'Mentoria de Desenvolvimento Front-end')"
+            class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+            <i class="ph ph-trash"></i> Deletar
+          </button>
         </div>
       </div>
+      <div class="p-4">
+        <div class="flex flex-col p-1 lg:flex-row gap-6">
+          <div class="flex-1 space-y-2">
+            <p class="text-sm text-[#f8ca54]"><i class="ph ph-list-checks"></i> Quantidade de Entregáveis</p>
+            <p class="text-sm font-medium">{{ entregaveis_count[mentoria.id] }} entregáveis</p>
+          </div>
+          <div class="flex-1 space-y-2">
+            <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar"></i> Data de Criação</p>
+            <p class="text-sm font-medium">{{mentoria.data_create.strftime('%d/%m/%Y')}}</p>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+
+  {% endfor %}
+
+
+
+
 
 </div>
 

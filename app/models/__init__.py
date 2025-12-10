@@ -12,3 +12,4 @@ from app.models.Atividade import Atividade
 
 from .Mentoria_model import Mentoria
 from .Entregavel_model import Entregavel
+from .Reuniao_model import Reuniao

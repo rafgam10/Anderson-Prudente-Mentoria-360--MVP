@@ -16,6 +16,7 @@ class Mentoria(db.Model):
         back_populates="mentoria",
         cascade="all, delete-orphan"
     )
+    reunioes = db.relationship("Reuniao", back_populates="mentoria")
     
     
     def __init__(self, nome, descricao, data_create):

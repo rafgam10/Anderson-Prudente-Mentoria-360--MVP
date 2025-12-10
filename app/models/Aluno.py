@@ -13,5 +13,7 @@ class Aluno(db.Model, UserMixin):
     
     produtos = db.relationship("Produto", secondary="usuarios_produtos", back_populates="alunos")
     
+    reunioes = db.relationship("Reuniao", back_populates="aluno")
+    
     def __repr__(self):
         return f"<Aluno {self.nomeAluno}>"

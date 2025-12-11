@@ -1,5 +1,6 @@
 from flask_login import UserMixin
 from app.models import db
+from app.models.associacoes import alunos_mentorias
 
 class Aluno(db.Model, UserMixin):
     
@@ -13,6 +14,7 @@ class Aluno(db.Model, UserMixin):
     
     produtos = db.relationship("Produto", secondary="usuarios_produtos", back_populates="alunos")
     reunioes = db.relationship("Reuniao", back_populates="aluno")
+    mentorias = db.relationship("Mentoria", secondary=alunos_mentorias, back_populates="alunos")
     
     def __repr__(self):
         return f"<Aluno {self.nomeAluno}>"

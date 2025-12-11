@@ -43,12 +43,14 @@
         <div class="flex flex-row items-center sm:justify-normal justify-center gap-3 mt-6">
             <label class="text-white font-bold">Mentorias:</label>
             <div class="relative flex-1">
-                <select id="selectEntregavel"
+                <select name="select_mentoria" id="selectEntregavel"
                     class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54] appearance-none">
                     <option value="" disabled selected>Selecione uma mentoria</option>
-                    <option value="projeto_final">MPS</option>
-                    <option value="apresentacao">DOP</option>
-                    <option value="apresentacao">DOP-10</option>
+                    
+                    {% for mentoria in mentorias %}
+                        <option value="{{mentoria.id}}">{{mentoria.nome}}</option>
+                    {% endfor %}
+                    
                 </select>
                 <i
                     class="ph ph-caret-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>

@@ -1,4 +1,5 @@
 from app.models import db
+from app.models.associacoes import alunos_mentorias
 
 class Mentoria(db.Model):
     
@@ -18,6 +19,11 @@ class Mentoria(db.Model):
     )
     reunioes = db.relationship("Reuniao", back_populates="mentoria")
     
+    alunos = db.relationship(
+        "Aluno",
+        secondary=alunos_mentorias,
+        back_populates="mentorias"
+    )
     
     def __init__(self, nome, descricao, data_create):
         self.nome = nome

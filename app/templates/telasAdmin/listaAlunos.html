@@ -52,24 +52,30 @@
           <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
           <p class="text-sm font-medium">{{aluno.emailAluno}}</p>
         </div>
+
         <div class="flex-1 space-y-2">
           <p class="text-sm text-[#f8ca54]"><i class="ph ph-identification-card"></i> CPF</p>
           <p class="text-sm font-medium">{{aluno.CPFAluno}}</p>
         </div>
+
         <div class="flex-1 space-y-2">
           <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Mentoria</p>
           <div class="flex gap-2">
-            {% if aluno.produtos %}
-            {% for produto in aluno.produtos %}
-            <span class="px-2 py-1 bg-[#e77c09] text-white text-sm font-semibold rounded-md">
-              {{ produto.nomeProduto }}
-            </span>
-            {% endfor %}
+            {% if aluno.mentorias %}
+              {% for mentoria in aluno.mentorias %}
+          
+                <span class="px-2 py-1 bg-[#e77c09] text-white text-sm font-semibold rounded-md">
+                  {{ mentoria.nome }}
+                </span>
+              {% endfor %}
+              
             {% else %}
-            <span class="text-sm text-gray-400">Sem produtos</span>
+              <span class="text-sm text-gray-400">Sem produtos</span>
             {% endif %}
+      
           </div>
         </div>
+
       </div>
     </div>
 
@@ -201,12 +207,12 @@
 
 <!-- MODAL DE DELETAR -->
 {% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
-<div class="text-center py-4">
-  <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
-  <p class="text-gray-300 mb-2">Tem certeza que deseja excluir o aluno?</p>
-  <p class="text-lg font-semibold text-[#f8ca54]" id="aluno-deletar-nome"></p>
-  <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
-</div>
+  <div class="text-center py-4">
+    <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
+    <p class="text-gray-300 mb-2">Tem certeza que deseja excluir o aluno?</p>
+    <p class="text-lg font-semibold text-[#f8ca54]" id="aluno-deletar-nome"></p>
+    <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
+  </div>
 {% endcall %}
 {% endblock %}
 

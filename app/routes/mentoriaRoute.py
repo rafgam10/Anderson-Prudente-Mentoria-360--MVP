@@ -76,3 +76,36 @@ def listar_mentorias():
         lista_mentoria=lista_mentoria,
         entregaveis_count=entregaveis_count
     )
+
+
+@mentoria_bp.route("/editar-mentoria/<int:id>", methods=["PUT"])
+def editar_mentoria(id: int):
+    data = request.get_json()
+    novo_nome = data.get("nomeMentoria")
+
+    mentoria = Mentoria.query.get(id)
+
+    if not mentoria:
+        return jsonify({"error": "Mentoria não encontrada"}), 404
+
+    mentoria.nome = novo_nome
+    db.session.commit()
+
+    return jsonify({"message": "Mentoria atualizada com sucesso!"}), 200
+
+
+
+@mentoria_bp.route("/deletar-mentoria/<int:id>", methods=["DELETE"])
+def deletar_mentoria(id: int):
+    mentoria = Mentoria.query.get(id)
+
+    if not mentoria:
+        return jsonify({"error": "Mentoria não encontrada"}), 404
+
+    db.session.delete(mentoria)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Mentoria deletada com sucesso!",
+        "id": id
+    }), 200

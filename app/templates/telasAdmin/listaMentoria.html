@@ -33,11 +33,11 @@ Lista de Mentorias | Mentoria 360° - ADM
           <span>{{mentoria.nome}}</span>
         </div>
         <div class="flex flex-col p-1 sm:flex-row gap-2">
-          <button onclick="abrirModalEditar(1, 'Mentoria de Desenvolvimento Front-end')"
+          <button onclick="abrirModalEditar({{mentoria.id}}, '{{mentoria.nome}}')"
             class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
             <i class="ph ph-pencil-simple"></i> Editar
           </button>
-          <button onclick="abrirModalDeletar(1, 'Mentoria de Desenvolvimento Front-end')"
+          <button onclick="abrirModalDeletar({{mentoria.id}}, '{{mentoria.nome}}')"
             class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
             <i class="ph ph-trash"></i> Deletar
           </button>
@@ -67,109 +67,140 @@ Lista de Mentorias | Mentoria 360° - ADM
 
 <!-- MODAL DE EDIÇÃO -->
 {% call criar_modal('modal-editar', 'Editar Mentoria', 'max-w-md') %}
-<form id="modal-editar-form" class="space-y-4">
-  <div>
-    <label class="text-sm text-gray-300">Nome da Mentoria</label>
-    <input type="text" name="nomeMentoria" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-  </div>
-</form>
+  <form id="modal-editar-form" class="space-y-4">
+    <div>
+      <label class="text-sm text-gray-300">Nome da Mentoria</label>
+      <input type="text" name="nomeMentoria" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+    </div>
+  </form>
 {% endcall %}
 
-<!-- MODAL DE DELETAR -->
-{% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
-<div class="text-center py-4">
-  <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
-  <p class="text-gray-300 mb-2">Tem certeza que deseja excluir a mentoria?</p>
-  <p class="text-lg font-semibold text-[#f8ca54]" id="mentoria-deletar-nome"></p>
-  <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
-</div>
-{% endcall %}
+  <!-- MODAL DE DELETAR -->
+  {% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
+    <div class="text-center py-4">
+      <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
+      <p class="text-gray-300 mb-2">Tem certeza que deseja excluir a mentoria?</p>
+      <p class="text-lg font-semibold text-[#f8ca54]" id="mentoria-deletar-nome"></p>
+      <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
+    </div>
+  {% endcall %}
 {% endblock %}
 
 {% block scripts %}
+
 <script>
-  let mentoriaEditandoId = null;
-  let mentoriaDeletandoId = null;
+    let mentoriaEditandoId = null;
+    let mentoriaDeletandoId = null;
 
-  // Função para abrir modal de edição
-  function abrirModalEditar(id, nome) {
-    mentoriaEditandoId = id;
+    /*******************************
+     * 🔵 ABRIR MODAL DE EDIÇÃO
+     *******************************/
+    function abrirModalEditar(id, nome) {
+        mentoriaEditandoId = id;
 
-    // Preencher o formulário
-    const form = document.getElementById('modal-editar-form');
-    if (form) {
-      form.nomeMentoria.value = nome;
+        const form = document.getElementById("modal-editar-form");
+        form.nomeMentoria.value = nome;
+
+        abrirModal("modal-editar");
     }
 
-    abrirModal('modal-editar');
-  }
-
-  // Função para abrir modal de deletar
-  function abrirModalDeletar(id, nome) {
-    mentoriaDeletandoId = id;
-
-    const nomeElement = document.getElementById('mentoria-deletar-nome');
-    if (nomeElement) {
-      nomeElement.textContent = nome;
-    }
-
-    abrirModal('modal-deletar');
-  }
-
-  // Configurar formulário de edição
-  document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     const editForm = document.getElementById('modal-editar-form');
     if (editForm) {
       editForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const payload = {
-          nomeMentoria: editForm.nomeMentoria.value
-        };
+        editarMentoria();
 
-        console.log('Editando mentoria:', payload);
+      
+       });
+      } 
+    });
 
-        setTimeout(() => {
-          alert(`Mentoria "${payload.nomeMentoria}" editada com sucesso!`);
-          fecharModal('modal-editar');
-          // location.reload();
-        }, 500);
-      });
+    /*******************************
+     * 🔴 ABRIR MODAL DE DELETAR
+     *******************************/
+    function abrirModalDeletar(id, nome) {
+        mentoriaDeletandoId = id;
+        document.getElementById("mentoria-deletar-nome").textContent = nome;
+        abrirModal("modal-deletar");
     }
 
-    // Filtro de pesquisa
-    const pesquisaInput = document.getElementById('pesquisa-mentoria');
-    if (pesquisaInput) {
-      pesquisaInput.addEventListener('input', function () {
-        const termo = this.value.toLowerCase();
-        const cards = document.querySelectorAll('.card-mentoria');
+    /*******************************
+     * 🔵 FUNÇÃO PARA EDITAR MENTORIA (PUT)
+     *******************************/
+    async function editarMentoria() {
+        const novoNome = document.querySelector("input[name='nomeMentoria']").value;
 
-        cards.forEach(card => {
-          const titulo = card.querySelector('span').textContent.toLowerCase();
-          if (titulo.includes(termo)) {
-            card.style.display = 'block';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      });
+        const payload = { nomeMentoria: novoNome };
+
+        try {
+            const response = await fetch(`/mentorias/editar-mentoria/${mentoriaEditandoId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                alert("Erro: " + (result.error || "Erro desconhecido"));
+                return;
+            }
+
+            alert(result.message);
+            fecharModal("modal-editar");
+            location.reload();
+
+        } catch (err) {
+            alert("Erro ao editar mentoria: " + err.message);
+        }
     }
-  });
 
-  window.acaoModal = async function (modalId) {
-    if (modalId === 'modal-deletar' && mentoriaDeletandoId) {
+    /*******************************
+     * 🔴 FUNÇÃO PARA DELETAR MENTORIA (DELETE)
+     *******************************/
+    async function confirmarDeletar() {
+        try {
+            const response = await fetch(`/mentorias/deletar-mentoria/${mentoriaDeletandoId}`, {
+                method: "DELETE"
+            });
 
-      console.log(`Deletando mentoria ${mentoriaDeletandoId}`);
+            const result = await response.json();
 
-      setTimeout(() => {
-        alert(`Mentoria deletada com sucesso!`);
-        fecharModal('modal-deletar');
+            if (!response.ok) {
+                alert("Erro: " + (result.error || "Erro desconhecido"));
+                return;
+            }
 
-      }, 500);
-    } else {
-      fecharModal(modalId);
+            alert(result.message);
+            fecharModal("modal-deletar");
+            location.reload();
+
+        } catch (err) {
+            alert("Erro ao deletar mentoria: " + err.message);
+        }
     }
-  };
 
+    /*******************************
+     * 🟡 FUNÇÃO GLOBAL PARA MODAIS DE AÇÃO
+     *******************************/
+    function acaoModal(modalId) {
+        if (modalId === "modal-deletar") {
+            confirmarDeletar();
+        }
+    }
+
+    /*******************************
+     * 🟡 CONTROLE DE MODAIS
+     *******************************/
+    function abrirModal(id) {
+        document.getElementById(id).classList.remove("hidden");
+    }
+
+    function fecharModal(id) {
+        document.getElementById(id).classList.add("hidden");
+    }
 </script>
+
 {% endblock %}

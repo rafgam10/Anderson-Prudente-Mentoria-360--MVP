@@ -16,7 +16,8 @@ from app.models import (
     Produto,
     PalestrasEventos,
     Fase,
-    Atividade
+    Atividade,
+    Mentoria
 )
 from datetime import datetime
 
@@ -126,14 +127,14 @@ def cadastro_aluno():
         inputSenhaAluno = request.form.get('senhaAluno')
         inputCPFAluno = request.form.get('cpfAluno')
         
-        produtos_marcados = request.form.getlist('produtos')
+        mentoria_select = request.form.getlist('select_mentoria')
         
         # Exibir dados coletados.
         print("Nome:", inputNomeAluno)
         print("Email:", inputEmailAluno)
         print("Senha:", inputSenhaAluno)
         print("CPF:", inputCPFAluno)
-        print("Produtos selecionados:", produtos_marcados)
+        print("Mentoria selecionados:", mentoria_select)
         
         # Inserir alunos no DB:
         novo_aluno = Aluno(
@@ -144,11 +145,13 @@ def cadastro_aluno():
         )
             
         # Busca os produtos selecionado no DB:
-        if produtos_marcados:
-            produtos_db = Produto.query.filter(Produto.nomeProduto.in_(produtos_marcados)).all()
-            novo_aluno.produtos.extend(produtos_db)
-            print("Produtos do aluno:",produtos_db, " - ", produtos_marcados)
+        if mentoria_select:
+            mentorias_db = Mentoria.query.filter(
+                Mentoria.id.in_(mentoria_select)
+            ).all()
             
+            novo_aluno.mentorias.extend(mentorias_db)
+            print("Mentorias associadas:", mentorias_db)
         
         db.session.add(novo_aluno)
         db.session.commit()
@@ -157,7 +160,8 @@ def cadastro_aluno():
         flash(f"Aluno {inputNomeAluno} cadastrado com sucesso!", "success")
         return redirect(url_for('admin.cadastro_aluno'))
     
-    return render_template('telasAdmin/cadastroAlunos.html')
+    mentorias = db.session.query(Mentoria).all()
+    return render_template('telasAdmin/cadastroAlunos.html', mentorias=mentorias)
 
 
 @admin_bp.route('/alunos/editar/<int:id>', methods=["PATCH"])

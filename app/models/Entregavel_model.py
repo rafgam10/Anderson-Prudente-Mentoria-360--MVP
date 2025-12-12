@@ -10,13 +10,9 @@ class Entregavel(db.Model):
         db.ForeignKey("mentorias.id"), 
         nullable=False
     )
-    
     nome = db.Column(db.String(255), nullable=False)
+    status = db.Column(db.String(20), nullable=False, default='Pendente')
+    data_entrega = db.Column(db.Date, nullable=True)
     
     # Relações
     mentoria = db.relationship("Mentoria", back_populates="entregaveis")
-
-    
-    def __init__(self, id_mentoria, nome):
-        self.id_mentoria = id_mentoria
-        self.nome = nome

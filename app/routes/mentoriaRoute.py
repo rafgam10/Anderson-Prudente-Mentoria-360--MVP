@@ -47,7 +47,9 @@ def cadastrar_mentorias():
         for entregar in entregaveis:
             obj_entregar = Entregavel(
                 id_mentoria=id_mentoria,
-                nome=entregar.get("nome")
+                nome=entregar.get("nome"),
+                status='Pendente',
+                data_entrega=None
             )
             db.session.add(obj_entregar)
 

@@ -16,5 +16,18 @@ class Aluno(db.Model, UserMixin):
     reunioes = db.relationship("Reuniao", back_populates="aluno")
     mentorias = db.relationship("Mentoria", secondary=alunos_mentorias, back_populates="alunos")
     
+    @property
+    def ultima_reuniao(self):
+        if not self.reunioes:
+            return None
+        return max(reuniao.data for reuniao in self.reunioes)
+    
+    @property
+    def entregaveis(self):
+        entregaveis = []
+        for mentoria in self.mentorias:
+            entregaveis.extend(mentoria.entregaveis)
+        return entregaveis
+    
     def __repr__(self):
         return f"<Aluno {self.nomeAluno}>"

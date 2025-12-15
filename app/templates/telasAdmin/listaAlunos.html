@@ -22,77 +22,86 @@
   </div>
 
   {% for aluno in array_alunos %}
-  <div
-    class="card-aluno mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors cursor-pointer hover:border-[#535353]"
-    onclick="abrirModalDetalhes()">
-
-    <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-      <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-        <i class="ph-duotone ph-student text-2xl"></i>
-        <span>{{aluno.nomeAluno}}</span>
-      </div>
-
-      <div class="flex flex-col p-1 sm:flex-row gap-2">
-        <button
-          class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors"
-          onclick="event.stopPropagation(); abrirModalEditar({{aluno.id}}, '{{aluno.nomeAluno}}', '{% for p in aluno.produtos %}{{p.nomeProduto}}{% if not loop.last %}+{% endif %}{% endfor %}')">
-          <i class="ph ph-pencil-simple"></i> Editar
-        </button>
-        <button
-          class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors"
-          onclick="event.stopPropagation(); abrirModalDeletar({{aluno.id}}, '{{aluno.nomeAluno}}')">
-          <i class="ph ph-trash"></i> Deletar
-        </button>
-      </div>
-    </div>
-
-    <div class="p-4">
-      <div class="flex flex-col p-1 lg:flex-row gap-6">
-        <div class="flex-1 space-y-2">
-          <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
-          <p class="text-sm font-medium">{{aluno.emailAluno}}</p>
-        </div>
-
-        <div class="flex-1 space-y-2">
-          <p class="text-sm text-[#f8ca54]"><i class="ph ph-identification-card"></i> CPF</p>
-          <p class="text-sm font-medium">{{aluno.CPFAluno}}</p>
-        </div>
-
-        <div class="flex-1 space-y-2">
-          <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Mentoria</p>
-          <div class="flex gap-2">
-            {% if aluno.mentorias %}
-              {% for mentoria in aluno.mentorias %}
-          
-                <span class="px-2 py-1 bg-[#e77c09] text-white text-sm font-semibold rounded-md">
-                  {{ mentoria.nome }}
-                </span>
-              {% endfor %}
-              
-            {% else %}
-              <span class="text-sm text-gray-400">Sem produtos</span>
-            {% endif %}
-      
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Rodapé do card -->
     <div
-      class="rounded-b-lg px-2 py-2 bg-[#242424] border-t border-[#2a2a2a] flex flex-col sm:flex-row justify-baseline gap-10 items-center">
-      <div class="flex items-center gap-2">
-        <i class="ph ph-calendar text-[#f8ca54]"></i>
-        <span class="text-sm text-gray-300">Data da última reunião: <span class="font-semibold">01/12/2024</span></span>
-      </div>
-      <div class="flex items-center gap-2">
-        <i class="ph ph-users text-[#f8ca54]"></i>
-        <span class="text-sm text-gray-300">Nº total de reuniões: <span class="font-semibold">12</span></span>
-      </div>
-    </div>
+      class="card-aluno mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors cursor-pointer hover:border-[#535353]"
+      onclick="abrirModalDetalhes({{aluno.id}})">
 
-  </div>
+      <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+        <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+          <i class="ph-duotone ph-student text-2xl"></i>
+          <span>{{aluno.nomeAluno}}</span>
+        </div>
+
+        <div class="flex flex-col p-1 sm:flex-row gap-2">
+          <button
+            class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors"
+            onclick="event.stopPropagation(); abrirModalEditar({{aluno.id}}, '{{aluno.nomeAluno}}', '{% for p in aluno.produtos %}{{p.nomeProduto}}{% if not loop.last %}+{% endif %}{% endfor %}')">
+            <i class="ph ph-pencil-simple"></i> Editar
+          </button>
+          <button
+            class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors"
+            onclick="event.stopPropagation(); abrirModalDeletar({{aluno.id}}, '{{aluno.nomeAluno}}')">
+            <i class="ph ph-trash"></i> Deletar
+          </button>
+        </div>
+      </div>
+
+      <div class="p-4">
+        <div class="flex flex-col p-1 lg:flex-row gap-6">
+          <div class="flex-1 space-y-2">
+            <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
+            <p class="text-sm font-medium">{{aluno.emailAluno}}</p>
+          </div>
+
+          <div class="flex-1 space-y-2">
+            <p class="text-sm text-[#f8ca54]"><i class="ph ph-identification-card"></i> CPF</p>
+            <p class="text-sm font-medium">{{aluno.CPFAluno}}</p>
+          </div>
+
+          <div class="flex-1 space-y-2">
+            <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Mentoria</p>
+            <div class="flex gap-2">
+              {% if aluno.mentorias %}
+                {% for mentoria in aluno.mentorias %}
+            
+                  <span class="px-2 py-1 bg-[#e77c09] text-white text-sm font-semibold rounded-md">
+                    {{ mentoria.nome }}
+                  </span>
+                {% endfor %}
+                
+              {% else %}
+                <span class="text-sm text-gray-400">Sem produtos</span>
+              {% endif %}
+        
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Rodapé do card -->
+      <div
+        class="rounded-b-lg px-2 py-2 bg-[#242424] border-t border-[#2a2a2a] flex flex-col sm:flex-row justify-baseline gap-10 items-center">
+        <div class="flex items-center gap-2">
+          <i class="ph ph-calendar text-[#f8ca54]"></i>
+         <span class="text-sm text-gray-300">
+            Data da última reunião:
+            <span class="font-semibold">
+              {% if aluno.ultima_reuniao %}
+                {{ aluno.ultima_reuniao.strftime('%d/%m/%Y') }}
+              {% else %}
+                —
+              {% endif %}
+            </span>
+          </span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="ph ph-users text-[#f8ca54]"></i>
+          <span class="text-sm text-gray-300">Nº total de reuniões: <span class="font-semibold">{{ aluno.reunioes | length }}</span></span>
+        </div>
+      </div>
+
+    </div>
 
   {% endfor %}
 
@@ -118,60 +127,27 @@
 
 <!-- MODAL DE DETALHES -->
 {% call criar_modal('modal-detalhes', 'Detalhes do aluno', 'max-w-2xl') %}
-<div class="space-y-6">
-  <!-- Lista de Entregáveis -->
-  <div class="flex w-full max-h-100 overflow-scroll">
-    <div class="space-y-3 w-full">
-      <!-- Entregável 1 -->
-      <button onclick="abrirModalEntregavel('Logo', 'entregue', '2024-11-15')"
-        class="w-full py-2 px-4 bg-[#242424] rounded-lg border border-[#2a2a2a] hover:border-[#535353] transition-colors flex justify-between items-center group">
-        <div class="flex items-center gap-3">
-          <i class="ph ph-check-circle text-green-600 transition-colors"></i>
+  <div class="space-y-6">
 
-          <div class="text-left">
-            <h4 class="font-medium text-white">Logo</h4>
-            <p class="text-sm text-green-600">Entregue em: <span class="font-semibold">15/11/2024</span></p>
-          </div>
-        </div>
-      </button>
-
-      <!-- Entregável 2 -->
-      <button onclick="abrirModalEntregavel('Site', 'pendente', '')"
-        class="w-full py-2 px-4 bg-[#242424] rounded-lg border border-[#2a2a2a] hover:border-[#535353] transition-colors flex justify-between items-center group">
-        <div class="flex items-center gap-3">
-          <i class="ph ph-minus-circle text-gray-400 transition-colors"></i>
-          <div class="text-left">
-            <h4 class="font-medium text-white">Site</h4>
-            <p class="text-sm text-gray-400">Pendente</p>
-          </div>
-        </div>
-      </button>
-
-      <button onclick="abrirModalEntregavel('logo 2', 'pendente', '')"
-        class="w-full py-2 px-4 bg-[#242424] rounded-lg border border-[#2a2a2a] hover:border-[#535353] transition-colors flex justify-between items-center group">
-        <div class="flex items-center gap-3">
-          <i class="ph ph-minus-circle text-gray-400 transition-colors"></i>
-          <div class="text-left">
-            <h4 class="font-medium text-white">logo 2</h4>
-            <p class="text-sm text-gray-400">Pendente</p>
-          </div>
-        </div>
-      </button>
-
-
+    <!-- Lista de Entregáveis -->
+    <div class="flex w-full max-h-[60vh] overflow-y-auto">
+      <div id="lista-entregaveis" class="space-y-3 w-full">
+        <!-- JS vai inserir os entregáveis aqui -->
+      </div>
     </div>
-  </div>
 
-  <!-- Botão para adicionar reunião -->
-  <div class="pt-4 border-t border-[#2a2a2a]">
-    <button onclick="abrirModalNovaReuniao()"
-      class="w-full py-3 px-4 bg-[#f8ca55] hover:bg-[#d7ac3f] text-black font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
-      <i class="ph ph-calendar-plus"></i>
-      Adicionar Nova Reunião
-    </button>
+    <!-- Botão para adicionar reunião -->
+    <div class="pt-4 border-t border-[#2a2a2a]">
+      <button onclick="abrirModalNovaReuniao()"
+        class="w-full py-3 px-4 bg-[#f8ca55] hover:bg-[#d7ac3f] text-black font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
+        <i class="ph ph-calendar-plus"></i>
+        Adicionar Nova Reunião
+      </button>
+    </div>
+
   </div>
-</div>
 {% endcall %}
+
 
 <!-- MODAL PARA EDITAR ENTREGÁVEL -->
 {% call criar_modal('modal-entregavel', 'Editar Entregavel', 'max-w-md') %}
@@ -200,7 +176,7 @@
 <form id="modal-nova-reuniao-form" class="space-y-4">
   <div>
     <label class="text-sm text-gray-300">Data da Reunião</label>
-    <input type="date" name="data_reuniao" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+    <input type="date" id="data_reuniao" name="data_reuniao" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
   </div>
 </form>
 {% endcall %}
@@ -224,58 +200,80 @@
 
   let alunoDetalhesId = null;
   let entregavelAtual = null;
+  let entregavelAtualId = null;
 
-  // Função para abrir modal de detalhes
-  function abrirModalDetalhes(alunoId) {
-    alunoDetalhesId = alunoId;
-    abrirModal('modal-detalhes');
-  }
+
 
   // Função para abrir modal de entregável
-  function abrirModalEntregavel(nomeEntregavel, status, data) {
-    entregavelAtual = nomeEntregavel;
+  function abrirModalEntregavel(id, nome, status, data) {
+    entregavelAtualId = id;
 
-    // Atualizar título do modal
-    const tituloElement = document.getElementById('entregavel-titulo');
-    const statusSelect = document.getElementById('entregavel-status');
-    const dataContainer = document.getElementById('entregavel-data-container');
-    const dataInput = document.getElementById('entregavel-data');
+    document.getElementById("entregavel-titulo").textContent = nome;
 
-    if (tituloElement) {
-      tituloElement.textContent = `${nomeEntregavel}`;
+    const statusSelect = document.getElementById("entregavel-status");
+    const dataContainer = document.getElementById("entregavel-data-container");
+    const dataInput = document.getElementById("entregavel-data");
+
+    statusSelect.value = status;
+
+    if (status === "entregue") {
+      dataContainer.classList.remove("hidden");
+      dataInput.value = data || "";
+    } else {
+      dataContainer.classList.add("hidden");
+      dataInput.value = "";
     }
 
-    if (statusSelect) {
-      statusSelect.value = status;
+    statusSelect.onchange = () => {
+      statusSelect.value === "entregue"
+        ? dataContainer.classList.remove("hidden")
+        : dataContainer.classList.add("hidden");
+    };
 
-      // Mostrar/ocultar campo de data baseado no status
-      if (status === 'entregue') {
-        dataContainer.classList.remove('hidden');
-        if (dataInput && data) {
-          dataInput.value = data;
-        }
-      } else {
-        dataContainer.classList.add('hidden');
-      }
+    abrirModal("modal-entregavel");
+  }
 
-      // Adicionar listener para mudança de status
-      statusSelect.onchange = function () {
-        if (this.value === 'entregue') {
-          dataContainer.classList.remove('hidden');
-        } else {
-          dataContainer.classList.add('hidden');
-        }
+
+  document.getElementById("modal-entregavel-form")
+    .addEventListener("submit", async function (e) {
+
+      e.preventDefault();
+
+      const status = document.getElementById("entregavel-status").value;
+      const dataEntregaInput = document.getElementById("entregavel-data");
+
+      const payload = {
+        status: status,
+        data_entrega: status === "entregue"
+          ? dataEntregaInput.value
+          : null
       };
-    }
 
-    abrirModal('modal-entregavel');
-  }
+      try {
+        const response = await fetch(
+          `/admin/entregaveis/${entregavelAtualId}`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          }
+        );
 
-  // Função para abrir modal de nova reunião
-  function abrirModalNovaReuniao() {
-    // Pode marcar qualquer data
-    abrirModal('modal-nova-reuniao');
-  }
+        if (!response.ok) {
+          throw new Error("Erro ao salvar entregável");
+        }
+
+        fecharModal("modal-entregavel");
+
+        // recarrega os entregáveis do aluno
+        abrirModalDetalhes(alunoDetalhesId);
+
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao salvar entregável");
+      }
+  });
+
 
   // Configurar formulário de entregável
   document.addEventListener('DOMContentLoaded', function () {
@@ -321,6 +319,7 @@
         try {
           console.log('Agendando reunião:', payload);
           alert('Reunião adicionada com sucesso!');
+          location.reload();
           fecharModal('modal-nova-reuniao');
         } catch (error) {
           console.error('Erro:', error);
@@ -330,10 +329,20 @@
     }
   });
 
-  // Função para abrir modal de detalhes (mantém o conteúdo vazio como pedido)
-  function abrirModalDetalhes() {
-    abrirModal('modal-detalhes');
+
+
+
+
+
+
+  // Função para abrir modal de nova reunião
+  function abrirModalNovaReuniao() {
+    // Pode marcar qualquer data
+    abrirModal('modal-nova-reuniao');
   }
+
+
+
 
   // Função para abrir modal de edição
   function abrirModalEditar(id, nome, produto) {
@@ -418,6 +427,142 @@
       fecharModal(modalId);
     }
   };
+
+
+
+   /*****************************************
+   * 🔵 EXIBIR ENTREGÁVEIS DO ALUNO
+   *****************************************/
+  async function abrirModalDetalhes(alunoId) {
+    alunoDetalhesId = alunoId;
+
+
+    const container = document.getElementById("lista-entregaveis");
+    if (!container) {
+      console.error("Container #lista-entregaveis não encontrado");
+      return;
+    }
+
+    container.innerHTML = "<p class='text-gray-400'>Carregando entregáveis...</p>";
+
+    abrirModal("modal-detalhes");
+
+    try {
+      const response = await fetch(`/admin/alunos/${alunoId}/entregaveis`);
+      const data = await response.json();
+      // salva a mentoria atual (usamos a primeira)
+      window.mentoriaAtualId = data.entregaveis[0].mentoria_id;
+
+
+      container.innerHTML = "";
+
+      if (!data.entregaveis || data.entregaveis.length === 0) {
+        container.innerHTML = `
+          <p class="text-gray-400 text-center">
+            Nenhuma tarefa encontrada para este aluno.
+          </p>`;
+        return;
+      }
+
+      data.entregaveis.forEach(e => {
+        container.innerHTML += `
+          <button
+            onclick="abrirModalEntregavel(
+              '${e.id}',
+              '${e.nome}',
+              '${e.status}',
+              '${e.data_entrega || ""}'
+            )" class="w-full py-2 px-4 bg-[#242424] rounded-lg border border-[#2a2a2a]
+                   hover:border-[#535353] transition-colors flex justify-between items-center group">
+
+            <div class="flex items-center gap-3">
+              <i class="ph ph-check-circle ${
+                e.status === 'entregue'
+                  ? 'text-green-600'
+                  : 'text-yellow-500'
+              }" entregavel-status ></i>
+
+              <div class="text-left">
+                <h4 class="font-medium text-white">${e.nome}</h4>
+
+                <p class="text-sm text-gray-400">
+                  Mentoria: <span class="font-semibold">${e.mentoria}</span>
+                </p>
+
+                ${
+                  e.status === "entregue"
+                    ? `<p class="text-sm text-green-600">
+                        Entregue em: <b>${e.data_entrega}</b>
+                      </p>`
+                    : `<p class="text-sm text-red-400">Pendente</p>`
+                }
+
+              </div>
+            </div>
+          </button>
+        `;
+      });
+
+    } catch (error) {
+      console.error(error);
+      container.innerHTML = `
+        <p class="text-red-500 text-center">
+          Erro ao carregar entregáveis.
+        </p>`;
+    }
+  }
+
+
+  /////////////////////////////////////////////////////////
+
+  document
+  .getElementById("modal-nova-reuniao-form")
+  .addEventListener("submit", async function (e) {
+
+    e.preventDefault();
+
+    const dataReuniao = this.querySelector("#data_reuniao").value;
+
+    if (!dataReuniao) {
+      alert("Informe a data da reunião");
+      return;
+    }
+
+    // ⚠️ IMPORTANTE:
+    // usamos a PRIMEIRA mentoria do aluno
+    // (se futuramente tiver várias, você pode escolher)
+    const mentoriaId = window.mentoriaAtualId;
+
+    try {
+      const response = await fetch("/admin/reuniao/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          aluno_id: alunoDetalhesId,
+          mentoria_id: mentoriaId,
+          data_reuniao: dataReuniao
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao salvar reunião");
+      }
+
+      fecharModal("modal-nova-reuniao");
+
+      alert("Reunião adicionada com sucesso!");
+
+      // Atualiza a data do último encontro na tela
+      atualizarUltimaReuniao(dataReuniao);
+
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao adicionar reunião");
+    }
+});
+
+
+
 
 </script>
 {% endblock %}

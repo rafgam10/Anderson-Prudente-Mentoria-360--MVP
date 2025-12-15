@@ -17,7 +17,9 @@ from app.models import (
     PalestrasEventos,
     Fase,
     Atividade,
-    Mentoria
+    Mentoria,
+    Entregavel,
+    Reuniao
 )
 from datetime import datetime
 
@@ -197,6 +199,67 @@ def deletar_aluno(id:int) -> None:
     print(f"Aluno {aluno.nomeAluno} removido com sucesso")
     return jsonify({"message": f"Aluno {aluno.nomeAluno} removido com sucesso"})
 
+@admin_bp.route('/entregaveis/<int:id>', methods=['PATCH'])
+def atualizar_entregavel(id):
+    entregavel = Entregavel.query.get_or_404(id)
+    data = request.get_json()
+
+    entregavel.status = data.get('status')
+
+    if data.get('data_entrega'):
+        entregavel.data_entrega = datetime.strptime(
+            data.get('data_entrega'), '%Y-%m-%d'
+        )
+    else:
+        entregavel.data_entrega = None
+
+    db.session.commit()
+
+    return jsonify({"success": True})
+
+
+
+@admin_bp.route('/alunos/<int:aluno_id>/entregaveis')
+def entregaveis_aluno(aluno_id):
+    aluno = Aluno.query.get_or_404(aluno_id)
+
+    entregaveis = [
+        {
+            "id": e.id,
+            "nome": e.nome,
+            "status": e.status,
+            "data_entrega": e.data_entrega.strftime('%d/%m/%Y') if e.data_entrega else None,
+            "mentoria": e.mentoria.nome,
+            "mentoria_id": e.mentoria.id
+        }
+        for e in aluno.entregaveis
+    ]
+
+    return {"entregaveis": entregaveis}
+
+
+@admin_bp.route("/reuniao/add", methods=["POST"])
+def criar_reuniao():
+    data = request.get_json()
+
+    aluno_id = data.get("aluno_id")
+    mentoria_id = data.get("mentoria_id")
+    data_reuniao = data.get("data_reuniao")
+
+    if not all([aluno_id, mentoria_id, data_reuniao]):
+        return jsonify({"error": "Dados incompletos"}), 400
+
+    nova_reuniao = Reuniao(
+        nome="Reunião",
+        data=datetime.strptime(data_reuniao, "%Y-%m-%d"),
+        id_aluno=aluno_id,
+        id_mentoria=mentoria_id
+    )
+
+    db.session.add(nova_reuniao)
+    db.session.commit()
+
+    return jsonify({"success": True})
 
 #################################################
 ##### Gerenciamento de Eventos no rota Admin.####

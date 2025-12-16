@@ -95,19 +95,23 @@ def editar_admin(id:int) -> None:
 
 
 @admin_bp.route('/admins/deletar/<int:id>', methods=["DELETE"])
-def deletar_admin(id:int):
+def deletar_admin(id: int):
     admin = Administrador.query.get(id)
     if not admin:
         return jsonify({"error": "Administrador não encontrado"}), 404
-    
+
     try:
         db.session.delete(admin)
         db.session.commit()
-        print("Admin Removido com Sucesso no DB!")
-        
+
+        print("Admin removido com sucesso!")
+        return jsonify({"success": True}), 200
+
     except Exception as e:
         db.session.rollback()
-        
+        print("Erro ao deletar admin:", e)
+        return jsonify({"error": "Erro interno ao deletar administrador"}), 500
+
         
 
 #################################################

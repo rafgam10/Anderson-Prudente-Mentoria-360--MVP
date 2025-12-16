@@ -13,7 +13,7 @@ class Aluno(db.Model, UserMixin):
     CPFAluno = db.Column(db.String(255), nullable=False)
     
     produtos = db.relationship("Produto", secondary="usuarios_produtos", back_populates="alunos")
-    reunioes = db.relationship("Reuniao", back_populates="aluno")
+    reunioes = db.relationship("Reuniao", back_populates="aluno", cascade="all, delete-orphan")
     mentorias = db.relationship("Mentoria", secondary=alunos_mentorias, back_populates="alunos")
     
     @property

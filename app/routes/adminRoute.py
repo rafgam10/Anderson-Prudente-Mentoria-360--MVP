@@ -193,6 +193,10 @@ def editar_aluno(id:int) -> None:
 def deletar_aluno(id:int) -> None:
     aluno = Aluno.query.get_or_404(id)
     
+    # limpa relacionamentos
+    aluno.mentorias.clear()
+    aluno.produtos.clear()
+    
     db.session.delete(aluno)
     db.session.commit()
     

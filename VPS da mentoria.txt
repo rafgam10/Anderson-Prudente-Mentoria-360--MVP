@@ -11,3 +11,5 @@ Token Github: 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
 Usuário: flaskapp
 Senha: flask123
 
+
+CREATE USER 'mentoria_user'@'localhost' IDENTIFIED BY 'M3nt0ria@2025!Sql';

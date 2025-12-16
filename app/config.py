@@ -1,4 +1,5 @@
 
+
 # Variaveis do Mysql
 USER = "root"
 PASSWORD = "root"

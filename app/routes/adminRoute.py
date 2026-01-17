@@ -111,7 +111,7 @@ def deletar_admin(id: int):
         db.session.rollback()
         print("Erro ao deletar admin:", e)
         return jsonify({"error": "Erro interno ao deletar administrador"}), 500
-
+    
         
 
 #################################################

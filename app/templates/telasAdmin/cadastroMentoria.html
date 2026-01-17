@@ -126,7 +126,10 @@ Cadastro de Mentoria
           class="ph ph-arrow-up"></i></button>
       <button type="button" class="mover-baixo text-gray-400 hover:text-white p-1"><i
           class="ph ph-arrow-down"></i></button>
+
+      
       <button type="button" class="remover text-red-400 hover:text-red-300 p-1"><i class="ph ph-trash"></i></button>
+    
     </div>
     <input type="hidden" name="entregaveis[]" value="" />
   </div>
@@ -228,9 +231,12 @@ Cadastro de Mentoria
     const btnMoverBaixo = clone.querySelector('.mover-baixo')
     const btnMover = clone.querySelector('.mover')
 
-    btnRemover.addEventListener('click', () => removerEntregavel(proximoId))
-    btnMoverCima.addEventListener('click', () => moverEntregavel(proximoId, 'cima'))
-    btnMoverBaixo.addEventListener('click', () => moverEntregavel(proximoId, 'baixo'))
+    btnRemover.addEventListener('click', () => {
+      const id = parseInt(item.dataset.id)
+      removerEntregavel(id)
+    });
+    btnMoverCima.addEventListener('click', () => moverEntregavel(proximoId, 'cima'));
+    btnMoverBaixo.addEventListener('click', () => moverEntregavel(proximoId, 'baixo'));
 
     // Tornar arrastável
     tornarArrastavel(item)

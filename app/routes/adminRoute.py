@@ -249,6 +249,12 @@ def atualizar_entregavel(id):
 def entregaveis_aluno(aluno_id):
     aluno = Aluno.query.get_or_404(aluno_id)
     
+    # Ordenar pelo campo 'ordem' do template (se existir/preenchido)
+    status_ordenados = sorted(
+        aluno.entregaveis_status,
+        key=lambda st: (st.entregavel_template.ordem if st.entregavel_template.ordem is not None else 0, st.id)
+    )
+    
     entregaveis = [
         {
             "id": st.id, # ID do AlunoEntregavel
@@ -260,7 +266,7 @@ def entregaveis_aluno(aluno_id):
             "mentoria": aluno.mentoria.nome if aluno.mentoria else "N/A",
             "mentoria_id": aluno.mentoria_id
         }
-        for st in aluno.entregaveis_status
+        for st in status_ordenados
     ]
     
     return {"entregaveis": entregaveis}

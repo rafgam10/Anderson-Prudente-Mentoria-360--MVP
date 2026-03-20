@@ -47,11 +47,12 @@ def cadastrar_mentorias():
         # pega ID sem precisar buscar no BD
         id_mentoria = obj_mentoria.id
         
-        # cria os entregáveis
-        for entregar in entregaveis:
+        # cria os entregáveis com ordem
+        for idx, entregar in enumerate(entregaveis):
             obj_entregar = Entregavel(
                 id_mentoria=id_mentoria,
-                nome=entregar.get("nome")
+                nome=entregar.get("nome"),
+                ordem=idx
             )
             db.session.add(obj_entregar)
 
@@ -163,13 +164,23 @@ def editar_mentoria(id: int):
                 )
                 db.session.add(nova_instancia)
 
+    # 3. Atualizar ordens conforme a lista enviada (contendo todos os nomes na ordem correta)
+    for idx, nome in enumerate(entregaveis_nomes):
+        # Busca o entregável pelo nome dentro da mentoria atualizada
+        entregavel = next((e for e in mentoria.entregaveis if e.nome == nome), None)
+        if entregavel:
+            entregavel.ordem = idx
+
     db.session.commit()
     return jsonify({"message": "Mentoria atualizada com sucesso!"}), 200
 
 @mentoria_bp.route("/entregaveis/<int:id>", methods=["GET"])
 def get_entregaveis_mentoria(id):
     mentoria = Mentoria.query.get_or_404(id)
-    res = [{"id": e.id, "nome": e.nome} for e in mentoria.entregaveis]
+    # Ordena por ordem (e depois por ID como fallback)
+    entregaveis_ordenados = sorted(mentoria.entregaveis, key=lambda x: (x.ordem if x.ordem is not None else 0, x.id))
+    
+    res = [{"id": e.id, "nome": e.nome} for e in entregaveis_ordenados]
     return jsonify({"entregaveis": res})
 
 

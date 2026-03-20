@@ -11,6 +11,7 @@ class Entregavel(db.Model):
         nullable=False
     )
     nome = db.Column(db.String(255), nullable=False)
+    ordem = db.Column(db.Integer, nullable=True, default=0)
     
     # Relações
     mentoria = db.relationship("Mentoria", back_populates="entregaveis")

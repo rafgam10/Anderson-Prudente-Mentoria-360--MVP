@@ -12,9 +12,12 @@ class Aluno(db.Model, UserMixin):
     senhaAluno = db.Column(db.String(255), nullable=False)
     CPFAluno = db.Column(db.String(255), nullable=False)
     
+    mentoria_id = db.Column(db.Integer, db.ForeignKey("mentorias.id"), nullable=True)
+    
     produtos = db.relationship("Produto", secondary="usuarios_produtos", back_populates="alunos")
     reunioes = db.relationship("Reuniao", back_populates="aluno", cascade="all, delete-orphan")
-    mentorias = db.relationship("Mentoria", secondary=alunos_mentorias, back_populates="alunos")
+    mentoria = db.relationship("Mentoria", back_populates="alunos")
+    entregaveis_status = db.relationship("AlunoEntregavel", back_populates="aluno", cascade="all, delete-orphan")
     
     @property
     def ultima_reuniao(self):
@@ -24,10 +27,8 @@ class Aluno(db.Model, UserMixin):
     
     @property
     def entregaveis(self):
-        entregaveis = []
-        for mentoria in self.mentorias:
-            entregaveis.extend(mentoria.entregaveis)
-        return entregaveis
+        # Retorna os registros de status específicos deste aluno
+        return self.entregaveis_status
     
     def __repr__(self):
         return f"<Aluno {self.nomeAluno}>"

@@ -12,4 +12,6 @@ from app.models.Atividade import Atividade
 
 from .Mentoria_model import Mentoria
 from .Entregavel_model import Entregavel
+from .EntregavelModelo import EntregavelModelo
 from .Reuniao_model import Reuniao
+from .AlunoEntregavel import AlunoEntregavel

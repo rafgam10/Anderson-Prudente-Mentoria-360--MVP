@@ -11,8 +11,6 @@ class Entregavel(db.Model):
         nullable=False
     )
     nome = db.Column(db.String(255), nullable=False)
-    status = db.Column(db.String(20), nullable=False, default='Pendente')
-    data_entrega = db.Column(db.Date, nullable=True)
     
     # Relações
     mentoria = db.relationship("Mentoria", back_populates="entregaveis")

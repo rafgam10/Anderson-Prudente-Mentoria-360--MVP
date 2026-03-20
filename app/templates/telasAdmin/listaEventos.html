@@ -22,7 +22,8 @@
     </div>
 
     {% for evento in eventos %}
-    <div class="card-evento mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
+    <div
+        class="card-evento mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-all hover:border-[#f8ca54] hover:shadow-lg group">
         <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
             <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
                 <i class="ph-duotone ph-calendar text-2xl"></i>
@@ -30,7 +31,7 @@
             </div>
 
             <div class="flex flex-col p-1 sm:flex-row gap-2">
-                <button onclick="abrirModalEditar(
+                <button type="button" onclick="event.stopPropagation(); abrirModalEditar(
                               {{ evento.id }},
                              '{{ evento.nomeEvento }}', 
                              '{{ evento.dataInicial }}', 
@@ -39,11 +40,12 @@
                              '{{ evento.horaFinal }}',
                              '{{ evento.nomePalestrante }}'
                             )"
-                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors flex items-center gap-1">
                     <i class="ph ph-pencil-simple"></i> Editar
                 </button>
-                <button onclick="abrirModalDeletar({{evento.id}}, '{{evento.nomeEvento}}')"
-                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+                <button type="button"
+                    onclick="event.stopPropagation(); abrirModalDeletar({{evento.id}}, '{{evento.nomeEvento}}')"
+                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors flex items-center gap-1">
                     <i class="ph ph-trash"></i> Deletar
                 </button>
             </div>
@@ -176,15 +178,15 @@
                     });
 
                     if (response.ok) {
-                        const result = await response.json();
-                        console.log(result.message);
                         fecharModal('modal-editar');
                         location.reload();
                     } else {
-                        console.log("Erro ao editar evento");
+                        const result = await response.json();
+                        mostrarAviso("Erro ao editar evento: " + (result.error || "Erro desconhecido"));
                     }
                 } catch (err) {
-                    console.log(err);
+                    console.error(err);
+                    mostrarAviso("Erro de conexão ao editar evento");
                 }
             });
         }
@@ -216,17 +218,16 @@
                 });
 
                 if (response.ok) {
-                    const data = await response.json();
                     fecharModal('modal-deletar');
                     location.reload();
                 } else {
-                    console.error("Erro ao deletar evento");
-                    alert("Não foi possível deletar o evento.");
+                    const data = await response.json();
+                    mostrarAviso("Erro ao deletar: " + (data.error || "Não foi possível deletar o evento."));
                     fecharModal('modal-deletar');
                 }
             } catch (error) {
                 console.error("Erro na requisição:", error);
-                alert("Ocorreu um erro inesperado.");
+                mostrarAviso("Erro de conexão ao deletar evento");
                 fecharModal('modal-deletar');
             }
         } else {

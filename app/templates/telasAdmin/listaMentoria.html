@@ -25,37 +25,37 @@ Lista de Mentorias | Mentoria 360° - ADM
 
   {% for mentoria in lista_mentoria %}
 
-    <!-- Mentoria 1 -->
-    <div class="card-mentoria mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
-      <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-        <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-          <i class="ph-duotone ph-book-bookmark text-2xl"></i>
-          <span>{{mentoria.nome}}</span>
-        </div>
-        <div class="flex flex-col p-1 sm:flex-row gap-2">
-          <button onclick="abrirModalEditar({{mentoria.id}}, '{{mentoria.nome}}')"
-            class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
-            <i class="ph ph-pencil-simple"></i> Editar
-          </button>
-          <button onclick="abrirModalDeletar({{mentoria.id}}, '{{mentoria.nome}}')"
-            class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
-            <i class="ph ph-trash"></i> Deletar
-          </button>
-        </div>
+  <!-- Mentoria 1 -->
+  <div class="card-mentoria mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
+    <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+      <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+        <i class="ph-duotone ph-book-bookmark text-2xl"></i>
+        <span>{{mentoria.nome}}</span>
       </div>
-      <div class="p-4">
-        <div class="flex flex-col p-1 lg:flex-row gap-6">
-          <div class="flex-1 space-y-2">
-            <p class="text-sm text-[#f8ca54]"><i class="ph ph-list-checks"></i> Quantidade de Entregáveis</p>
-            <p class="text-sm font-medium">{{ entregaveis_count[mentoria.id] }} entregáveis</p>
-          </div>
-          <div class="flex-1 space-y-2">
-            <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar"></i> Data de Criação</p>
-            <p class="text-sm font-medium">{{mentoria.data_create.strftime('%d/%m/%Y')}}</p>
-          </div>
+      <div class="flex flex-col p-1 sm:flex-row gap-2">
+        <button onclick="abrirModalEditar({{mentoria.id}}, '{{mentoria.nome}}')"
+          class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+          <i class="ph ph-pencil-simple"></i> Editar
+        </button>
+        <button onclick="abrirModalDeletar({{mentoria.id}}, '{{mentoria.nome}}')"
+          class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+          <i class="ph ph-trash"></i> Deletar
+        </button>
+      </div>
+    </div>
+    <div class="p-4">
+      <div class="flex flex-col p-1 lg:flex-row gap-6">
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-list-checks"></i> Quantidade de Entregáveis</p>
+          <p class="text-sm font-medium">{{ entregaveis_count[mentoria.id] }} entregáveis</p>
+        </div>
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-calendar"></i> Data de Criação</p>
+          <p class="text-sm font-medium">{{mentoria.data_create.strftime('%d/%m/%Y')}}</p>
         </div>
       </div>
     </div>
+  </div>
 
   {% endfor %}
 
@@ -67,140 +67,138 @@ Lista de Mentorias | Mentoria 360° - ADM
 
 <!-- MODAL DE EDIÇÃO -->
 {% call criar_modal('modal-editar', 'Editar Mentoria', 'max-w-md') %}
-  <form id="modal-editar-form" class="space-y-4">
-    <div>
-      <label class="text-sm text-gray-300">Nome da Mentoria</label>
-      <input type="text" name="nomeMentoria" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-    </div>
-  </form>
+<form id="modal-editar-form" class="space-y-4">
+  <div>
+    <label class="text-sm text-gray-300">Nome da Mentoria</label>
+    <input type="text" name="nomeMentoria" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+  </div>
+</form>
 {% endcall %}
 
-  <!-- MODAL DE DELETAR -->
-  {% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
-    <div class="text-center py-4">
-      <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
-      <p class="text-gray-300 mb-2">Tem certeza que deseja excluir a mentoria?</p>
-      <p class="text-lg font-semibold text-[#f8ca54]" id="mentoria-deletar-nome"></p>
-      <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
-    </div>
-  {% endcall %}
+<!-- MODAL DE DELETAR -->
+{% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
+<div class="text-center py-4">
+  <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
+  <p class="text-gray-300 mb-2">Tem certeza que deseja excluir a mentoria?</p>
+  <p class="text-lg font-semibold text-[#f8ca54]" id="mentoria-deletar-nome"></p>
+  <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
+</div>
+{% endcall %}
 {% endblock %}
 
 {% block scripts %}
 
 <script>
-    let mentoriaEditandoId = null;
-    let mentoriaDeletandoId = null;
+  let mentoriaEditandoId = null;
+  let mentoriaDeletandoId = null;
 
-    /*******************************
-     * 🔵 ABRIR MODAL DE EDIÇÃO
-     *******************************/
-    function abrirModalEditar(id, nome) {
-        mentoriaEditandoId = id;
+  /*******************************
+   * 🔵 ABRIR MODAL DE EDIÇÃO
+   *******************************/
+  function abrirModalEditar(id, nome) {
+    mentoriaEditandoId = id;
 
-        const form = document.getElementById("modal-editar-form");
-        form.nomeMentoria.value = nome;
+    const form = document.getElementById("modal-editar-form");
+    form.nomeMentoria.value = nome;
 
-        abrirModal("modal-editar");
-    }
+    abrirModal("modal-editar");
+  }
 
-    document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () {
+    // 1. Enviar Edição
     const editForm = document.getElementById('modal-editar-form');
     if (editForm) {
       editForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-
         editarMentoria();
-
-      
-       });
-      } 
-    });
-
-    /*******************************
-     * 🔴 ABRIR MODAL DE DELETAR
-     *******************************/
-    function abrirModalDeletar(id, nome) {
-        mentoriaDeletandoId = id;
-        document.getElementById("mentoria-deletar-nome").textContent = nome;
-        abrirModal("modal-deletar");
+      });
     }
 
-    /*******************************
-     * 🔵 FUNÇÃO PARA EDITAR MENTORIA (PUT)
-     *******************************/
-    async function editarMentoria() {
-        const novoNome = document.querySelector("input[name='nomeMentoria']").value;
-
-        const payload = { nomeMentoria: novoNome };
-
-        try {
-            const response = await fetch(`/mentorias/editar-mentoria/${mentoriaEditandoId}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                alert("Erro: " + (result.error || "Erro desconhecido"));
-                return;
-            }
-
-            alert(result.message);
-            fecharModal("modal-editar");
-            location.reload();
-
-        } catch (err) {
-            alert("Erro ao editar mentoria: " + err.message);
-        }
+    // 2. Busca em tempo real
+    const inputPesquisa = document.getElementById('pesquisa-mentoria');
+    if (inputPesquisa) {
+      inputPesquisa.addEventListener('input', function () {
+        const termo = this.value.toLowerCase();
+        document.querySelectorAll('.card-mentoria').forEach(card => {
+          const nome = card.querySelector('span').textContent.toLowerCase();
+          card.style.display = nome.includes(termo) ? '' : 'none';
+        });
+      });
     }
+  });
 
-    /*******************************
-     * 🔴 FUNÇÃO PARA DELETAR MENTORIA (DELETE)
-     *******************************/
-    async function confirmarDeletar() {
-        try {
-            const response = await fetch(`/mentorias/deletar-mentoria/${mentoriaDeletandoId}`, {
-                method: "DELETE"
-            });
+  /*******************************
+   * 🔴 ABRIR MODAL DE DELETAR
+   *******************************/
+  function abrirModalDeletar(id, nome) {
+    mentoriaDeletandoId = id;
+    document.getElementById("mentoria-deletar-nome").textContent = nome;
+    abrirModal("modal-deletar");
+  }
 
-            const result = await response.json();
+  /*******************************
+   * 🔵 FUNÇÃO PARA EDITAR MENTORIA (PUT)
+   *******************************/
+  async function editarMentoria() {
+    const novoNome = document.querySelector("input[name='nomeMentoria']").value;
 
-            if (!response.ok) {
-                alert("Erro: " + (result.error || "Erro desconhecido"));
-                return;
-            }
+    const payload = { nomeMentoria: novoNome };
 
-            alert(result.message);
-            fecharModal("modal-deletar");
-            location.reload();
+    try {
+      const response = await fetch(`/mentorias/editar-mentoria/${mentoriaEditandoId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
 
-        } catch (err) {
-            alert("Erro ao deletar mentoria: " + err.message);
-        }
+      const result = await response.json();
+
+      if (!response.ok) {
+        mostrarAviso("Erro: " + (result.error || "Erro desconhecido"));
+        return;
+      }
+
+      fecharModal("modal-editar");
+      location.reload();
+
+    } catch (err) {
+      mostrarAviso("Erro ao editar mentoria: " + err.message);
     }
+  }
 
-    /*******************************
-     * 🟡 FUNÇÃO GLOBAL PARA MODAIS DE AÇÃO
-     *******************************/
-    function acaoModal(modalId) {
-        if (modalId === "modal-deletar") {
-            confirmarDeletar();
-        }
-    }
+  /*******************************
+   * 🔴 FUNÇÃO PARA DELETAR MENTORIA (DELETE)
+   *******************************/
+  async function confirmarDeletar() {
+    try {
+      const response = await fetch(`/mentorias/deletar-mentoria/${mentoriaDeletandoId}`, {
+        method: "DELETE"
+      });
 
-    /*******************************
-     * 🟡 CONTROLE DE MODAIS
-     *******************************/
-    function abrirModal(id) {
-        document.getElementById(id).classList.remove("hidden");
-    }
+      const result = await response.json();
 
-    function fecharModal(id) {
-        document.getElementById(id).classList.add("hidden");
+      if (!response.ok) {
+        mostrarAviso("Erro: " + (result.error || "Erro desconhecido"));
+        return;
+      }
+
+      fecharModal("modal-deletar");
+      location.reload();
+
+    } catch (err) {
+      mostrarAviso("Erro ao deletar mentoria: " + err.message);
     }
+  }
+
+  /*******************************
+   * 🟡 FUNÇÃO GLOBAL PARA MODAIS DE AÇÃO
+   *******************************/
+  function acaoModal(modalId) {
+    if (modalId === "modal-deletar") {
+      confirmarDeletar();
+    }
+  }
 </script>
+
 
 {% endblock %}

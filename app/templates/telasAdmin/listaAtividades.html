@@ -24,14 +24,14 @@
     {% for atividade in atividades %}
     <!-- exempo 1 ae-->
     <div
-        class="card-atividade mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors">
+        class="card-atividade mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-all hover:border-[#f8ca54] hover:shadow-lg group">
         <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
             <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
                 <i class="ph-duotone ph-notebook text-2xl"></i>
                 <span>{{atividade.nome_atividade}}</span>
             </div>
             <div class="flex flex-col p-1 sm:flex-row gap-2">
-                <button onclick="openModalEditar(
+                <button type="button" onclick="event.stopPropagation(); openModalEditar(
                     {{atividade.id}},
                     '{{atividade.nome_atividade | escape}}',
                     '{{atividade.descricao | escape}}',
@@ -41,11 +41,12 @@
                     {{atividade.fase.id_fase}},
                     '{{atividade.plataforma | escape}}'
                 )"
-                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors">
+                    class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors flex items-center gap-1">
                     <i class="ph ph-pencil-simple"></i> Editar
                 </button>
-                <button onclick="abrirModalDeletar({{atividade.id}}, '{{atividade.nome_atividade | escape}}')"
-                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors">
+                <button type="button"
+                    onclick="event.stopPropagation(); abrirModalDeletar({{atividade.id}}, '{{atividade.nome_atividade | escape}}')"
+                    class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors flex items-center gap-1">
                     <i class="ph ph-trash"></i> Deletar
                 </button>
             </div>
@@ -148,13 +149,8 @@
     let atividadeId = null;
     let atividadeDeletandoId = null;
 
-    // FUNÇÃO ORIGINAL QUE FUNCIONAVA - mantendo o mesmo nome
     function openModalEditar(id, nomeAtividade, descricaoAtividade, dataAtividade, horaAtividade, tipoAtividade, faseAtividade, programaAtividade) {
         atividadeId = id;
-
-        const modal = document.getElementById('modal-editar');
-        modal.classList.remove('hidden');
-
         const form = document.getElementById('editForm');
         if (form) {
             form.nomeAtividade.value = nomeAtividade;
@@ -165,12 +161,7 @@
             form.faseAtividade.value = faseAtividade;
             form.programaAtividade.value = programaAtividade;
         }
-    }
-
-    // Função para fechar modal (original)
-    function closeModal() {
-        const modal = document.getElementById('modal-editar');
-        modal.classList.add('hidden');
+        abrirModal('modal-editar');
     }
 
     // Função para abrir modal de deletar
@@ -215,11 +206,12 @@
 
                 if (resp.ok) {
                     const result = await resp.json();
-                    alert(result.message);
-                    closeModal();
+                    fecharModal('modal-editar');
+                    fecharModal('modal-editar');
                     location.reload();
                 } else {
-                    alert("Erro ao salvar alterações");
+                    const result = await resp.json();
+                    mostrarAviso("Erro ao salvar alterações: " + (result.error || "Erro desconhecido"));
                 }
             });
         }
@@ -251,11 +243,12 @@
 
             if (resp.ok) {
                 const result = await resp.json();
-                alert(result.message);
+                fecharModal('modal-deletar');
                 fecharModal('modal-deletar');
                 location.reload();
             } else {
-                alert("Erro ao deletar atividade!");
+                const result = await resp.json();
+                mostrarAviso("Erro ao deletar: " + (result.error || "Não foi possível deletar a atividade."));
                 fecharModal('modal-deletar');
             }
         } else {

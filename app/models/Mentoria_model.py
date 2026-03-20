@@ -21,8 +21,7 @@ class Mentoria(db.Model):
     
     alunos = db.relationship(
         "Aluno",
-        secondary=alunos_mentorias,
-        back_populates="mentorias"
+        back_populates="mentoria"
     )
     
     def __init__(self, nome, descricao, data_create):

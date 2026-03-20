@@ -1,4 +1,5 @@
 {% import "components/icone.html" as icone %}
+{% from "components/modal.html" import criar_modal, criar_modal_acao %}
 {% extends "telasAdmin/baseAdm.html" %}
 
 {% block title %}
@@ -10,14 +11,15 @@ Cadastro de Mentoria
 
 {% block content %}
 <div class="bg-[#101010] flex flex-col items-center justify-center min-h-screen p-4 sm:p-6">
-  <form method="post" class="w-full max-w-4xl bg-[#171717] rounded-lg border border-[#2a2a2a] p-6 sm:p-10 shadow-lg">
+  <form id="formCadastroMentoria" method="post"
+    class="w-full max-w-4xl bg-[#171717] rounded-lg border border-[#2a2a2a] p-6 sm:p-10 shadow-lg">
     <h3 class="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-7 text-center">Cadastro de Mentoria</h3>
 
     <!-- Nome da Mentoria -->
     <div class="mb-6">
       <label class="block text-white font-medium mb-2">Nome da Mentoria</label>
       <div class="relative">
-        <input type="text" name="nomeMentoria" placeholder="Digite o nome da mentoria"
+        <input type="text" name="nomeMentoria" id="nomeMentoria" placeholder="Digite o nome da mentoria"
           class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]">
         <i class="ph ph-book-bookmark absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
       </div>
@@ -33,14 +35,19 @@ Cadastro de Mentoria
           <select id="selectEntregavel"
             class="w-full text-base sm:text-lg pl-4 pr-10 py-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54] appearance-none">
             <option value="" disabled selected>Selecione um entregável existente</option>
-            <option value="relatorio">Logo</option>
-            <option value="plano_acao">Site</option>
-            <option value="prototipo">Protótipo</option>
-            <option value="projeto_final">Projeto Final</option>
+            {% for mod in modelos %}
+            <option value="{{ mod.id }}">{{ mod.nome }}</option>
+            {% endfor %}
           </select>
           <i
             class="ph ph-caret-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
         </div>
+
+        <button type="button" onclick="abrirModal('modalGerenciarTemplates')"
+          class="bg-[#2a2a2a] hover:bg-[#3a3a3a] text-gray-400 hover:text-[#f8ca54] p-2 rounded-md transition-all border border-[#3a3a3a]"
+          title="Gerenciar Modelos">
+          <i class="ph ph-gear text-xl"></i>
+        </button>
 
         <button type="button" id="btnAdicionarEntregavel"
           class="bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white font-medium py-2 px-4 rounded-md transition-colors flex items-center justify-center gap-2 whitespace-nowrap">
@@ -80,36 +87,56 @@ Cadastro de Mentoria
 
 
 <!-- Modal para Criar Novo Entregável -->
-<div id="modalNovoEntregavel"
-  class="fixed inset-0 bg-[#00000084] bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
-  <div class="bg-[#171717] border border-[#2a2a2a] rounded-lg w-full max-w-md p-6 shadow-xl">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-xl font-bold text-white">Criar Novo Entregável</h3>
-      <button type="button" id="btnFecharModal" class="text-gray-400 hover:text-white transition-colors"><i
-          class="ph ph-x text-xl"></i></button>
-    </div>
+{% call criar_modal('modalNovoEntregavel', 'Criar Novo Entregável', 'max-w-md', true, false) %}
+<div class="mb-6">
+  <label class="block text-white font-medium mb-2">Nome do Entregável</label>
+  <div class="relative">
+    <input type="text" id="nomeNovoEntregavelModal" placeholder="Digite o nome do entregável"
+      class="w-full text-base sm:text-lg pl-4 pr-10 py-3 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]" />
+    <i class="ph ph-file-text absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+  </div>
+  <p class="text-gray-400 text-sm mt-2">O entregável será adicionado à lista atual e ao seletor para uso futuro.</p>
+</div>
 
-    <div class="mb-6">
-      <label class="block text-white font-medium mb-2">Nome do Entregável</label>
-      <div class="relative">
-        <input type="text" id="nomeNovoEntregavelModal" placeholder="Digite o nome do entregável"
-          class="w-full text-base sm:text-lg pl-4 pr-10 py-3 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#f8ca54]" />
-        <i class="ph ph-file-text absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-      </div>
-      <p class="text-gray-400 text-sm mt-2">O entregável será adicionado à lista atual e ao seletor para uso futuro.</p>
-    </div>
+<div class="flex gap-3">
+  <button type="button" onclick="fecharModal('modalNovoEntregavel')"
+    class="flex-1 bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white font-medium py-3 px-4 rounded-md transition-colors">Cancelar</button>
+  <button type="button" id="btnCriarModal"
+    class="flex-1 bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2">
+    <i class="ph ph-check"></i>
+    Criar Entregável
+  </button>
+</div>
+{% endcall %}
 
-    <div class="flex gap-3">
-      <button type="button" id="btnCancelarModal"
-        class="flex-1 bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white font-medium py-3 px-4 rounded-md transition-colors">Cancelar</button>
-      <button type="button" id="btnCriarModal"
-        class="flex-1 bg-[#f8ca54] hover:bg-[#d7ac3f] text-[#101010] font-medium py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2">
-        <i class="ph ph-check"></i>
-        Criar Entregável
+{% call criar_modal('modalGerenciarTemplates', 'Gerenciar Modelos de Entregáveis', 'max-w-lg', true, false) %}
+<div class="space-y-4">
+  <p class="text-sm text-gray-400">Aqui você pode remover modelos da lista geral de seleção.</p>
+  <div id="lista-modelos-slug" class="space-y-2 max-h-[50vh] overflow-y-auto pr-2">
+    <!-- JS popula aqui -->
+    {% for mod in modelos %}
+    <div class="flex justify-between items-center p-3 bg-[#101010] border border-[#2a2a2a] rounded-lg group"
+      data-modelo-id="{{ mod.id }}">
+      <span class="text-white">{{ mod.nome }}</span>
+      <button onclick="deletarModelo('{{ mod.id }}')"
+        class="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-500/10 rounded">
+        <i class="ph ph-trash text-lg"></i>
       </button>
     </div>
+    {% endfor %}
   </div>
 </div>
+{% endcall %}
+
+<!-- Modal de confirmação de exclusão de modelo -->
+{% call criar_modal_acao('modal-deletar-modelo', 'Confirmar Exclusão de Modelo', 'max-w-md', true, 'Deletar') %}
+<div class="text-center py-4">
+  <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
+  <p class="text-gray-300 mb-2">Deseja realmente excluir este modelo da lista global?</p>
+  <p class="text-sm text-gray-400 mt-4">Isso não afetará mentorias já criadas, mas o modelo não poderá mais ser
+    selecionado.</p>
+</div>
+{% endcall %}
 
 <!-- Template para Entregável -->
 <template id="templateEntregavel">
@@ -122,14 +149,9 @@ Cadastro de Mentoria
       <span class="text-white nome-entregavel">Nome do Entregável</span>
     </div>
     <div class="flex items-center gap-2">
-      <button type="button" class="mover-cima text-gray-400 hover:text-white p-1"><i
-          class="ph ph-arrow-up"></i></button>
-      <button type="button" class="mover-baixo text-gray-400 hover:text-white p-1"><i
-          class="ph ph-arrow-down"></i></button>
 
-      
       <button type="button" class="remover text-red-400 hover:text-red-300 p-1"><i class="ph ph-trash"></i></button>
-    
+
     </div>
     <input type="hidden" name="entregaveis[]" value="" />
   </div>
@@ -153,28 +175,13 @@ Cadastro de Mentoria
   // Array para armazenar entregáveis
   let entregaveis = []
   let proximoId = 1
+  let modeloDeletandoId = null
 
   // Abrir modal
   btnNovoEntregavel.addEventListener('click', () => {
-    modalNovoEntregavel.classList.remove('hidden')
+    abrirModal('modalNovoEntregavel')
     nomeNovoEntregavelModal.value = ''
-    nomeNovoEntregavelModal.focus()
-  })
-
-  // Fechar modal
-  function fecharModal() {
-    modalNovoEntregavel.classList.add('hidden')
-    nomeNovoEntregavelModal.value = ''
-  }
-
-  btnFecharModal.addEventListener('click', fecharModal)
-  btnCancelarModal.addEventListener('click', fecharModal)
-
-  // Fechar modal ao clicar fora
-  modalNovoEntregavel.addEventListener('click', (e) => {
-    if (e.target === modalNovoEntregavel) {
-      fecharModal()
-    }
+    setTimeout(() => nomeNovoEntregavelModal.focus(), 100);
   })
 
   // Adicionar entregável existente
@@ -188,25 +195,91 @@ Cadastro de Mentoria
   })
 
   // Criar novo entregável via modal
-  btnCriarModal.addEventListener('click', () => {
+  btnCriarModal.addEventListener('click', async () => {
     const nome = nomeNovoEntregavelModal.value.trim()
-    if (nome) {
-      const valor = 'novo_' + Date.now()
-      adicionarEntregavel(nome, valor)
+    if (!nome) return;
 
-      // Adicionar ao select também
-      const option = document.createElement('option')
-      option.value = valor
-      option.textContent = nome
-      selectEntregavel.appendChild(option)
+    try {
+      const resp = await fetch('/mentorias/modelo/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome: nome })
+      });
 
-      // Fechar modal e limpar
-      fecharModal()
+      const data = await resp.json();
+      if (resp.ok) {
+        // Adicionar ao seletor
+        const option = document.createElement('option')
+        option.value = data.id
+        option.textContent = data.nome
+        selectEntregavel.appendChild(option)
+
+        // Adicionar à lista da mentoria (opcional, ou deixa o user selecionar?)
+        // O user disse: "ele cria o entregável mas não fecha" -> implica que quer adicionar logo.
+        adicionarEntregavel(data.nome, data.id)
+
+        // Limpar lista de gerenciar se estiver aberta ou apenas recarregar
+        atualizarListaGerenciar(data.id, data.nome);
+
+        // Fechar modal
+        fecharModal('modalNovoEntregavel')
+      } else {
+        mostrarAviso(data.error || 'Erro ao criar modelo');
+      }
+    } catch (err) {
+      console.error(err);
+      mostrarAviso('Erro de conexão');
     }
   })
 
-  // Função para adicionar entregável à lista
+  // Gerenciar Modelos
+  function deletarModelo(id) {
+    modeloDeletandoId = id;
+    abrirModal('modal-deletar-modelo');
+  }
+
+  async function confirmarDeletarModelo() {
+    if (!modeloDeletandoId) return;
+    try {
+      const resp = await fetch(`/mentorias/modelo/delete/${modeloDeletandoId}`, { method: 'DELETE' });
+      if (resp.ok) {
+        // Remove do select
+        const option = selectEntregavel.querySelector(`option[value="${modeloDeletandoId}"]`);
+        if (option) option.remove();
+
+        // Remove da lista de gerenciar
+        const div = document.querySelector(`[data-modelo-id="${modeloDeletandoId}"]`);
+        if (div) div.remove();
+
+        fecharModal('modal-deletar-modelo');
+      } else {
+        const data = await resp.json();
+        mostrarAviso(data.error || 'Erro ao deletar modelo');
+      }
+    } catch (err) {
+      console.error(err);
+      mostrarAviso('Erro de conexão ao deletar modelo');
+    }
+  }
+
+  function atualizarListaGerenciar(id, nome) {
+    const container = document.getElementById('lista-modelos-slug');
+    const div = document.createElement('div');
+    div.className = 'flex justify-between items-center p-3 bg-[#101010] border border-[#2a2a2a] rounded-lg group';
+    div.dataset.modeloId = id;
+    div.innerHTML = `
+      <span class="text-white">${nome}</span>
+      <button onclick="deletarModelo(${id})" class="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-500/10 rounded">
+        <i class="ph ph-trash text-lg"></i>
+      </button>
+    `;
+    container.appendChild(div);
+  }
+
+  // Função para adicionar entregável à lista da mentoria
   function adicionarEntregavel(nome, valor) {
+    // Na mentoria PODE repetir (removida a checagem que adicionei antes)
+
     // Remover mensagem de lista vazia
     if (listaVazia) {
       listaVazia.remove()
@@ -227,16 +300,12 @@ Cadastro de Mentoria
 
     // Adicionar eventos
     const btnRemover = clone.querySelector('.remover')
-    const btnMoverCima = clone.querySelector('.mover-cima')
-    const btnMoverBaixo = clone.querySelector('.mover-baixo')
     const btnMover = clone.querySelector('.mover')
 
     btnRemover.addEventListener('click', () => {
       const id = parseInt(item.dataset.id)
       removerEntregavel(id)
     });
-    btnMoverCima.addEventListener('click', () => moverEntregavel(proximoId, 'cima'));
-    btnMoverBaixo.addEventListener('click', () => moverEntregavel(proximoId, 'baixo'));
 
     // Tornar arrastável
     tornarArrastavel(item)
@@ -254,6 +323,7 @@ Cadastro de Mentoria
     })
 
     proximoId++
+    return true;
   }
 
   // Função para remover entregável
@@ -280,29 +350,6 @@ Cadastro de Mentoria
     }
   }
 
-  // Função para mover entregável
-  function moverEntregavel(id, direcao) {
-    const index = entregaveis.findIndex((e) => e.id === id)
-    if (index !== -1) {
-      const novoIndex = direcao === 'cima' ? index - 1 : index + 1
-
-      // Verificar se o movimento é válido
-      if (novoIndex >= 0 && novoIndex < entregaveis.length) {
-        // Trocar posições no array
-        ;[entregaveis[index], entregaveis[novoIndex]] = [entregaveis[novoIndex], entregaveis[index]]
-
-        // Atualizar DOM
-        if (direcao === 'cima') {
-          listaEntregaveis.insertBefore(entregaveis[index].elemento, entregaveis[novoIndex].elemento)
-        } else {
-          listaEntregaveis.insertBefore(entregaveis[novoIndex].elemento, entregaveis[index].elemento.nextSibling)
-        }
-
-        // Atualizar ordens
-        atualizarOrdens()
-      }
-    }
-  }
 
   //--------------------------------------------------------------------
 
@@ -414,9 +461,65 @@ Cadastro de Mentoria
   // fazer o esc fechar o modal
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !modalNovoEntregavel.classList.contains('hidden')) {
-      fecharModal()
+      fecharModal('modalNovoEntregavel')
     }
   })
+
+  // Validação do Formulário
+  const form = document.getElementById('formCadastroMentoria');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const nome = document.getElementById('nomeMentoria').value.trim();
+    if (!nome) {
+      mostrarAviso('Por favor, digite o nome da mentoria.');
+      return;
+    }
+
+    if (entregaveis.length === 0) {
+      mostrarAviso('A mentoria precisa ter pelo menos um entregável.');
+      return;
+    }
+
+    // Desativar botão para evitar cliques duplos
+    const btnSubmit = form.querySelector('button[type="submit"]');
+    const originalText = btnSubmit.innerHTML;
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML = '<i class="ph ph-circle-notch animate-spin"></i> Verificando...';
+
+    try {
+      // Verificar duplicado no backend
+      const resp = await fetch('/mentorias/verificar-nome', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome: nome })
+      });
+      const data = await resp.json();
+
+      if (data.existe) {
+        mostrarAviso(`Já existe uma mentoria com o nome "${nome}". Por favor, escolha outro.`);
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = originalText;
+        return;
+      }
+
+      // Se tudo ok, envia de verdade
+      form.submit();
+    } catch (err) {
+      console.error(err);
+      mostrarAviso('Erro ao validar formulário. Tente novamente.');
+      btnSubmit.disabled = false;
+      btnSubmit.innerHTML = originalText;
+    }
+  });
+
+  window.acaoModal = function (modalId) {
+    if (modalId === 'modal-deletar-modelo') {
+      confirmarDeletarModelo();
+    } else {
+      fecharModal(modalId);
+    }
+  }
 </script>
 
 <style>

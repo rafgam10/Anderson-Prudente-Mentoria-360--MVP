@@ -14,6 +14,7 @@ import json, datetime
 from app.models import db
 from app.models.Mentoria_model import Mentoria
 from app.models.Entregavel_model import Entregavel
+from app.models.EntregavelModelo import EntregavelModelo
 
 mentoria_bp = Blueprint("mentoria", __name__, url_prefix="/mentorias")
 
@@ -30,9 +31,12 @@ def cadastrar_mentorias():
         # transforma JSON → dict
         entregaveis = [json.loads(item) for item in entregaveis_raw]
         
-        print("Nome:", nomeMentoria)
-        print("Entregáveis:", entregaveis)
-        
+        # Verifica duplicado
+        existente = Mentoria.query.filter_by(nome=nomeMentoria).first()
+        if existente:
+            flash(f"Já existe uma mentoria com o nome '{nomeMentoria}'!", "danger")
+            return redirect(url_for("mentoria.cadastrar_mentorias"))
+
         data_criacao_mentoria = datetime.datetime.now().strftime('%Y-%m-%d')
         
         # cria mentoria
@@ -47,9 +51,7 @@ def cadastrar_mentorias():
         for entregar in entregaveis:
             obj_entregar = Entregavel(
                 id_mentoria=id_mentoria,
-                nome=entregar.get("nome"),
-                status='Pendente',
-                data_entrega=None
+                nome=entregar.get("nome")
             )
             db.session.add(obj_entregar)
 
@@ -58,7 +60,43 @@ def cadastrar_mentorias():
         flash("Mentoria criada com sucesso!", "success")
         return redirect(url_for("mentoria.cadastrar_mentorias"))
     
-    return render_template("telasAdmin/cadastroMentoria.html")
+    modelos = EntregavelModelo.query.order_by(EntregavelModelo.nome).all()
+    return render_template("telasAdmin/cadastroMentoria.html", modelos=modelos)
+
+@mentoria_bp.route("/modelo/add", methods=["POST"])
+def add_modelo():
+    data = request.get_json()
+    nome = data.get("nome")
+    if not nome:
+        return jsonify({"error": "Nome é obrigatório"}), 400
+    
+    # Verifica duplicado
+    existente = EntregavelModelo.query.filter_by(nome=nome).first()
+    if existente:
+        return jsonify({"error": "Já existe um modelo com este nome"}), 400
+    
+    novo = EntregavelModelo(nome=nome)
+    db.session.add(novo)
+    db.session.commit()
+    
+    return jsonify({"id": novo.id, "nome": novo.nome}), 201
+
+@mentoria_bp.route("/modelo/delete/<int:id>", methods=["DELETE"])
+def delete_modelo(id):
+    modelo = EntregavelModelo.query.get_or_404(id)
+    db.session.delete(modelo)
+    db.session.commit()
+    return jsonify({"message": "Modelo removido com sucesso"}), 200
+
+@mentoria_bp.route("/verificar-nome", methods=["POST"])
+def verificar_nome():
+    data = request.get_json()
+    nome = data.get("nome")
+    if not nome:
+        return jsonify({"existe": False})
+    
+    existente = Mentoria.query.filter_by(nome=nome).first()
+    return jsonify({"existe": existente is not None})
 
 @mentoria_bp.route("/listar-mentoria", methods=["GET"])
 def listar_mentorias():

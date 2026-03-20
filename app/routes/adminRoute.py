@@ -19,7 +19,8 @@ from app.models import (
     Atividade,
     Mentoria,
     Entregavel,
-    Reuniao
+    Reuniao,
+    AlunoEntregavel
 )
 from datetime import datetime
 
@@ -121,7 +122,8 @@ def deletar_admin(id: int):
 @admin_bp.route('/alunos/lista', methods=["GET"])
 def lista_alunos():
     array_alunos = Aluno.query.all()
-    return render_template('telasAdmin/listaAlunos.html', array_alunos=array_alunos)
+    todos_mentorias = Mentoria.query.all()
+    return render_template('telasAdmin/listaAlunos.html', array_alunos=array_alunos, todos_mentorias=todos_mentorias)
 
 
 @admin_bp.route('/alunos/cadastro', methods=["GET","POST"])
@@ -136,11 +138,7 @@ def cadastro_aluno():
         mentoria_select = request.form.getlist('select_mentoria')
         
         # Exibir dados coletados.
-        print("Nome:", inputNomeAluno)
-        print("Email:", inputEmailAluno)
-        print("Senha:", inputSenhaAluno)
-        print("CPF:", inputCPFAluno)
-        print("Mentoria selecionados:", mentoria_select)
+        print(f"Cadastro Aluno: {inputNomeAluno}, Ment: {mentoria_select}")
         
         # Inserir alunos no DB:
         novo_aluno = Aluno(
@@ -150,14 +148,21 @@ def cadastro_aluno():
             CPFAluno=inputCPFAluno
         )
             
-        # Busca os produtos selecionado no DB:
-        if mentoria_select:
-            mentorias_db = Mentoria.query.filter(
-                Mentoria.id.in_(mentoria_select)
-            ).all()
-            
-            novo_aluno.mentorias.extend(mentorias_db)
-            print("Mentorias associadas:", mentorias_db)
+        # Busca a mentoria selecionada no DB:
+        m_id = request.form.get('select_mentoria')
+        if m_id:
+            mentoria_db = Mentoria.query.get(int(m_id))
+            if mentoria_db:
+                novo_aluno.mentoria = mentoria_db
+                # Cria instâncias de entregáveis para este aluno
+                for template in mentoria_db.entregaveis:
+                    status_item = AlunoEntregavel(
+                        aluno=novo_aluno,
+                        entregavel_template=template,
+                        status='Pendente'
+                    )
+                    db.session.add(status_item)
+                print(f"Mentoria {mentoria_db.nome} e entregáveis associados.")
         
         db.session.add(novo_aluno)
         db.session.commit()
@@ -166,30 +171,47 @@ def cadastro_aluno():
         flash(f"Aluno {inputNomeAluno} cadastrado com sucesso!", "success")
         return redirect(url_for('admin.cadastro_aluno'))
     
-    mentorias = db.session.query(Mentoria).all()
-    return render_template('telasAdmin/cadastroAlunos.html', mentorias=mentorias)
+    mentorias = Mentoria.query.all()
+    todos_produtos = Produto.query.all()
+    return render_template('telasAdmin/cadastroAlunos.html', mentorias=mentorias, todos_produtos=todos_produtos)
 
 
 @admin_bp.route('/alunos/editar/<int:id>', methods=["PATCH"])
 def editar_aluno(id:int) -> None:
     data = request.get_json()
-    
     aluno = Aluno.query.get_or_404(id)
     
     aluno.nomeAluno = data.get("nome", aluno.nomeAluno)
     aluno.emailAluno = data.get("email", aluno.emailAluno)
     aluno.CPFAluno = data.get("cpf", aluno.CPFAluno)
     
-    produto_input = data.get("produto")
-    aluno.produtos.clear()
+    senha_nova = data.get("senha")
+    if senha_nova:
+        aluno.senhaAluno = generate_password_hash(senha_nova)
     
-    if produto_input:
-        nomes_produtos = produto_input.split("+")
-        produtos_db = Produto.query.filter(Produto.nomeProduto.in_(nomes_produtos)).all()
-        aluno.produtos.extend(produtos_db)
+    mentoria_id = data.get("mentoria_id") 
+    
+    # Verifica se a mentoria mudou para "zerar tudo"
+    if mentoria_id is not None and mentoria_id != "":
+        mentoria_id_int = int(mentoria_id)
+        if mentoria_id_int != aluno.mentoria_id:
+            print(f"Mentoria mudou. Zerando dados do aluno {aluno.id}...")
+            aluno.reunioes.clear()
+            aluno.entregaveis_status.clear()
+            
+            mentoria_db = Mentoria.query.get(mentoria_id_int)
+            if mentoria_db:
+                aluno.mentoria = mentoria_db
+            # Cria novas instâncias de entregáveis
+            for template in mentoria_db.entregaveis:
+                status_item = AlunoEntregavel(
+                    aluno=aluno,
+                    entregavel_template=template,
+                    status='Pendente'
+                )
+                db.session.add(status_item)
         
     db.session.commit()
-    print(f"Aluno {aluno.nomeAluno} atualizado com sucesso")
     return jsonify({"message": f"Aluno {aluno.nomeAluno} atualizado com sucesso"})
 
 
@@ -197,10 +219,7 @@ def editar_aluno(id:int) -> None:
 def deletar_aluno(id:int) -> None:
     aluno = Aluno.query.get_or_404(id)
     
-    # limpa relacionamentos
-    aluno.mentorias.clear()
-    aluno.produtos.clear()
-    
+    # limpa relacionamentos em cascata (reunioes e entregaveis_status são clear via cascade)
     db.session.delete(aluno)
     db.session.commit()
     
@@ -209,20 +228,19 @@ def deletar_aluno(id:int) -> None:
 
 @admin_bp.route('/entregaveis/<int:id>', methods=['PATCH'])
 def atualizar_entregavel(id):
-    entregavel = Entregavel.query.get_or_404(id)
+    # Agora atualiza o status Específico do Aluno
+    status_item = AlunoEntregavel.query.get_or_404(id)
     data = request.get_json()
-
-    entregavel.status = data.get('status')
-
+    
+    status_item.status = data.get('status')
     if data.get('data_entrega'):
-        entregavel.data_entrega = datetime.strptime(
+        status_item.data_entrega = datetime.strptime(
             data.get('data_entrega'), '%Y-%m-%d'
-        )
+        ).date()
     else:
-        entregavel.data_entrega = None
-
+        status_item.data_entrega = None
+        
     db.session.commit()
-
     return jsonify({"success": True})
 
 
@@ -230,21 +248,61 @@ def atualizar_entregavel(id):
 @admin_bp.route('/alunos/<int:aluno_id>/entregaveis')
 def entregaveis_aluno(aluno_id):
     aluno = Aluno.query.get_or_404(aluno_id)
-
+    
     entregaveis = [
         {
-            "id": e.id,
-            "nome": e.nome,
-            "status": e.status,
-            "data_entrega": e.data_entrega.strftime('%d/%m/%Y') if e.data_entrega else None,
-            "mentoria": e.mentoria.nome,
-            "mentoria_id": e.mentoria.id
+            "id": st.id, # ID do AlunoEntregavel
+            "template_id": st.entregavel_id,
+            "nome": st.entregavel_template.nome,
+            "status": st.status,
+            "data_entrega": st.data_entrega.strftime('%d/%m/%Y') if st.data_entrega else None,
+            "data_entrega_iso": st.data_entrega.strftime('%Y-%m-%d') if st.data_entrega else None,
+            "mentoria": aluno.mentoria.nome if aluno.mentoria else "N/A",
+            "mentoria_id": aluno.mentoria_id
         }
-        for e in aluno.entregaveis
+        for st in aluno.entregaveis_status
     ]
-
+    
     return {"entregaveis": entregaveis}
 
+
+# --- INÍCIO GESTÃO DE REUNIÕES ---
+
+@admin_bp.route('/alunos/<int:aluno_id>/reunioes')
+def listar_reunioes_aluno(aluno_id):
+    aluno = Aluno.query.get_or_404(aluno_id)
+    reunioes = [
+        {
+            "id": r.id,
+            "nome": r.nome,
+            "data": r.data.strftime('%Y-%m-%d'),
+            "data_formatada": r.data.strftime('%d/%m/%Y'),
+            "mentoria_nome": r.mentoria.nome
+        }
+        for r in aluno.reunioes
+    ]
+    return jsonify({"reunioes": sorted(reunioes, key=lambda x: x['data'], reverse=True)})
+
+@admin_bp.route('/reuniao/<int:id>', methods=['PATCH'])
+def editar_reuniao(id):
+    reuniao = Reuniao.query.get_or_404(id)
+    data = request.get_json()
+    
+    reuniao.nome = data.get('nome', reuniao.nome)
+    if data.get('data'):
+        reuniao.data = datetime.strptime(data.get('data'), '%Y-%m-%d').date()
+        
+    db.session.commit()
+    return jsonify({"success": True, "message": "Reunião atualizada!"})
+
+@admin_bp.route('/reuniao/<int:id>', methods=['DELETE'])
+def deletar_reuniao(id):
+    reuniao = Reuniao.query.get_or_404(id)
+    db.session.delete(reuniao)
+    db.session.commit()
+    return jsonify({"success": True, "message": "Reunião removida!"})
+
+# --- FIM GESTÃO DE REUNIÕES ---
 
 @admin_bp.route("/reuniao/add", methods=["POST"])
 def criar_reuniao():

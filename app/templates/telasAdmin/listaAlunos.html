@@ -22,130 +22,153 @@
   </div>
 
   {% for aluno in array_alunos %}
-    <div
-      class="card-aluno mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-colors cursor-pointer hover:border-[#535353]"
-      onclick="abrirModalDetalhes({{aluno.id}})">
+  <div
+    class="card-aluno mx-4 mb-5 text-gray-300 bg-[#171717] rounded-lg border border-[#2a2a2a] transition-all cursor-pointer hover:border-[#f8ca54] hover:shadow-lg group"
+    onclick="abrirModalDetalhes({{aluno.id}})">
 
-      <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
-        <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
-          <i class="ph-duotone ph-student text-2xl"></i>
-          <span>{{aluno.nomeAluno}}</span>
-        </div>
-
-        <div class="flex flex-col p-1 sm:flex-row gap-2">
-          <button
-            class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors"
-            onclick="event.stopPropagation(); abrirModalEditar({{aluno.id}}, '{{aluno.nomeAluno}}', '{% for p in aluno.produtos %}{{p.nomeProduto}}{% if not loop.last %}+{% endif %}{% endfor %}')">
-            <i class="ph ph-pencil-simple"></i> Editar
-          </button>
-          <button
-            class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors"
-            onclick="event.stopPropagation(); abrirModalDeletar({{aluno.id}}, '{{aluno.nomeAluno}}')">
-            <i class="ph ph-trash"></i> Deletar
-          </button>
-        </div>
+    <div class="rounded-t-lg px-2 py-2 gap-2 bg-[#242424] flex justify-between items-center">
+      <div class="flex justify-center items-center gap-2 text-lg font-bold text-[#f8ca54]">
+        <i class="ph-duotone ph-student text-2xl"></i>
+        <span>{{aluno.nomeAluno}}</span>
       </div>
 
-      <div class="p-4">
-        <div class="flex flex-col p-1 lg:flex-row gap-6">
-          <div class="flex-1 space-y-2">
-            <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
-            <p class="text-sm font-medium">{{aluno.emailAluno}}</p>
-          </div>
-
-          <div class="flex-1 space-y-2">
-            <p class="text-sm text-[#f8ca54]"><i class="ph ph-identification-card"></i> CPF</p>
-            <p class="text-sm font-medium">{{aluno.CPFAluno}}</p>
-          </div>
-
-          <div class="flex-1 space-y-2">
-            <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Mentoria</p>
-            <div class="flex gap-2">
-              {% if aluno.mentorias %}
-                {% for mentoria in aluno.mentorias %}
-            
-                  <span class="px-2 py-1 bg-[#e77c09] text-white text-sm font-semibold rounded-md">
-                    {{ mentoria.nome }}
-                  </span>
-                {% endfor %}
-                
-              {% else %}
-                <span class="text-sm text-gray-400">Sem produtos</span>
-              {% endif %}
-        
-            </div>
-          </div>
-
-        </div>
+      <div class="flex flex-col p-1 sm:flex-row gap-2">
+        <button type="button"
+          class="px-3 py-1 bg-[#e28813] text-white hover:bg-[#c4610a] rounded-md text-sm font-semibold transition-colors flex items-center gap-1"
+          onclick="event.stopPropagation(); abrirModalEditar('{{aluno.id}}', '{{aluno.nomeAluno}}', '{{aluno.emailAluno}}', '{{aluno.CPFAluno}}', '{{aluno.mentoria_id or ''}}')">
+          <i class="ph ph-pencil-simple"></i> Editar
+        </button>
+        <button type="button"
+          class="px-3 py-1 bg-red-600 text-white hover:bg-red-800 rounded-md text-sm font-semibold transition-colors flex items-center gap-1"
+          onclick="event.stopPropagation(); abrirModalDeletar('{{aluno.id}}', '{{aluno.nomeAluno}}')">
+          <i class="ph ph-trash"></i> Deletar
+        </button>
       </div>
-
-      <!-- Rodapé do card -->
-      <div
-        class="rounded-b-lg px-2 py-2 bg-[#242424] border-t border-[#2a2a2a] flex flex-col sm:flex-row justify-baseline gap-10 items-center">
-        <div class="flex items-center gap-2">
-          <i class="ph ph-calendar text-[#f8ca54]"></i>
-         <span class="text-sm text-gray-300">
-            Data da última reunião:
-            <span class="font-semibold">
-              {% if aluno.ultima_reuniao %}
-                {{ aluno.ultima_reuniao.strftime('%d/%m/%Y') }}
-              {% else %}
-                —
-              {% endif %}
-            </span>
-          </span>
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="ph ph-users text-[#f8ca54]"></i>
-          <span class="text-sm text-gray-300">Nº total de reuniões: <span class="font-semibold">{{ aluno.reunioes | length }}</span></span>
-        </div>
-      </div>
-
     </div>
+
+    <div class="p-4">
+      <div class="flex flex-col p-1 lg:flex-row gap-6">
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-envelope"></i> Email</p>
+          <p class="text-sm font-medium">{{aluno.emailAluno}}</p>
+        </div>
+
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-identification-card"></i> CPF</p>
+          <p class="text-sm font-medium">{{aluno.CPFAluno}}</p>
+        </div>
+
+        <div class="flex-1 space-y-2">
+          <p class="text-sm text-[#f8ca54]"><i class="ph ph-package"></i> Mentoria</p>
+          <div class="flex gap-2">
+            {% if aluno.mentoria %}
+            <span class="px-2 py-1 bg-[#e77c09] text-white text-sm font-semibold rounded-md">
+              {{ aluno.mentoria.nome }}
+            </span>
+            {% else %}
+            <span class="text-sm text-gray-400">Sem mentoria</span>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Rodapé do card -->
+    <div
+      class="rounded-b-lg px-2 py-2 bg-[#242424] border-t border-[#2a2a2a] flex flex-col sm:flex-row justify-baseline gap-10 items-center">
+      <div class="flex items-center gap-2">
+        <i class="ph ph-calendar text-[#f8ca54]"></i>
+        <span class="text-sm text-gray-300">
+          Data da última reunião:
+          <span class="font-semibold">
+            {% if aluno.ultima_reuniao %}
+            {{ aluno.ultima_reuniao.strftime('%d/%m/%Y') }}
+            {% else %}
+            —
+            {% endif %}
+          </span>
+        </span>
+      </div>
+      <div class="flex items-center gap-2">
+        <i class="ph ph-users text-[#f8ca54]"></i>
+        <span class="text-sm text-gray-300">Nº total de reuniões: <span class="font-semibold">{{ aluno.reunioes | length
+            }}</span></span>
+      </div>
+    </div>
+
+  </div>
 
   {% endfor %}
 
 </div>
 
 <!-- MODAL DE EDIÇÃO -->
-{% call criar_modal('modal-editar', 'Editar Aluno', 'max-w-md') %}
+{% call criar_modal('modal-editar', 'Editar Aluno', 'max-w-md', mostrar_footer=true) %}
 <form id="modal-editar-form" class="space-y-4">
   <div>
-    <label class="text-sm text-gray-300">Nome</label>
-    <input type="text" name="nome" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+    <label class="text-sm text-gray-300 font-medium mb-1 block">Nome Completo</label>
+    <input type="text" name="nome"
+      class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white focus:border-[#f8ca54] outline-none transition-all">
   </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <label class="text-sm text-gray-300 font-medium mb-1 block">E-mail</label>
+      <input type="email" name="email"
+        class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white focus:border-[#f8ca54] outline-none transition-all">
+    </div>
+    <div>
+      <label class="text-sm text-gray-300 font-medium mb-1 block">CPF</label>
+      <input type="text" name="cpf"
+        class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white focus:border-[#f8ca54] outline-none transition-all">
+    </div>
+  </div>
+
   <div>
-    <label class="text-sm text-gray-300">Mentoria</label>
-    <select name="produto" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
-      <option value="MPS">MPS</option>
-      <option value="DOP">DOP</option>
-      <option value="MPS+DOP">MPS + DOP</option>
+    <label class="text-sm text-gray-300 font-medium mb-1 block">Mentoria</label>
+    <select name="mentoria"
+      class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white focus:border-[#f8ca54] outline-none transition-all">
+      <option value="" disabled>Selecione uma Mentoria</option>
+      {% for ment in todos_mentorias %}
+      <option value="{{ ment.id }}">{{ ment.nome }}</option>
+      {% endfor %}
     </select>
+  </div>
+
+  <div class="pt-2 border-t border-[#2a2a2a]">
+    <label class="text-sm text-[#f8ca54] font-medium mb-1 block">Nova Senha (opcional)</label>
+    <input type="password" name="senha" placeholder="Deixe em branco para manter"
+      class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white focus:border-[#f8ca54] outline-none transition-all">
   </div>
 </form>
 {% endcall %}
 
 <!-- MODAL DE DETALHES -->
-{% call criar_modal('modal-detalhes', 'Detalhes do aluno', 'max-w-2xl') %}
-  <div class="space-y-6">
+{% set botoes_detalhes %}
+<div class="grid grid-cols-2 gap-3 w-full">
+  <button onclick="abrirModalNovaReuniao()"
+    class="py-3 px-4 bg-[#f8ca54] hover:bg-[#d7ac3f] text-black font-bold rounded-lg transition-colors flex items-center justify-center gap-2 text-sm shadow-lg">
+    <i class="ph ph-calendar-plus text-lg"></i>
+    Nova Reunião
+  </button>
+  <button onclick="abrirModalListaReunioes()"
+    class="py-3 px-4 bg-[#2a2a2a] border border-[#3a3a3a] hover:border-[#f8ca54] text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 text-sm shadow-sm">
+    <i class="ph ph-list-bullets text-lg"></i>
+    Lista Reuniões
+  </button>
+</div>
+{% endset %}
 
-    <!-- Lista de Entregáveis -->
-    <div class="flex w-full max-h-[60vh] overflow-y-auto">
-      <div id="lista-entregaveis" class="space-y-3 w-full">
-        <!-- JS vai inserir os entregáveis aqui -->
-      </div>
+{% call criar_modal('modal-detalhes', 'Detalhes do aluno', 'max-w-2xl', true, true, botoes_detalhes) %}
+<div class="space-y-6">
+  <!-- Lista de Entregáveis -->
+  <div class="flex w-full">
+    <div id="lista-entregaveis" class="space-y-3 w-full">
+      <!-- JS vai inserir os entregáveis aqui -->
     </div>
-
-    <!-- Botão para adicionar reunião -->
-    <div class="pt-4 border-t border-[#2a2a2a]">
-      <button onclick="abrirModalNovaReuniao()"
-        class="w-full py-3 px-4 bg-[#f8ca55] hover:bg-[#d7ac3f] text-black font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
-        <i class="ph ph-calendar-plus"></i>
-        Adicionar Nova Reunião
-      </button>
-    </div>
-
   </div>
+</div>
 {% endcall %}
 
 
@@ -176,38 +199,124 @@
 <form id="modal-nova-reuniao-form" class="space-y-4">
   <div>
     <label class="text-sm text-gray-300">Data da Reunião</label>
-    <input type="date" id="data_reuniao" name="data_reuniao" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
+    <input type="date" id="data_reuniao" name="data_reuniao"
+      class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white" required>
   </div>
 </form>
 {% endcall %}
 
-<!-- MODAL DE DELETAR -->
-{% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
-  <div class="text-center py-4">
-    <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
-    <p class="text-gray-300 mb-2">Tem certeza que deseja excluir o aluno?</p>
-    <p class="text-lg font-semibold text-[#f8ca54]" id="aluno-deletar-nome"></p>
-    <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
+<!-- MODAL LISTA DE REUNIÕES -->
+{% call criar_modal('modal-lista-reunioes', 'Lista de Reuniões', 'max-w-lg', true, false) %}
+<div id="lista-reunioes-container" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+  <!-- JS preenche aqui -->
+</div>
+{% endcall %}
+
+<!-- MODAL EDITAR REUNIÃO -->
+{% call criar_modal('modal-editar-reuniao', 'Editar Reunião', 'max-w-md') %}
+<form id="modal-editar-reuniao-form" class="space-y-4">
+  <div>
+    <label class="text-sm text-gray-300">Nome/Descrição</label>
+    <input type="text" id="edit-reuniao-nome" name="nome"
+      class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white" required>
   </div>
+  <div>
+    <label class="text-sm text-gray-300">Data</label>
+    <input type="date" id="edit-reuniao-data" name="data"
+      class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white" required>
+  </div>
+</form>
+{% endcall %}
+
+<!-- MODAL DE DELETAR ALUNO -->
+{% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
+<div class="text-center py-4">
+  <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
+  <p class="text-gray-300 mb-2">Tem certeza que deseja excluir o aluno?</p>
+  <p class="text-lg font-semibold text-[#f8ca54]" id="aluno-deletar-nome"></p>
+  <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
+</div>
+{% endcall %}
+
+<!-- MODAL DE DELETAR REUNIÃO -->
+{% call criar_modal_acao('modal-deletar-reuniao', 'Confirmar Exclusão de Reunião', 'max-w-md', true, 'Deletar') %}
+<div class="text-center py-4">
+  <i class="ph ph-warning-circle text-5xl text-red-500 mb-4"></i>
+  <p class="text-gray-300 mb-2">Tem certeza que deseja excluir esta reunião?</p>
+  <p class="text-sm text-gray-400 mt-4">Esta ação não pode ser desfeita.</p>
+</div>
 {% endcall %}
 {% endblock %}
 
 {% block scripts %}
 <script>
-  // Variáveis globais
+  /*******************************
+   * 🟢 VARIÁVEIS GLOBAIS
+   *******************************/
   let alunoEditandoId = null;
   let alunoDeletandoId = null;
-
   let alunoDetalhesId = null;
-  let entregavelAtual = null;
   let entregavelAtualId = null;
+  let reuniaoEditandoId = null;
+  let reuniaoDeletandoId = null;
 
+  /*******************************
+   * 🔵 ABERTURA DE MODAIS
+   *******************************/
 
+  // Detalhes do Aluno (Carrega entregáveis via API)
+  async function abrirModalDetalhes(alunoId) {
+    if (!alunoId) return;
+    alunoDetalhesId = alunoId;
 
-  // Função para abrir modal de entregável
+    const container = document.getElementById("lista-entregaveis");
+    if (!container) return;
+
+    container.innerHTML = "<p class='text-gray-400 text-center py-4'>Carregando entregáveis...</p>";
+    abrirModal("modal-detalhes");
+
+    try {
+      const response = await fetch(`/admin/alunos/${alunoId}/entregaveis`);
+      const data = await response.json();
+
+      if (data.entregaveis && data.entregaveis.length > 0) {
+        window.mentoriaAtualId = data.entregaveis[0].mentoria_id;
+      }
+
+      container.innerHTML = "";
+
+      if (!data.entregaveis || data.entregaveis.length === 0) {
+        container.innerHTML = `<p class="text-gray-400 text-center py-4">Nenhuma tarefa encontrada.</p>`;
+        return;
+      }
+
+      data.entregaveis.forEach(e => {
+        container.innerHTML += `
+          <button onclick="abrirModalEntregavel('${e.id}', '${e.nome}', '${e.status}', '${e.data_entrega_iso || ""}')" 
+            class="w-full py-3 px-4 bg-[#242424] rounded-lg border border-[#2a2a2a] hover:border-[#f8ca54] transition-all flex justify-between items-center group mb-2">
+            <div class="flex items-center gap-3">
+              <i class="ph ph-check-circle ${e.status === 'entregue' ? 'text-green-500' : 'text-gray-500'} text-xl"></i>
+              <div class="text-left">
+                <h4 class="font-medium text-white group-hover:text-[#f8ca54] transition-colors">${e.nome}</h4>
+                <p class="text-xs text-gray-400">Mentoria: ${e.mentoria}</p>
+                ${e.status === "entregue"
+            ? `<p class="text-xs text-green-500 mt-1">Entregue em: <b>${e.data_entrega}</b></p>`
+            : `<p class="text-xs text-red-400 mt-1">Pendente</p>`}
+              </div>
+            </div>
+            <i class="ph ph-caret-right text-gray-600 group-hover:text-[#f8ca54]"></i>
+          </button>
+        `;
+      });
+    } catch (error) {
+      console.error(error);
+      container.innerHTML = `<p class="text-red-400 text-center py-4">Erro ao carregar dados.</p>`;
+    }
+  }
+
+  // Editar Entregável
   function abrirModalEntregavel(id, nome, status, data) {
     entregavelAtualId = id;
-
     document.getElementById("entregavel-titulo").textContent = nome;
 
     const statusSelect = document.getElementById("entregavel-status");
@@ -215,354 +324,293 @@
     const dataInput = document.getElementById("entregavel-data");
 
     statusSelect.value = status;
+    dataInput.value = data || "";
 
     if (status === "entregue") {
       dataContainer.classList.remove("hidden");
-      dataInput.value = data || "";
     } else {
       dataContainer.classList.add("hidden");
-      dataInput.value = "";
     }
 
     statusSelect.onchange = () => {
-      statusSelect.value === "entregue"
-        ? dataContainer.classList.remove("hidden")
-        : dataContainer.classList.add("hidden");
+      if (statusSelect.value === "entregue") {
+        dataContainer.classList.remove("hidden");
+      } else {
+        dataContainer.classList.add("hidden");
+      }
     };
 
     abrirModal("modal-entregavel");
   }
 
+  // Editar Aluno
+  function abrirModalEditar(id, nome, email, cpf, mentoriaId) {
+    alunoEditandoId = id;
+    const form = document.getElementById('modal-editar-form');
+    if (form) {
+      form.nome.value = nome;
+      form.email.value = email;
+      form.cpf.value = cpf;
+      form.mentoria.value = mentoriaId || '';
+      form.senha.value = ''; // Sempre limpa ao abrir
+    }
+    abrirModal('modal-editar');
+  }
 
-  document.getElementById("modal-entregavel-form")
-    .addEventListener("submit", async function (e) {
+  // Novo Encontro
+  function abrirModalNovaReuniao() {
+    abrirModal('modal-nova-reuniao');
+  }
 
-      e.preventDefault();
+  // Lista de Reuniões
+  async function abrirModalListaReunioes() {
+    const container = document.getElementById("lista-reunioes-container");
+    container.innerHTML = "<p class='text-gray-400 text-center py-4'>Carregando reuniões...</p>";
 
-      const status = document.getElementById("entregavel-status").value;
-      const dataEntregaInput = document.getElementById("entregavel-data");
+    abrirModal("modal-lista-reunioes");
 
-      const payload = {
-        status: status,
-        data_entrega: status === "entregue"
-          ? dataEntregaInput.value
-          : null
-      };
+    try {
+      const resp = await fetch(`/admin/alunos/${alunoDetalhesId}/reunioes`);
+      const data = await resp.json();
 
-      try {
-        const response = await fetch(
-          `/admin/entregaveis/${entregavelAtualId}`,
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Erro ao salvar entregável");
-        }
-
-        fecharModal("modal-entregavel");
-
-        // recarrega os entregáveis do aluno
-        abrirModalDetalhes(alunoDetalhesId);
-
-      } catch (err) {
-        console.error(err);
-        alert("Erro ao salvar entregável");
+      container.innerHTML = "";
+      if (!data.reunioes || data.reunioes.length === 0) {
+        container.innerHTML = "<p class='text-gray-400 text-center py-4'>Nenhuma reunião agendada.</p>";
+        return;
       }
-  });
 
+      data.reunioes.forEach(r => {
+        container.innerHTML += `
+          <div class="p-4 bg-[#242424] rounded-lg border border-[#2a2a2a] hover:border-[#3a3a3a] flex justify-between items-center group transition-all">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-full bg-[#f8ca54]/10 flex items-center justify-center text-[#f8ca54]">
+                <i class="ph ph-calendar-text text-xl"></i>
+              </div>
+              <div>
+                <p class="text-white font-semibold text-lg">${r.data_formatada}</p>
+                <p class="text-xs text-[#f8ca54] uppercase tracking-wider font-medium">${r.nome}</p>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="abrirEditarReuniao(${r.id}, '${r.nome}', '${r.data}')" 
+                class="p-2 bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white rounded-lg transition-all shadow-sm" title="Editar">
+                <i class="ph ph-pencil-simple text-lg"></i>
+              </button>
+              <button onclick="deletarReuniao(${r.id})" 
+                class="p-2 bg-red-600/10 text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition-all shadow-sm" title="Excluir">
+                <i class="ph ph-trash text-lg"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    } catch (err) {
+      container.innerHTML = "<p class='text-red-400 text-center'>Erro ao carrergar reuniões.</p>";
+    }
+  }
 
-  // Configurar formulário de entregável
+  // Editar Reunião (Abre o modal)
+  function abrirEditarReuniao(id, nome, data) {
+    reuniaoEditandoId = id;
+    document.getElementById("edit-reuniao-nome").value = nome;
+    document.getElementById("edit-reuniao-data").value = data;
+    abrirModal("modal-editar-reuniao");
+  }
+
+  // Deletar Reunião
+  function deletarReuniao(id) {
+    reuniaoDeletandoId = id;
+    abrirModal('modal-deletar-reuniao');
+  }
+
+  // Deletar Aluno
+  function abrirModalDeletar(id, nome) {
+    alunoDeletandoId = id;
+    const nomeElement = document.getElementById('aluno-deletar-nome');
+    if (nomeElement) nomeElement.textContent = nome;
+    abrirModal('modal-deletar');
+  }
+
+  /*******************************
+   * 🟠 PROCESSAMENTO DE FORMULÁRIOS
+   *******************************/
   document.addEventListener('DOMContentLoaded', function () {
+
+    // 1. Enviar Status de Entregável
     const formEntregavel = document.getElementById('modal-entregavel-form');
     if (formEntregavel) {
       formEntregavel.addEventListener('submit', async function (e) {
         e.preventDefault();
-
-        const statusSelect = document.getElementById('entregavel-status');
-        const dataInput = document.getElementById('entregavel-data');
+        const status = document.getElementById("entregavel-status").value;
+        const dataInput = document.getElementById("entregavel-data");
 
         const payload = {
-          alunoId: alunoDetalhesId,
-          entregavel: entregavelAtual,
-          status: statusSelect ? statusSelect.value : 'pendente',
-          data_entrega: (statusSelect && statusSelect.value === 'entregue' && dataInput) ? dataInput.value : ''
+          status: status,
+          data_entrega: status === "entregue" ? dataInput.value : null
         };
 
         try {
-          console.log('Salvando entregável:', payload);
-          fecharModal('modal-entregavel');
-        } catch (error) {
-          console.error('Erro:', error);
-          alert('Erro ao salvar');
+          const resp = await fetch(`/admin/entregaveis/${entregavelAtualId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          if (resp.ok) {
+            fecharModal("modal-entregavel");
+            abrirModalDetalhes(alunoDetalhesId); // Recarrega lista
+          } else {
+            const data = await resp.json();
+            mostrarAviso("Erro ao salvar entregável: " + (data.error || "Erro desconhecido"));
+          }
+        } catch (err) {
+          console.error(err);
+          mostrarAviso("Erro de conexão ao salvar entregável");
         }
       });
     }
 
-    // Configurar formulário de nova reunião
-    const formNovaReuniao = document.getElementById('modal-nova-reuniao-form');
-    if (formNovaReuniao) {
-      formNovaReuniao.addEventListener('submit', async function (e) {
+    // 2. Adicionar Reunião
+    const formReuniao = document.getElementById('modal-nova-reuniao-form');
+    if (formReuniao) {
+      formReuniao.addEventListener('submit', async function (e) {
         e.preventDefault();
-
-        const formData = new FormData(this);
-        const dataReuniao = formData.get('data_reuniao');
-
-        const payload = {
-          alunoId: alunoDetalhesId,
-          data_reuniao: dataReuniao
-        };
+        const dataReuniao = document.getElementById("data_reuniao").value;
+        if (!dataReuniao) {
+          mostrarAviso("Informe a data");
+          return;
+        }
 
         try {
-          console.log('Agendando reunião:', payload);
-          alert('Reunião adicionada com sucesso!');
-          location.reload();
-          fecharModal('modal-nova-reuniao');
-        } catch (error) {
-          console.error('Erro:', error);
-          alert('Erro ao adicionar reunião');
+          const resp = await fetch("/admin/reuniao/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              aluno_id: alunoDetalhesId,
+              mentoria_id: window.mentoriaAtualId,
+              data_reuniao: dataReuniao
+            })
+          });
+
+          if (resp.ok) {
+            fecharModal("modal-nova-reuniao");
+            location.reload();
+          } else {
+            const data = await resp.json();
+            mostrarAviso("Erro ao salvar reunião: " + (data.error || "Erro desconhecido"));
+          }
+        } catch (err) {
+          console.error(err);
+          mostrarAviso("Erro de conexão ao salvar reunião");
         }
       });
     }
-  });
 
-
-
-
-
-
-
-  // Função para abrir modal de nova reunião
-  function abrirModalNovaReuniao() {
-    // Pode marcar qualquer data
-    abrirModal('modal-nova-reuniao');
-  }
-
-
-
-
-  // Função para abrir modal de edição
-  function abrirModalEditar(id, nome, produto) {
-    alunoEditandoId = id;
-
-    // Preencher o formulário
-    const form = document.getElementById('modal-editar-form');
-    if (form) {
-      form.nome.value = nome;
-      // Corrigir valor se for múltiplos produtos
-      const produtoValue = produto.includes('+') ? 'MPS+DOP' : produto;
-      form.produto.value = produtoValue;
-    }
-
-    abrirModal('modal-editar');
-  }
-
-  // Função para abrir modal de deletar
-  function abrirModalDeletar(id, nome) {
-    alunoDeletandoId = id;
-
-
-    const nomeElement = document.getElementById('aluno-deletar-nome');
-    if (nomeElement) {
-      nomeElement.textContent = nome;
-    }
-
-    abrirModal('modal-deletar');
-  }
-
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const editForm = document.getElementById('modal-editar-form');
-    if (editForm) {
-      editForm.addEventListener('submit', async (e) => {
+    // 2.1 Editar Reunião (Envio)
+    const formEditReuniao = document.getElementById('modal-editar-reuniao-form');
+    if (formEditReuniao) {
+      formEditReuniao.addEventListener('submit', async function (e) {
         e.preventDefault();
-
         const payload = {
-          nome: editForm.nome.value,
-          produto: editForm.produto.value
+          nome: document.getElementById("edit-reuniao-nome").value,
+          data: document.getElementById("edit-reuniao-data").value
         };
 
-        const resp = await fetch(`/admin/alunos/editar/${alunoEditandoId}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+        try {
+          const resp = await fetch(`/admin/reuniao/${reuniaoEditandoId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          if (resp.ok) {
+            fecharModal("modal-editar-reuniao");
+            abrirModalListaReunioes(); // Recarrega a lista
+          }
+        } catch (err) { console.error(err); }
+      });
+    }
+
+    // 3. Editar Aluno
+    const formEditar = document.getElementById('modal-editar-form');
+    if (formEditar) {
+      formEditar.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const payload = {
+          nome: formEditar.nome.value,
+          email: formEditar.email.value,
+          cpf: formEditar.cpf.value,
+          mentoria_id: formEditar.mentoria.value,
+          senha: formEditar.senha.value || null
+        };
+
+        try {
+          const resp = await fetch(`/admin/alunos/editar/${alunoEditandoId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          if (resp.ok) {
+            location.reload();
+          } else {
+            const data = await resp.json();
+            mostrarAviso("Erro ao atualizar aluno: " + (data.error || "Erro desconhecido"));
+          }
+        } catch (err) {
+          console.error(err);
+          mostrarAviso("Erro de conexão ao atualizar aluno");
+        }
+      });
+    }
+
+    // 4. Busca em tempo real
+    const inputPesquisa = document.getElementById('pesquisa-aluno');
+    if (inputPesquisa) {
+      inputPesquisa.addEventListener('input', function () {
+        const termo = this.value.toLowerCase();
+        document.querySelectorAll('.card-aluno').forEach(card => {
+          const nome = card.querySelector('span').textContent.toLowerCase();
+          card.style.display = nome.includes(termo) ? '' : 'none';
         });
-
-        if (resp.ok) {
-          location.reload();
-        } else {
-          console.error("Erro ao editar aluno");
-        }
-
-        fecharModal('modal-editar');
       });
     }
   });
 
-
+  /*******************************
+   * 🔴 AÇÕES GLOBAIS (BOTÃO 'SALVAR' EM MODAL_ACAO)
+   *******************************/
   window.acaoModal = async function (modalId) {
     if (modalId === 'modal-deletar' && alunoDeletandoId) {
       try {
-        const resp = await fetch(`/admin/alunos/deletar/${alunoDeletandoId}`, {
-          method: "DELETE"
-        });
-
+        const resp = await fetch(`/admin/alunos/deletar/${alunoDeletandoId}`, { method: "DELETE" });
         if (resp.ok) {
-          const result = await resp.json();
-          fecharModal('modal-deletar');
           location.reload();
-        } else {
-          alert("Erro ao deletar aluno.");
-          fecharModal('modal-deletar');
         }
-      } catch (error) {
-        console.error("Erro:", error);
-        alert("Erro ao conectar com o servidor.");
-        fecharModal('modal-deletar');
+        else {
+          const data = await resp.json();
+          mostrarAviso("Erro ao deletar: " + (data.error || "Erro desconhecido"));
+        }
+      } catch (err) {
+        console.error(err);
+        mostrarAviso("Erro de conexão ao deletar");
+      }
+    } else if (modalId === 'modal-deletar-reuniao' && reuniaoDeletandoId) {
+      try {
+        const resp = await fetch(`/admin/reuniao/${reuniaoDeletandoId}`, { method: "DELETE" });
+        if (resp.ok) {
+          fecharModal('modal-deletar-reuniao');
+          abrirModalListaReunioes(); // Atualiza lista
+        } else {
+          const data = await resp.json();
+          mostrarAviso("Erro ao deletar reunião: " + (data.error || "Erro desconhecido"));
+        }
+      } catch (err) {
+        console.error(err);
+        mostrarAviso("Erro de conexão ao deletar reunião");
       }
     } else {
       fecharModal(modalId);
     }
   };
-
-
-
-   /*****************************************
-   * 🔵 EXIBIR ENTREGÁVEIS DO ALUNO
-   *****************************************/
-  async function abrirModalDetalhes(alunoId) {
-    alunoDetalhesId = alunoId;
-
-
-    const container = document.getElementById("lista-entregaveis");
-    if (!container) {
-      console.error("Container #lista-entregaveis não encontrado");
-      return;
-    }
-
-    container.innerHTML = "<p class='text-gray-400'>Carregando entregáveis...</p>";
-
-    abrirModal("modal-detalhes");
-
-    try {
-      const response = await fetch(`/admin/alunos/${alunoId}/entregaveis`);
-      const data = await response.json();
-      // salva a mentoria atual (usamos a primeira)
-      window.mentoriaAtualId = data.entregaveis[0].mentoria_id;
-
-
-      container.innerHTML = "";
-
-      if (!data.entregaveis || data.entregaveis.length === 0) {
-        container.innerHTML = `
-          <p class="text-gray-400 text-center">
-            Nenhuma tarefa encontrada para este aluno.
-          </p>`;
-        return;
-      }
-
-      data.entregaveis.forEach(e => {
-        container.innerHTML += `
-          <button
-            onclick="abrirModalEntregavel(
-              '${e.id}',
-              '${e.nome}',
-              '${e.status}',
-              '${e.data_entrega || ""}'
-            )" class="w-full py-2 px-4 bg-[#242424] rounded-lg border border-[#2a2a2a]
-                   hover:border-[#535353] transition-colors flex justify-between items-center group">
-
-            <div class="flex items-center gap-3">
-              <i class="ph ph-check-circle ${
-                e.status === 'entregue'
-                  ? 'text-green-600'
-                  : 'text-yellow-500'
-              }" entregavel-status ></i>
-
-              <div class="text-left">
-                <h4 class="font-medium text-white">${e.nome}</h4>
-
-                <p class="text-sm text-gray-400">
-                  Mentoria: <span class="font-semibold">${e.mentoria}</span>
-                </p>
-
-                ${
-                  e.status === "entregue"
-                    ? `<p class="text-sm text-green-600">
-                        Entregue em: <b>${e.data_entrega}</b>
-                      </p>`
-                    : `<p class="text-sm text-red-400">Pendente</p>`
-                }
-
-              </div>
-            </div>
-          </button>
-        `;
-      });
-
-    } catch (error) {
-      console.error(error);
-      container.innerHTML = `
-        <p class="text-red-500 text-center">
-          Erro ao carregar entregáveis.
-        </p>`;
-    }
-  }
-
-
-  /////////////////////////////////////////////////////////
-
-  document
-  .getElementById("modal-nova-reuniao-form")
-  .addEventListener("submit", async function (e) {
-
-    e.preventDefault();
-
-    const dataReuniao = this.querySelector("#data_reuniao").value;
-
-    if (!dataReuniao) {
-      alert("Informe a data da reunião");
-      return;
-    }
-
-    // ⚠️ IMPORTANTE:
-    // usamos a PRIMEIRA mentoria do aluno
-    // (se futuramente tiver várias, você pode escolher)
-    const mentoriaId = window.mentoriaAtualId;
-
-    try {
-      const response = await fetch("/admin/reuniao/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          aluno_id: alunoDetalhesId,
-          mentoria_id: mentoriaId,
-          data_reuniao: dataReuniao
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error("Erro ao salvar reunião");
-      }
-
-      fecharModal("modal-nova-reuniao");
-
-      alert("Reunião adicionada com sucesso!");
-
-      // Atualiza a data do último encontro na tela
-      atualizarUltimaReuniao(dataReuniao);
-
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao adicionar reunião");
-    }
-});
-
-
-
-
 </script>
 {% endblock %}

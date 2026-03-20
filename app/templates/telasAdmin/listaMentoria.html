@@ -72,8 +72,52 @@ Lista de Mentorias | Mentoria 360° - ADM
     <label class="text-sm text-gray-300">Nome da Mentoria</label>
     <input type="text" name="nomeMentoria" class="w-full p-2 rounded border border-[#2a2a2a] bg-[#101010] text-white">
   </div>
+
+  <div class="mt-6">
+    <label class="block text-white font-medium mb-2">Entregáveis</label>
+    
+    <!-- Seletor -->
+    <div class="flex gap-2 mb-4">
+      <div class="relative flex-1">
+        <select id="selectEntregavel" class="w-full p-2 bg-[#101010] border border-[#2a2a2a] rounded-md text-white focus:outline-none focus:ring-1 focus:ring-[#f8ca54] appearance-none">
+          <option value="" disabled selected>Selecionar modelo...</option>
+          {% for mod in modelos %}
+          <option value="{{ mod.id }}">{{ mod.nome }}</option>
+          {% endfor %}
+        </select>
+        <i class="ph ph-caret-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+      </div>
+      <button type="button" id="btnAdicionarEntregavel" class="bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white px-3 rounded-md transition-colors">
+        <i class="ph ph-plus"></i>
+      </button>
+    </div>
+
+    <!-- Lista -->
+    <div class="border border-[#2a2a2a] rounded-lg overflow-hidden">
+      <div id="listaEntregaveis" class="min-h-[150px] max-h-[300px] overflow-y-auto p-2 bg-[#0a0a0a]">
+        <!-- JS popula -->
+      </div>
+    </div>
+  </div>
+
 </form>
 {% endcall %}
+
+<!-- Template para Entregável -->
+<template id="templateEntregavel">
+  <div class="entregavel-item group flex items-center justify-between p-2 border border-[#2a2a2a] rounded-lg mb-2 bg-[#171717] hover:bg-[#222] transition-colors" draggable="true">
+    <div class="flex items-center gap-2">
+      <div class="mover cursor-move text-gray-500 hover:text-gray-300">
+        <i class="ph ph-dots-six-vertical text-lg"></i>
+      </div>
+      <span class="text-white font-medium ordem text-xs">1.</span>
+      <span class="text-gray-200 text-sm nome-entregavel">Nome</span>
+    </div>
+    <button type="button" class="remover text-red-500 hover:text-red-400 p-1">
+      <i class="ph ph-trash"></i>
+    </button>
+  </div>
+</template>
 
 <!-- MODAL DE DELETAR -->
 {% call criar_modal_acao('modal-deletar', 'Confirmar Exclusão', 'max-w-md', true, 'Deletar') %}
@@ -91,18 +135,8 @@ Lista de Mentorias | Mentoria 360° - ADM
 <script>
   let mentoriaEditandoId = null;
   let mentoriaDeletandoId = null;
-
-  /*******************************
-   * 🔵 ABRIR MODAL DE EDIÇÃO
-   *******************************/
-  function abrirModalEditar(id, nome) {
-    mentoriaEditandoId = id;
-
-    const form = document.getElementById("modal-editar-form");
-    form.nomeMentoria.value = nome;
-
-    abrirModal("modal-editar");
-  }
+  let entregaveis = [];
+  let proximoId = 1;
 
   document.addEventListener('DOMContentLoaded', function () {
     // 1. Enviar Edição
@@ -120,8 +154,11 @@ Lista de Mentorias | Mentoria 360° - ADM
       inputPesquisa.addEventListener('input', function () {
         const termo = this.value.toLowerCase();
         document.querySelectorAll('.card-mentoria').forEach(card => {
-          const nome = card.querySelector('span').textContent.toLowerCase();
-          card.style.display = nome.includes(termo) ? '' : 'none';
+          const span = card.querySelector('span');
+          if (span) {
+            const nome = span.textContent.toLowerCase();
+            card.style.display = nome.includes(termo) ? '' : 'none';
+          }
         });
       });
     }
@@ -135,14 +172,132 @@ Lista de Mentorias | Mentoria 360° - ADM
     document.getElementById("mentoria-deletar-nome").textContent = nome;
     abrirModal("modal-deletar");
   }
+  /*******************************
+   * 🔵 ABRIR MODAL DE EDIÇÃO
+   *******************************/
+  async function abrirModalEditar(id, nome) {
+    mentoriaEditandoId = id;
+    entregaveis = [];
+    
+    const form = document.getElementById("modal-editar-form");
+    form.nomeMentoria.value = nome;
+
+    const listaContainer = document.getElementById('listaEntregaveis');
+    listaContainer.innerHTML = '<div class="text-center py-4"><i class="ph ph-circle-notch animate-spin text-2xl text-[#f8ca54]"></i></div>';
+
+    try {
+      const resp = await fetch(`/mentorias/entregaveis/${id}`);
+      const data = await resp.json();
+      
+      listaContainer.innerHTML = '';
+      if (data.entregaveis && data.entregaveis.length > 0) {
+        data.entregaveis.forEach(e => adicionarEntregavelUI(e.nome));
+      } else {
+        listaContainer.innerHTML = '<p id="listaVazia" class="text-gray-500 text-center py-8 text-sm">Nenhum entregável</p>';
+      }
+    } catch (err) {
+      console.error(err);
+      listaContainer.innerHTML = '<p class="text-red-500 text-center py-4 text-sm">Erro ao carregar entregáveis</p>';
+    }
+
+    abrirModal("modal-editar");
+  }
+
+  function adicionarEntregavelUI(nome) {
+    const container = document.getElementById('listaEntregaveis');
+    const vazia = document.getElementById('listaVazia');
+    if (vazia) vazia.remove();
+
+    const template = document.getElementById('templateEntregavel');
+    const clone = template.content.cloneNode(true);
+    const item = clone.querySelector('.entregavel-item');
+    
+    const idLocal = proximoId++;
+    item.dataset.id = idLocal;
+    item.querySelector('.nome-entregavel').textContent = nome;
+
+    // Eventos
+    item.querySelector('.remover').onclick = () => {
+      item.remove();
+      entregaveis = entregaveis.filter(e => e.idLocal !== idLocal);
+      atualizarOrdens();
+      if (container.children.length === 0) {
+        container.innerHTML = '<p id="listaVazia" class="text-gray-500 text-center py-8 text-sm">Nenhum entregável</p>';
+      }
+    };
+
+    tornarArrastavel(item);
+    container.appendChild(item);
+    
+    entregaveis.push({ idLocal, nome, elemento: item });
+    atualizarOrdens();
+  }
+
+  function atualizarOrdens() {
+    const itens = document.querySelectorAll('#listaEntregaveis .entregavel-item');
+    itens.forEach((it, idx) => {
+      it.querySelector('.ordem').textContent = (idx + 1) + '.';
+    });
+  }
+
+  function tornarArrastavel(el) {
+    el.addEventListener('dragstart', () => el.classList.add('opacity-50', 'dragging'));
+    el.addEventListener('dragend', () => el.classList.remove('opacity-50', 'dragging'));
+  }
+
+  const listaEntregaveis = document.getElementById('listaEntregaveis');
+  listaEntregaveis.addEventListener('dragover', e => {
+    e.preventDefault();
+    const draggable = document.querySelector('.dragging');
+    const afterElement = getDragAfterElement(listaEntregaveis, e.clientY);
+    if (afterElement == null) {
+      listaEntregaveis.appendChild(draggable);
+    } else {
+      listaEntregaveis.insertBefore(draggable, afterElement);
+    }
+  });
+
+  function getDragAfterElement(container, y) {
+    const elements = [...container.querySelectorAll('.entregavel-item:not(.dragging)')];
+    return elements.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset, element: child };
+      }
+      return closest;
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
+
+  // Evento botão adicionar
+  document.getElementById('btnAdicionarEntregavel').onclick = () => {
+    const select = document.getElementById('selectEntregavel');
+    const nome = select.options[select.selectedIndex]?.text;
+    if (select.value) {
+      adicionarEntregavelUI(nome);
+    }
+  };
 
   /*******************************
    * 🔵 FUNÇÃO PARA EDITAR MENTORIA (PUT)
    *******************************/
   async function editarMentoria() {
-    const novoNome = document.querySelector("input[name='nomeMentoria']").value;
+    const inputNome = document.querySelector("input[name='nomeMentoria']");
+    const novoNome = inputNome.value.trim();
+    
+    if (!novoNome) {
+      mostrarAviso("O nome da mentoria é obrigatório.");
+      return;
+    }
 
-    const payload = { nomeMentoria: novoNome };
+    // Coleta nomes na ordem atual do DOM
+    const nomesAtuais = [...document.querySelectorAll('#listaEntregaveis .nome-entregavel')]
+                        .map(el => el.textContent);
+
+    const payload = { 
+      nomeMentoria: novoNome,
+      entregaveis: nomesAtuais
+    };
 
     try {
       const response = await fetch(`/mentorias/editar-mentoria/${mentoriaEditandoId}`, {

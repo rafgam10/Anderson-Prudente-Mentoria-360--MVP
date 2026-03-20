@@ -111,27 +111,66 @@ def listar_mentorias():
         for mentoria in lista_mentoria
     }
 
+    modelos = EntregavelModelo.query.order_by(EntregavelModelo.nome).all()
+    
     return render_template(
         "telasAdmin/listaMentoria.html", 
         lista_mentoria=lista_mentoria,
-        entregaveis_count=entregaveis_count
+        entregaveis_count=entregaveis_count,
+        modelos=modelos
     )
 
 
 @mentoria_bp.route("/editar-mentoria/<int:id>", methods=["PUT"])
 def editar_mentoria(id: int):
+    from app.models.Aluno import Aluno
+    from app.models.AlunoEntregavel import AlunoEntregavel
+    
     data = request.get_json()
     novo_nome = data.get("nomeMentoria")
+    entregaveis_nomes = data.get("entregaveis", []) # Lista de nomes (strings)
 
     mentoria = Mentoria.query.get(id)
-
     if not mentoria:
         return jsonify({"error": "Mentoria não encontrada"}), 404
 
+    # Atualiza nome
     mentoria.nome = novo_nome
-    db.session.commit()
+    
+    # Gerencia entregáveis
+    atuais_nomes = [e.nome for e in mentoria.entregaveis]
+    
+    # 1. Remover entregáveis que não estão mais na lista nova
+    for e in list(mentoria.entregaveis):
+        if e.nome not in entregaveis_nomes:
+            # Remover instâncias deste entregável para todos os alunos
+            AlunoEntregavel.query.filter_by(entregavel_id=e.id).delete()
+            db.session.delete(e)
+            
+    # 2. Adicionar novos entregáveis
+    for nome in entregaveis_nomes:
+        if nome not in atuais_nomes:
+            novo_e = Entregavel(id_mentoria=id, nome=nome)
+            db.session.add(novo_e)
+            db.session.flush() # Garante que o ID do novo_e seja gerado
+            
+            # Criar instância para todos os alunos vinculados a esta mentoria
+            for aluno in mentoria.alunos:
+                nova_instancia = AlunoEntregavel(
+                    aluno=aluno,
+                    entregavel_id=novo_e.id,
+                    status='Pendente'
+                )
+                db.session.add(nova_instancia)
 
+    db.session.commit()
     return jsonify({"message": "Mentoria atualizada com sucesso!"}), 200
+
+@mentoria_bp.route("/entregaveis/<int:id>", methods=["GET"])
+def get_entregaveis_mentoria(id):
+    mentoria = Mentoria.query.get_or_404(id)
+    res = [{"id": e.id, "nome": e.nome} for e in mentoria.entregaveis]
+    return jsonify({"entregaveis": res})
 
 
 
